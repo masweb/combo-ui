@@ -1,0 +1,69 @@
+@use '@coreui/coreui/scss/coreui' with (
+  $primary: #3452c9,
+  $primary-dark: coral,
+  $card-bg: transparent
+);
+@use 'main-bar';
+/* @use 'previews'; */
+:root {
+  --cui-font-sans-serif: 'Inter';
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/InterVariable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/InterVariable-Italic.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+body {
+  font-family: var(--cui-font-sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+#app {
+  height: 100vh;
+  width: calc(100vw - 4px);
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 2px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.32);
+  }
+}
+
+[data-coreui-theme='dark'] {
+  --cui-body-color: #bbb;
+  --cui-body-color-rgb: #{to-rgb(188, 188, 188)};
+  --cui-body-bg: #222;
+  --cui-body-bg-rgb: #{to-rgb(29, 29, 29)};
+  --cui-tertiary-bg: #{to-rgb(48, 48, 48)};
+
+  .dropdown-menu {
+    --cui-dropdown-bg: #444;
+    --cui-dropdown-link-active-bg: #555;
+  }
+}
