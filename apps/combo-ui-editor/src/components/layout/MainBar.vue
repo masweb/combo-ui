@@ -5,9 +5,7 @@ import { useTheme } from '@/composables/useTheme'
 const { theme, setTheme } = useTheme()
 const { locale, availableLocales } = useI18n()
 
-watch(locale, newLocale => {
-  localStorage.setItem('lang', newLocale)
-})
+watch(locale, newLocale => localStorage.setItem('lang', newLocale))
 </script>
 <template>
   <div class="main-bar">

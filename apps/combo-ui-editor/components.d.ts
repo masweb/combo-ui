@@ -11,9 +11,22 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    CoverView: typeof import('./src/components/CoverView.vue')['default']
-    GoBack: typeof import('./src/components/GoBack.vue')['default']
-    MainBar: typeof import('./src/components/MainBar.vue')['default']
-    SidePanel: typeof import('./src/components/SidePanel.vue')['default']
+    AlertPositionField: typeof import('./src/components/editor/fields/AlertPositionField.vue')['default']
+    BackgroundSwatch: typeof import('./src/components/editor/fields/BackgroundSwatch.vue')['default']
+    BorderField: typeof import('./src/components/editor/fields/BorderField.vue')['default']
+    BorderRadiusField: typeof import('./src/components/editor/fields/BorderRadiusField.vue')['default']
+    ColorField: typeof import('./src/components/editor/fields/ColorField.vue')['default']
+    CoverView: typeof import('./src/components/layout/CoverView.vue')['default']
+    FontFamilyField: typeof import('./src/components/editor/fields/FontFamilyField.vue')['default']
+    FontSizeField: typeof import('./src/components/editor/fields/FontSizeField.vue')['default']
+    GoBack: typeof import('./src/components/layout/GoBack.vue')['default']
+    LetterSpacingField: typeof import('./src/components/editor/fields/LetterSpacingField.vue')['default']
+    MainBar: typeof import('./src/components/layout/MainBar.vue')['default']
+    NumberUnitField: typeof import('./src/components/editor/fields/NumberUnitField.vue')['default']
+    PaddingField: typeof import('./src/components/editor/fields/PaddingField.vue')['default']
+    ShadowField: typeof import('./src/components/editor/fields/ShadowField.vue')['default']
+    SidePanel: typeof import('./src/components/layout/SidePanel.vue')['default']
+    SwitchField: typeof import('./src/components/editor/fields/SwitchField.vue')['default']
+    TextAlignField: typeof import('./src/components/editor/fields/TextAlignField.vue')['default']
   }
 }

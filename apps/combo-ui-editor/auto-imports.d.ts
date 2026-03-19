@@ -104,6 +104,7 @@ declare global {
   const useTheme: typeof import('./src/composables/useTheme').useTheme
   const useValidateField: typeof import('vee-validate').useValidateField
   const useValidateForm: typeof import('vee-validate').useValidateForm
+  const vWheelNumber: typeof import('./src/directives/wheelNumber').vWheelNumber
   const validate: typeof import('vee-validate').validate
   const watch: typeof import('vue').watch
   const watchEffect: typeof import('vue').watchEffect
@@ -121,4 +122,43 @@ declare global {
   // @ts-ignore
   export type { ListComponentMeta } from './src/constants/index'
   import('./src/constants/index')
+  // @ts-ignore
+  export type { AlertVariant, DarkAlert } from './src/types/alert'
+  import('./src/types/alert')
+  // @ts-ignore
+  export type { AvatarVariant, DarkAvatar } from './src/types/avatar'
+  import('./src/types/avatar')
+  // @ts-ignore
+  export type { BadgeVariant, DarkBadge } from './src/types/badge'
+  import('./src/types/badge')
+  // @ts-ignore
+  export type { ButtonVariant, DarkButton } from './src/types/button'
+  import('./src/types/button')
+  // @ts-ignore
+  export type { CardVariant, DarkCard } from './src/types/card'
+  import('./src/types/card')
+  // @ts-ignore
+  export type { ChipVariant, DarkChip } from './src/types/chip'
+  import('./src/types/chip')
+  // @ts-ignore
+  export type { DividerWidthValue, DividerVariant, DarkDivider } from './src/types/divider'
+  import('./src/types/divider')
+  // @ts-ignore
+  export type { FormsVariantName, OptionOrientation, FormState, FormsGlobalConfig, DarkFormsGlobalConfig, FormsVariant, FormsVariants } from './src/types/forms'
+  import('./src/types/forms')
+  // @ts-ignore
+  export type { BorderStyle, TreeUnit, FourUnit, LineHeightUnit, FontStyle, TextTransform, TextDecoration, TextAlign, ProgressType, SkeletonAnimation, SpinnerType, Position, BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue, ShadowValue, ComponentShadows } from './src/types/generics'
+  import('./src/types/generics')
+  // @ts-ignore
+  export type { ProgressVariant, DarkProgress } from './src/types/progress'
+  import('./src/types/progress')
+  // @ts-ignore
+  export type { SkeletonVariant, DarkSkeleton } from './src/types/skeleton'
+  import('./src/types/skeleton')
+  // @ts-ignore
+  export type { SpinnerVariant, DarkSpinner } from './src/types/spinner'
+  import('./src/types/spinner')
+  // @ts-ignore
+  export type { TypographyVariantName, TypographyValue, DarkTypographyValue, TypographyGlobalConfig, TypographyVariant, TypographyVariants } from './src/types/typography'
+  import('./src/types/typography')
 }

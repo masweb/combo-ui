@@ -66,11 +66,6 @@ body {
   --cui-body-bg: #222;
   --cui-body-bg-rgb: #{to-rgb(29, 29, 29)};
   --cui-tertiary-bg: #{to-rgb(48, 48, 48)};
-
-  .dropdown-menu {
-    --cui-dropdown-bg: #444;
-    --cui-dropdown-link-active-bg: #555;
-  }
 }
 
 .btn-secondary {
