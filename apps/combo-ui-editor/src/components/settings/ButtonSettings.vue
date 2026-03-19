@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IconPlus, IconTrash } from '@tabler/icons-vue'
-import { BaseFields, TypographyFields, InteractiveFields, ThemeToggle } from '@/components/shared'
+import { BaseFields, TypographyFields, InteractiveFields } from '@/components/shared'
 import { useDualModePatch } from '@/composables/useDualModePatch'
 import type { DarkButton } from '@/types/button'
 

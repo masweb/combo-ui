@@ -55,7 +55,7 @@ const onSpeedInput = (e: Event) => {
 
   <div v-if="variant">
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <div class="mb-3">
           <label class="form-label">{{ t('settings.type') }}</label>
           <div class="btn-group btn-group-sm w-100">
@@ -106,7 +106,7 @@ const onSpeedInput = (e: Event) => {
     </template>
 
     <template v-else>
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('settings.color')"
           :model-value="variant.dark.color"

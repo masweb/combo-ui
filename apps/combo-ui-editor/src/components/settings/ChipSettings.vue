@@ -41,7 +41,7 @@ const variant = computed(() => chipStore.selectedVariant)
   </div>
   <div v-if="variant">
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <BaseFields
           :background="variant.background"
           :color="variant.color"
@@ -101,7 +101,7 @@ const variant = computed(() => chipStore.selectedVariant)
     </template>
 
     <template v-else>
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('common.background')"
           :model-value="variant.dark.background"

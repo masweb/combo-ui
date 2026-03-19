@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IconPlus, IconTrash } from '@tabler/icons-vue'
-import { BaseFields, TypographyFields, ThemeToggle } from '@/components/shared'
+import { BaseFields, TypographyFields } from '@/components/shared'
 import { useDualModePatch } from '@/composables/useDualModePatch'
 import type { DarkBadge } from '@/types/badge'
 
@@ -42,7 +42,7 @@ const variant = computed(() => badgeStore.selectedVariant)
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <BaseFields
           :background="variant.background"
           :color="variant.color"
@@ -80,7 +80,7 @@ const variant = computed(() => badgeStore.selectedVariant)
 
     <!-- DARK MODE SETTINGS -->
     <template v-else>
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('common.background')"
           :model-value="variant.dark.background"

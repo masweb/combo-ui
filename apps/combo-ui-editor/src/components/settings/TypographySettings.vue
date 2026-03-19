@@ -51,7 +51,7 @@ const textDecorationOptions = [
 </script>
 
 <template>
-  <SettingsSection title="Global" :initial-open="true">
+  <SettingsSection title="Global" :initial-open="false">
     <template v-if="!isDark">
       <FontFamilyField
         :font-family="typographyStore.globalConfig.fontFamily"
@@ -75,7 +75,7 @@ const textDecorationOptions = [
     </template>
   </SettingsSection>
 
-  <SettingsSection :title="t('common.variants')" :initial-open="true">
+  <SettingsSection :title="t('common.variants')" :initial-open="false">
     <div class="variant-list mb-2" style="max-height: 200px; overflow-y: auto">
       <div
         v-for="(v, index) in typographyStore.sortedVariants"
@@ -112,7 +112,7 @@ const textDecorationOptions = [
 
   <div v-if="variant" class="mx-2">
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.typography')" :initial-open="true">
+      <SettingsSection :title="t('common.typography')" :initial-open="false">
         <FontFamilyField
           :font-family="variant.fontFamily || ''"
           :font-style="variant.fontStyle"
@@ -213,7 +213,7 @@ const textDecorationOptions = [
     </template>
 
     <template v-else>
-      <SettingsSection :title="t('common.darkMode')" :initial-open="true">
+      <SettingsSection :title="t('common.darkMode')" :initial-open="false">
         <ColorField
           :label="t('common.textColor')"
           :model-value="variant.dark.color || typographyStore.globalConfig.dark.color"

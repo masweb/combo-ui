@@ -68,7 +68,7 @@ const updateOffsetUnit = (unit: string) => {
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <BaseFields
           :background="variant.background"
           :color="variant.color"
@@ -216,7 +216,7 @@ const updateOffsetUnit = (unit: string) => {
 
     <!-- DARK MODE SETTINGS -->
     <template v-else>
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('common.background')"
           :model-value="variant.dark.background"

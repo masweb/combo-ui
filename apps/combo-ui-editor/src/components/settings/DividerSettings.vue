@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IconPlus, IconTrash } from '@tabler/icons-vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
-import type { DividerWidthUnit, FontSizeUnit } from '@/types/generics'
+import type { TreeUnit, FourUnit } from '@/types/generics'
 import type { DividerVariant, DarkDivider } from '@/types/divider'
 
 const { t } = useI18n()
@@ -24,7 +24,7 @@ const updateWidthValue = (value: number) => {
 
 const updateWidthUnit = (unit: string) => {
   if (variant.value) {
-    patch({ width: { ...variant.value.width, unit: unit as DividerWidthUnit } })
+    patch({ width: { ...variant.value.width, unit: unit as FourUnit } })
   }
 }
 
@@ -36,7 +36,7 @@ const updateSpacingValue = (value: number) => {
 
 const updateSpacingUnit = (unit: string) => {
   if (variant.value) {
-    patch({ spacing: { ...variant.value.spacing, unit: unit as FontSizeUnit } })
+    patch({ spacing: { ...variant.value.spacing, unit: unit as TreeUnit } })
   }
 }
 </script>
@@ -65,7 +65,7 @@ const updateSpacingUnit = (unit: string) => {
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <BorderField
           :label="t('common.border')"
           :model-value="variant.border"
@@ -92,7 +92,7 @@ const updateSpacingUnit = (unit: string) => {
 
     <!-- DARK MODE SETTINGS -->
     <template v-else>
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('common.borderColor')"
           :model-value="variant.dark.borderColor"

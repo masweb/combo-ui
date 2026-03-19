@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ThemeToggle } from '@/components/shared'
 import { useFormsStore } from '@/stores/forms'
 import { useTypographyStore } from '@/stores/typography'
 import { useComponentTheme } from '@/composables/useComponentTheme'
@@ -41,7 +40,7 @@ const patchGlobalDark = (updates: Partial<(typeof formsStore.globalConfig)['dark
 </script>
 
 <template>
-  <SettingsSection title="Global" :initial-open="true">
+  <SettingsSection title="Global" :initial-open="false">
     <template v-if="!isDark">
       <FontFamilyField
         :font-family="config.fontFamily || ''"

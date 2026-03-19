@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { IconPlus, IconTrash } from '@tabler/icons-vue'
-import { ThemeToggle } from '@/components/shared'
 import { useProgressStore } from '@/stores/progress'
 import { useDualModePatch } from '@/composables/useDualModePatch'
-import type { ProgressType, FontSizeUnit, FontStyle } from '@/types/generics'
+import type { ProgressType, TreeUnit, FontStyle } from '@/types/generics'
 import type { ProgressVariant, DarkProgress } from '@/types/progress'
 
 const { t } = useI18n()
@@ -26,7 +25,7 @@ const updateHeightValue = (value: number) => {
 
 const updateHeightUnit = (unit: string) => {
   if (variant.value) {
-    patch({ height: { ...variant.value.height, unit: unit as FontSizeUnit } })
+    patch({ height: { ...variant.value.height, unit: unit as TreeUnit } })
   }
 }
 </script>
@@ -55,7 +54,7 @@ const updateHeightUnit = (unit: string) => {
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->
     <template v-if="!isDark">
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('common.background')"
           :model-value="variant.background"
@@ -187,7 +186,7 @@ const updateHeightUnit = (unit: string) => {
 
     <!-- DARK MODE SETTINGS -->
     <template v-else>
-      <SettingsSection :title="t('common.base')" :initial-open="true">
+      <SettingsSection :title="t('common.base')" :initial-open="false">
         <ColorField
           :label="t('common.background')"
           :model-value="variant.dark.background"
