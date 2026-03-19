@@ -1,16 +1,27 @@
 {
   "components": {
     "button": "Botón",
+    "button-descr": "Activa acciones",
     "card": "Tarjeta",
+    "card-descr": "Contenedor de contenido",
     "badge": "Insignia",
+    "badge-descr": "Indicadores de estado",
     "chip": "Chip",
+    "chip-descr": "Info compacta cerrable",
     "spinner": "Indicador de carga",
+    "spinner-descr": "Estado de carga",
     "progress": "Barra de progreso",
+    "progress-descr": "Indicador de progreso",
     "alert": "Alerta",
+    "alert-descr": "Mensajes de feedback",
     "avatar": "Avatar",
+    "avatar-descr": "Representación de usuario",
     "divider": "Divisor",
+    "divider-descr": "Separador visual",
     "typography": "Tipografía",
+    "typography-descr": "Tipografía de documento",
     "forms": "Formularios",
+    "forms-descr": "Estilos de elementos de formulario",
     "uiComponents": "Componentes UI"
   },
   "typography": {

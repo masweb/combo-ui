@@ -1,16 +1,27 @@
 {
   "components": {
     "button": "Button",
+    "button-descr": "Trigger actions",
     "card": "Card",
+    "card-descr": "Content container",
     "badge": "Badge",
+    "badge-descr": "Status indicators",
     "chip": "Chip",
+    "chip-descr": "Closable compact info",
     "spinner": "Spinner",
+    "spinner-descr": "Loading state",
     "progress": "Progress",
+    "progress-descr": "Completion indicator",
     "alert": "Alert",
+    "alert-descr": "Feedback messages",
     "avatar": "Avatar",
+    "avatar-descr": "User representation",
     "divider": "Divider",
+    "divider-descr": "Visual separator",
     "typography": "Typography",
+    "typography-descr": "Document typography",
     "forms": "Forms",
+    "forms-descr": "Form elements styling",
     "uiComponents": "UI Components"
   },
   "typography": {

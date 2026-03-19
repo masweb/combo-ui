@@ -86,6 +86,7 @@ declare global {
   const useForm: typeof import('vee-validate').useForm
   const useFormErrors: typeof import('vee-validate').useFormErrors
   const useFormValues: typeof import('vee-validate').useFormValues
+  const useI18n: typeof import('vue-i18n').useI18n
   const useId: typeof import('vue').useId
   const useIsFieldDirty: typeof import('vee-validate').useIsFieldDirty
   const useIsFieldTouched: typeof import('vee-validate').useIsFieldTouched

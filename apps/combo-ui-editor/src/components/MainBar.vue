@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { IconSunFilled, IconMoonFilled } from '@tabler/icons-vue'
-import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import { useTheme } from '@/composables/useTheme'
 const { theme, setTheme } = useTheme()

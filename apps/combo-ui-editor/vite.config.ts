@@ -16,7 +16,7 @@ export default defineConfig({
     }),
     AutoImport({
       dts: 'auto-imports.d.ts',
-      imports: ['vue', 'pinia', 'vee-validate'],
+      imports: ['vue', 'pinia', 'vee-validate', 'vue-i18n'],
       include: [/\.vue$/, /\.vue\?vue/, /\.ts$/],
       dirs: [
         'src/composables/**',
