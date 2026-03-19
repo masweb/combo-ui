@@ -22,7 +22,7 @@ watch(locale, newLocale => localStorage.setItem('lang', newLocale))
         @click="setTheme(theme === 'dark' ? 'light' : 'dark')"
       >
         <IconSunFilled v-if="theme === 'dark'" :size="24" stroke-width="1.2" />
-        <IconMoonFilled v-else :size="24" stroke-width="1.2" />
+        <IconMoonFilled v-else :size="22" stroke-width="1.2" />
       </button>
     </div>
   </div>

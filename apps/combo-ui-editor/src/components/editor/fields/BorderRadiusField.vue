@@ -41,7 +41,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
   <div class="border-radius-field field-group">
     <div class="d-flex align-items-center justify-content-between mb-1">
       <label class="field-label mb-0">{{ label }}</label>
-      <div class="d-flex align-items-center gap-1">
+      <div class="d-flex align-items-center">
         <select
           class="form-select form-select-sm radius-unit-select"
           :value="modelValue.unit"
@@ -66,7 +66,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
         <input
           v-wheel-number
           type="number"
-          class="form-control form-control-sm radius-input"
+          class="form-control form-control-sm radius-input border-end-0"
           min="0"
           :step="step"
           :value="modelValue.tl"
@@ -78,7 +78,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
         <input
           v-wheel-number
           type="number"
-          class="form-control form-control-sm radius-input"
+          class="form-control form-control-sm radius-input border-end-0"
           min="0"
           :step="step"
           :value="modelValue.tr"
@@ -90,7 +90,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
         <input
           v-wheel-number
           type="number"
-          class="form-control form-control-sm radius-input"
+          class="form-control form-control-sm radius-input border-end-0"
           min="0"
           :step="step"
           :value="modelValue.bl"

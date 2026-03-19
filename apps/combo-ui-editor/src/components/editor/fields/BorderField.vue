@@ -37,7 +37,7 @@ const isDisabled = computed(() => props.modelValue.style === 'none')
     <!-- Style selector -->
     <div class="border-field-row">
       <select
-        class="form-select form-select-sm border-style-select"
+        class="form-select form-select-sm border-end-0"
         :value="modelValue.style"
         @change="patch({ style: ($event.target as HTMLSelectElement).value as BorderStyle })"
       >
@@ -49,28 +49,28 @@ const isDisabled = computed(() => props.modelValue.style === 'none')
         <input
           v-wheel-number
           type="number"
-          class="form-control form-control-sm border-width-input"
+          class="form-control form-control-sm border-width-input border-end-0"
           min="0"
           max="99"
           :value="modelValue.width"
           @input="patch({ width: Math.max(0, Number(($event.target as HTMLInputElement).value)) })"
         />
         <select
-          class="form-select form-select-sm border-unit-select"
+          class="form-select form-select-sm border-unit-select border-end-0"
           :value="modelValue.unit"
           @change="patch({ unit: ($event.target as HTMLSelectElement).value as TreeUnit })"
         >
           <option v-for="u in BORDER_UNITS" :key="u" :value="u">{{ u }}</option>
         </select>
+        <ColorField
+          v-if="!isDisabled"
+          label=" "
+          :model-value="modelValue.color"
+          @update:model-value="patch({ color: $event })"
+        />
       </template>
     </div>
 
     <!-- Color (hidden when none) -->
-    <ColorField
-      v-if="!isDisabled"
-      label="Color"
-      :model-value="modelValue.color"
-      @update:model-value="patch({ color: $event })"
-    />
   </div>
 </template>

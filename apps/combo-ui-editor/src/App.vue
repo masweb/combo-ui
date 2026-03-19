@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const layout = stLayout()
+const nav = useNavigationStore()
 </script>
 
 <template>
   <MainBar />
-  <CoverView v-if="!layout.componentLoaded" />
+  <CoverView v-if="!nav.currentComponent" />
   <div v-else class="d-flex">
     <SidePanel />
     <div class="preview-view">ewe</div>

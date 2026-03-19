@@ -41,7 +41,7 @@ const onInput = (fn: (v: number) => void) =>  (e: Event) => fn(clamp(Number((e.t
 </script>
 
 <template>
-  <div class="padding-field field-group">
+  <div>
     <div class="d-flex align-items-center justify-content-between mb-1">
       <label class="field-label mb-0">{{ label }}</label>
       <select
@@ -56,7 +56,7 @@ const onInput = (fn: (v: number) => void) =>  (e: Event) => fn(clamp(Number((e.t
     <!-- Vertical: Top + Bottom -->
     <div class="padding-axis-row">
       <button
-        class="btn btn-sm radius-lock-btn"
+        class="btn btn-sm"
         :class="modelValue.linkedV ? 'btn-secondary' : 'btn-outline-secondary'"
         title="Sincronizar vertical"
         @click="toggleV"
@@ -91,12 +91,9 @@ const onInput = (fn: (v: number) => void) =>  (e: Event) => fn(clamp(Number((e.t
           <span class="padding-input-label">B</span>
         </div>
       </div>
-    </div>
 
-    <!-- Horizontal: Right + Left -->
-    <div class="padding-axis-row">
       <button
-        class="btn btn-sm radius-lock-btn"
+        class="btn btn-sm"
         :class="modelValue.linkedH ? 'btn-secondary' : 'btn-outline-secondary'"
         title="Sincronizar horizontal"
         @click="toggleH"

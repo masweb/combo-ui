@@ -9,7 +9,10 @@ declare global {
   const ALLOWED_THEMES: typeof import('./src/composables/useTheme').ALLOWED_THEMES
   const COMPONENT_FORM: typeof import('./src/constants/index').COMPONENT_FORM
   const COMPONENT_LIST: typeof import('./src/constants/index').COMPONENT_LIST
+  const COMPONENT_STORE_MAP: typeof import('./src/db/index').COMPONENT_STORE_MAP
   const COMPONENT_TYPO: typeof import('./src/constants/index').COMPONENT_TYPO
+  const ComboUXDatabase: typeof import('./src/db/index').ComboUXDatabase
+  const D: typeof import('./src/composables/useDualModePatch').D
   const EffectScope: typeof import('vue').EffectScope
   const FieldContextKey: typeof import('vee-validate').FieldContextKey
   const FormContextKey: typeof import('vee-validate').FormContextKey
@@ -20,23 +23,32 @@ declare global {
   const createApp: typeof import('vue').createApp
   const createPinia: typeof import('pinia').createPinia
   const customRef: typeof import('vue').customRef
+  const db: typeof import('./src/db/index').db
+  const deepClone: typeof import('./src/composables/useVariantManager').deepClone
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineRule: typeof import('vee-validate').defineRule
   const defineStore: typeof import('pinia').defineStore
   const effectScope: typeof import('vue').effectScope
+  const generateFontUrl: typeof import('./src/composables/googleFonts').generateFontUrl
   const getActivePinia: typeof import('pinia').getActivePinia
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const getOrCreatePersistence: typeof import('./src/composables/usePersistence').getOrCreatePersistence
+  const getTypographyDefaults: typeof import('./src/stores/editor/typography').getTypographyDefaults
   const h: typeof import('vue').h
   const initTheme: typeof import('./src/composables/useTheme').initTheme
   const inject: typeof import('vue').inject
+  const injectFontLink: typeof import('./src/composables/googleFonts').injectFontLink
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
+  const loadFontsFromVariant: typeof import('./src/composables/useGoogleFonts').loadFontsFromVariant
+  const loadFontsFromVariants: typeof import('./src/composables/useGoogleFonts').loadFontsFromVariants
+  const loadGoogleFont: typeof import('./src/composables/useGoogleFonts').loadGoogleFont
   const mapActions: typeof import('pinia').mapActions
   const mapGetters: typeof import('pinia').mapGetters
   const mapState: typeof import('pinia').mapState
@@ -69,6 +81,7 @@ declare global {
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
   const stLayout: typeof import('./src/stores/stLayout').stLayout
+  const storeManager: typeof import('./src/composables/useStoreManager').storeManager
   const storeToRefs: typeof import('pinia').storeToRefs
   const toRaw: typeof import('vue').toRaw
   const toRef: typeof import('vue').toRef
@@ -77,8 +90,12 @@ declare global {
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
   const useAttrs: typeof import('vue').useAttrs
+  const useButtonStore: typeof import('./src/stores/editor/button').useButtonStore
+  const useComponentRegistry: typeof import('./src/composables/useComponentRegistry').useComponentRegistry
+  const useComponentTheme: typeof import('./src/composables/useComponentTheme').useComponentTheme
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
+  const useDualModePatch: typeof import('./src/composables/useDualModePatch').useDualModePatch
   const useField: typeof import('vee-validate').useField
   const useFieldArray: typeof import('vee-validate').useFieldArray
   const useFieldError: typeof import('vee-validate').useFieldError
@@ -86,6 +103,7 @@ declare global {
   const useForm: typeof import('vee-validate').useForm
   const useFormErrors: typeof import('vee-validate').useFormErrors
   const useFormValues: typeof import('vee-validate').useFormValues
+  const useGoogleFonts: typeof import('./src/composables/useGoogleFonts').default
   const useI18n: typeof import('vue-i18n').useI18n
   const useId: typeof import('vue').useId
   const useIsFieldDirty: typeof import('vee-validate').useIsFieldDirty
@@ -96,14 +114,22 @@ declare global {
   const useIsFormValid: typeof import('vee-validate').useIsFormValid
   const useIsSubmitting: typeof import('vee-validate').useIsSubmitting
   const useModel: typeof import('vue').useModel
+  const useNavigationStore: typeof import('./src/stores/navigation').useNavigationStore
+  const usePersistence: typeof import('./src/composables/usePersistence').usePersistence
+  const usePreviewContrast: typeof import('./src/composables/usePreviewContrast').usePreviewContrast
   const useResetForm: typeof import('vee-validate').useResetForm
   const useSlots: typeof import('vue').useSlots
+  const useStoreManager: typeof import('./src/composables/useStoreManager').useStoreManager
   const useSubmitCount: typeof import('vee-validate').useSubmitCount
   const useSubmitForm: typeof import('vee-validate').useSubmitForm
   const useTemplateRef: typeof import('vue').useTemplateRef
   const useTheme: typeof import('./src/composables/useTheme').useTheme
+  const useThemeStore: typeof import('./src/stores/theme').useThemeStore
+  const useTypographyPersistence: typeof import('./src/composables/useTypographyPersistence').useTypographyPersistence
+  const useTypographyStore: typeof import('./src/stores/editor/typography').useTypographyStore
   const useValidateField: typeof import('vee-validate').useValidateField
   const useValidateForm: typeof import('vee-validate').useValidateForm
+  const useVariantManager: typeof import('./src/composables/useVariantManager').useVariantManager
   const vWheelNumber: typeof import('./src/directives/wheelNumber').vWheelNumber
   const validate: typeof import('vee-validate').validate
   const watch: typeof import('vue').watch
@@ -117,8 +143,23 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
+  export type { ComponentThemeOptions } from './src/composables/useComponentTheme'
+  import('./src/composables/useComponentTheme')
+  // @ts-ignore
+  export type { DualModePatchOptions } from './src/composables/useDualModePatch'
+  import('./src/composables/useDualModePatch')
+  // @ts-ignore
+  export type { GoogleFont } from './src/composables/useGoogleFonts'
+  import('./src/composables/useGoogleFonts')
+  // @ts-ignore
+  export type { PreviewContrastOptions } from './src/composables/usePreviewContrast'
+  import('./src/composables/usePreviewContrast')
+  // @ts-ignore
   export type { Theme } from './src/composables/useTheme'
   import('./src/composables/useTheme')
+  // @ts-ignore
+  export type { BaseVariant } from './src/composables/useVariantManager'
+  import('./src/composables/useVariantManager')
   // @ts-ignore
   export type { ListComponentMeta } from './src/constants/index'
   import('./src/constants/index')
@@ -161,4 +202,7 @@ declare global {
   // @ts-ignore
   export type { TypographyVariantName, TypographyValue, DarkTypographyValue, TypographyGlobalConfig, TypographyVariant, TypographyVariants } from './src/types/typography'
   import('./src/types/typography')
+  // @ts-ignore
+  export type { ComboUXDatabase, ComponentData, TypographyData, FormsData, ThemeMetaData } from './src/db/index'
+  import('./src/db/index')
 }

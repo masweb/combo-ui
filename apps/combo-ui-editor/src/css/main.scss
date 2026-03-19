@@ -1,15 +1,25 @@
+@use './variables' as *;
 @use '@coreui/coreui/scss/coreui' with (
-  $primary: #3452c9,
+  $primary: #496ea6,
   $primary-dark: coral,
   $card-bg: transparent
 );
+
 @use 'main-bar';
 @use 'cover-view';
 @use 'side-panel';
 @use 'preview-view';
+@use 'editor';
 
 :root {
   --cui-font-sans-serif: 'Inter';
+  --cui-border-radius: 0rem;
+  --cui-btn-border-radius: 0rem;
+  --cui-border-radius-sm: 0rem;
+  --cui-border-radius-lg: 0rem;
+  --cui-border-radius: 0rem;
+  --cui-border-radius-sm: 0rem;
+  --cui-border-radius-lg: 0rem;
 }
 
 @font-face {
@@ -60,12 +70,26 @@ body {
 .cursor-pointer {
   cursor: pointer !important;
 }
+.form-control:focus,
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var($primary);
+}
+
+[data-coreui-theme='dark'] {
+  .form-control:focus {
+    border-color: var($primary-dark) !important;
+  }
+}
+
 [data-coreui-theme='dark'] {
   --cui-body-color: #bbb;
   --cui-body-color-rgb: #{to-rgb(188, 188, 188)};
   --cui-body-bg: #222;
   --cui-body-bg-rgb: #{to-rgb(29, 29, 29)};
   --cui-tertiary-bg: #{to-rgb(48, 48, 48)};
+  --cui-border-color: #444;
 }
 
 .btn-secondary {
