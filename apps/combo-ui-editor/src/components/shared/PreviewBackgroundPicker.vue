@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { IconColorPicker } from '@tabler/icons-vue'
-import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const { isDark, lightBackground, darkBackground, setLightBackground, setDarkBackground } = useComponentTheme()
@@ -68,36 +67,3 @@ const togglePicker = () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.preview-bg-picker {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 1000;
-}
-
-.picker-trigger {
-  background: var(--cui-body-bg);
-  border-color: var(--cui-border-color);
-}
-
-.picker-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 0.5rem;
-  padding: 0.75rem;
-  background: var(--cui-body-bg);
-  border: 1px solid var(--cui-border-color);
-  border-radius: 0.375rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  min-width: 280px;
-}
-
-.picker-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-</style>

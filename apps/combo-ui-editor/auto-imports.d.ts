@@ -8,9 +8,11 @@ export {}
 declare global {
   const ALLOWED_THEMES: typeof import('./src/composables/useTheme').ALLOWED_THEMES
   const COMPONENT_FORM: typeof import('./src/constants/index').COMPONENT_FORM
+  const COMPONENT_FORM_META: typeof import('./src/constants/index').COMPONENT_FORM_META
   const COMPONENT_LIST: typeof import('./src/constants/index').COMPONENT_LIST
   const COMPONENT_STORE_MAP: typeof import('./src/db/index').COMPONENT_STORE_MAP
   const COMPONENT_TYPO: typeof import('./src/constants/index').COMPONENT_TYPO
+  const COMPONENT_TYPOGRAPHY_META: typeof import('./src/constants/index').COMPONENT_TYPOGRAPHY_META
   const ComboUXDatabase: typeof import('./src/db/index').ComboUXDatabase
   const D: typeof import('./src/composables/useDualModePatch').D
   const EffectScope: typeof import('vue').EffectScope
@@ -35,8 +37,9 @@ declare global {
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const getFormsDefaults: typeof import('./src/stores/forms').getFormsDefaults
   const getOrCreatePersistence: typeof import('./src/composables/usePersistence').getOrCreatePersistence
-  const getTypographyDefaults: typeof import('./src/stores/editor/typography').getTypographyDefaults
+  const getTypographyDefaults: typeof import('./src/stores/typography').getTypographyDefaults
   const h: typeof import('vue').h
   const initTheme: typeof import('./src/composables/useTheme').initTheme
   const inject: typeof import('vue').inject
@@ -89,12 +92,19 @@ declare global {
   const toValue: typeof import('vue').toValue
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
+  const useAlertStore: typeof import('./src/stores/alert').useAlertStore
   const useAttrs: typeof import('vue').useAttrs
+  const useAvatarStore: typeof import('./src/stores/avatar').useAvatarStore
+  const useBadgeStore: typeof import('./src/stores/badge').useBadgeStore
   const useButtonStore: typeof import('./src/stores/editor/button').useButtonStore
+  const useCardStore: typeof import('./src/stores/card').useCardStore
+  const useChipStore: typeof import('./src/stores/chip').useChipStore
   const useComponentRegistry: typeof import('./src/composables/useComponentRegistry').useComponentRegistry
   const useComponentTheme: typeof import('./src/composables/useComponentTheme').useComponentTheme
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
+  const useDarkStyles: typeof import('./src/composables/useDarkStyles').useDarkStyles
+  const useDividerStore: typeof import('./src/stores/divider').useDividerStore
   const useDualModePatch: typeof import('./src/composables/useDualModePatch').useDualModePatch
   const useField: typeof import('vee-validate').useField
   const useFieldArray: typeof import('vee-validate').useFieldArray
@@ -103,6 +113,8 @@ declare global {
   const useForm: typeof import('vee-validate').useForm
   const useFormErrors: typeof import('vee-validate').useFormErrors
   const useFormValues: typeof import('vee-validate').useFormValues
+  const useFormsPersistence: typeof import('./src/composables/useFormsPersistence').useFormsPersistence
+  const useFormsStore: typeof import('./src/stores/forms').useFormsStore
   const useGoogleFonts: typeof import('./src/composables/useGoogleFonts').default
   const useI18n: typeof import('vue-i18n').useI18n
   const useId: typeof import('vue').useId
@@ -117,8 +129,10 @@ declare global {
   const useNavigationStore: typeof import('./src/stores/navigation').useNavigationStore
   const usePersistence: typeof import('./src/composables/usePersistence').usePersistence
   const usePreviewContrast: typeof import('./src/composables/usePreviewContrast').usePreviewContrast
+  const useProgressStore: typeof import('./src/stores/progress').useProgressStore
   const useResetForm: typeof import('vee-validate').useResetForm
   const useSlots: typeof import('vue').useSlots
+  const useSpinnerStore: typeof import('./src/stores/spinner').useSpinnerStore
   const useStoreManager: typeof import('./src/composables/useStoreManager').useStoreManager
   const useSubmitCount: typeof import('vee-validate').useSubmitCount
   const useSubmitForm: typeof import('vee-validate').useSubmitForm
@@ -126,10 +140,11 @@ declare global {
   const useTheme: typeof import('./src/composables/useTheme').useTheme
   const useThemeStore: typeof import('./src/stores/theme').useThemeStore
   const useTypographyPersistence: typeof import('./src/composables/useTypographyPersistence').useTypographyPersistence
-  const useTypographyStore: typeof import('./src/stores/editor/typography').useTypographyStore
+  const useTypographyStore: typeof import('./src/stores/typography').useTypographyStore
   const useValidateField: typeof import('vee-validate').useValidateField
   const useValidateForm: typeof import('vee-validate').useValidateForm
   const useVariantManager: typeof import('./src/composables/useVariantManager').useVariantManager
+  const useVariantPatch: typeof import('./src/composables/useVariantPatch').useVariantPatch
   const vWheelNumber: typeof import('./src/directives/wheelNumber').vWheelNumber
   const validate: typeof import('vee-validate').validate
   const watch: typeof import('vue').watch
@@ -146,6 +161,9 @@ declare global {
   export type { ComponentThemeOptions } from './src/composables/useComponentTheme'
   import('./src/composables/useComponentTheme')
   // @ts-ignore
+  export type { DarkStyleConfig } from './src/composables/useDarkStyles'
+  import('./src/composables/useDarkStyles')
+  // @ts-ignore
   export type { DualModePatchOptions } from './src/composables/useDualModePatch'
   import('./src/composables/useDualModePatch')
   // @ts-ignore
@@ -160,6 +178,9 @@ declare global {
   // @ts-ignore
   export type { BaseVariant } from './src/composables/useVariantManager'
   import('./src/composables/useVariantManager')
+  // @ts-ignore
+  export type { VariantPatchOptions } from './src/composables/useVariantPatch'
+  import('./src/composables/useVariantPatch')
   // @ts-ignore
   export type { ListComponentMeta } from './src/constants/index'
   import('./src/constants/index')

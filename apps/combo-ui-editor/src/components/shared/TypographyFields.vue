@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import type { UnitNumber, LetterSpacingValue, FontStyle } from '@/types/generics'
 
 const { t } = useI18n()

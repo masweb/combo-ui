@@ -1,5 +1,3 @@
-import type { Component } from 'vue'
-
 const previewModules = import.meta.glob<{ default: Component }>('/src/components/previews/*.vue')
 const settingsModules = import.meta.glob<{ default: Component }>('/src/components/settings/*.vue')
 

@@ -7,6 +7,6 @@ const nav = useNavigationStore()
   <CoverView v-if="!nav.currentComponent" />
   <div v-else class="d-flex">
     <SidePanel />
-    <div class="preview-view">ewe</div>
+    <PreviewView />
   </div>
 </template>

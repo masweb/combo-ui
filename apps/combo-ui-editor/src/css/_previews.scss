@@ -1,0 +1,306 @@
+@use './variables' as *;
+
+.preview-card-body {
+  background-color: transparent !important;
+}
+
+.card-body {
+  background-color: transparent !important;
+}
+
+// ─── Card Preview ─────────────────────────────────────────────────────────────
+
+.preview-card {
+  overflow: hidden;
+}
+
+.preview-card-header {
+  border-bottom-width: 1px;
+}
+
+// ─── Alert Preview ────────────────────────────────────────────────────────────
+
+.preview-alert {
+  overflow: hidden;
+}
+
+.preview-alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom-width: 1px;
+}
+
+.preview-alert-body {
+  background-color: transparent;
+}
+
+.preview-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// ─── Divider Preview ──────────────────────────────────────────────────────────
+
+.preview-divider {
+  border: none;
+}
+
+// ─── Progress Preview ─────────────────────────────────────────────────────────
+
+.progress-fill--striped {
+  background-color: var(--fill-color);
+  background-image: linear-gradient(
+    45deg,
+    var(--stripe-color) 25%,
+    transparent 25%,
+    transparent 50%,
+    var(--stripe-color) 50%,
+    var(--stripe-color) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+
+.progress-fill--animated {
+  animation: progress-bar-stripe var(--stripe-speed) linear infinite;
+}
+
+@keyframes progress-bar-stripe {
+  from {
+    background-position: 1rem 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+// ─── Spinner Preview ──────────────────────────────────────────────────────────
+
+.sp-ring-arc {
+  stroke: var(--color);
+  fill: none;
+  animation: ring-spin var(--speed) linear infinite;
+  transform-origin: 12px 12px;
+}
+
+.sp-ring-track {
+  stroke: var(--track);
+  fill: none;
+}
+
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sp-pulse-bg {
+  fill: var(--track);
+  opacity: 0.3;
+  animation: pulse-scale var(--speed) ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.sp-pulse-fg {
+  fill: var(--color);
+  animation: pulse-scale var(--speed) ease-in-out infinite reverse;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes pulse-scale {
+  0%,
+  100% {
+    transform: scale(0.5);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.sp-dots {
+  display: flex;
+  gap: calc(var(--size) * 0.15);
+}
+
+.sp-dot {
+  width: calc(var(--size) * 0.2);
+  height: calc(var(--size) * 0.2);
+  background: var(--color);
+  border-radius: 50%;
+  animation: dots-bounce var(--speed) ease-in-out infinite;
+}
+
+.sp-dot-1 {
+  animation-delay: 0s;
+}
+.sp-dot-2 {
+  animation-delay: var(--delay2);
+}
+.sp-dot-3 {
+  animation-delay: var(--delay3);
+}
+
+@keyframes dots-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(calc(var(--size) * -0.25));
+    opacity: 1;
+  }
+}
+
+.sp-bars {
+  display: flex;
+  gap: calc(var(--size) * 0.1);
+  align-items: center;
+}
+
+.sp-bar {
+  width: calc(var(--size) * 0.15);
+  height: calc(var(--size) * 0.4);
+  background: var(--color);
+  border-radius: 2px;
+  animation: bars-stretch var(--speed) ease-in-out infinite;
+}
+
+.sp-bar-1 {
+  animation-delay: 0s;
+}
+.sp-bar-2 {
+  animation-delay: var(--delay2);
+}
+.sp-bar-3 {
+  animation-delay: var(--delay3);
+}
+.sp-bar-4 {
+  animation-delay: var(--delay4);
+}
+.sp-bar-5 {
+  animation-delay: var(--delay5);
+}
+
+@keyframes bars-stretch {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.sp-dual-outer,
+.sp-dual-inner {
+  animation: dual-spin var(--speed) linear infinite;
+}
+
+.sp-dual-outer circle {
+  stroke: var(--color);
+  fill: none;
+  stroke-linecap: round;
+}
+
+.sp-dual-inner circle {
+  stroke: var(--track);
+  fill: none;
+  stroke-linecap: round;
+}
+
+.sp-dual-inner {
+  animation-direction: reverse;
+  opacity: 0.6;
+}
+
+@keyframes dual-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ─── Forms Preview ────────────────────────────────────────────────────────────
+
+.forms-input::placeholder {
+  color: var(--placeholder-color);
+}
+
+.forms-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.forms-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.forms-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  background: var(--slider-track);
+  border-radius: 4px;
+}
+
+.forms-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  background: var(--slider-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -4px;
+  border: 2px solid var(--slider-accent);
+}
+
+.forms-slider::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  background: var(--slider-track);
+  border-radius: 4px;
+}
+
+.forms-slider::-moz-range-thumb {
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  background: var(--slider-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--slider-accent);
+}
+
+.forms-slider::-ms-track {
+  width: 100%;
+  height: 8px;
+  background: var(--slider-track);
+  border-radius: 4px;
+}
+
+.forms-slider::-ms-thumb {
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  background: var(--slider-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--slider-accent);
+}

@@ -19,7 +19,7 @@ const DARK_BG_KEY = 'combo-ux-preview-bg-dark'
 
 // Singleton refs - shared across all instances
 const lightBackground = ref(localStorage.getItem(LIGHT_BG_KEY) || '#ffffff')
-const darkBackground = ref(localStorage.getItem(DARK_BG_KEY) || '#222')
+const darkBackground = ref(localStorage.getItem(DARK_BG_KEY) || '#222222')
 
 export const useComponentTheme = (): ComponentThemeOptions => {
   const themeStore = useThemeStore()

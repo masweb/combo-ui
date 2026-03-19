@@ -10,6 +10,12 @@ export const COMPONENT_LIST: ListComponentMeta[] = [
   { id: 'spinner', label: 'Spinner', description: 'Loading state' }
 ]
 
+export const COMPONENT_TYPOGRAPHY_META: ListComponentMeta = {
+  id: 'typography',
+  label: 'Typography',
+  description: 'Text styles'
+}
+
 export const COMPONENT_TYPO: ListComponentMeta[] = [
   { id: 'h1', label: 'H1', description: 'Header 1 text styles' },
   { id: 'h2', label: 'H2', description: 'Header 2 text styles' },
@@ -28,6 +34,8 @@ export const COMPONENT_TYPO: ListComponentMeta[] = [
   { id: 'caption', label: 'Caption', description: 'Caption text styles' },
   { id: 'link', label: 'Link', description: 'Link text styles' }
 ]
+
+export const COMPONENT_FORM_META: ListComponentMeta = { id: 'forms', label: 'Input', description: 'Input form style' }
 
 export const COMPONENT_FORM: ListComponentMeta[] = [
   { id: 'input', label: 'Input', description: 'Input form style' },
