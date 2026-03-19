@@ -1,0 +1,12 @@
+.side-panel {
+  width: 380px;
+  background-color: #fff;
+  height: calc(100vh - 40px);
+  /* box-shadow: 5px 0 10px -5px rgba(0, 0, 0, 0.5); */
+  z-index: 1;
+}
+[data-coreui-theme='dark'] {
+  .side-panel {
+    background-color: #222;
+  }
+}

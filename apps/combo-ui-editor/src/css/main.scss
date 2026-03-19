@@ -4,7 +4,10 @@
   $card-bg: transparent
 );
 @use 'main-bar';
-/* @use 'previews'; */
+@use 'cover-view';
+@use 'side-panel';
+@use 'preview-view';
+
 :root {
   --cui-font-sans-serif: 'Inter';
 }
@@ -36,7 +39,7 @@ body {
 
 #app {
   height: 100vh;
-  width: calc(100vw - 4px);
+  width: 100vw;
 }
 ::-webkit-scrollbar {
   width: 4px;
@@ -54,7 +57,9 @@ body {
     background: rgba(0, 0, 0, 0.32);
   }
 }
-
+.cursor-pointer {
+  cursor: pointer !important;
+}
 [data-coreui-theme='dark'] {
   --cui-body-color: #bbb;
   --cui-body-color-rgb: #{to-rgb(188, 188, 188)};
@@ -66,4 +71,8 @@ body {
     --cui-dropdown-bg: #444;
     --cui-dropdown-link-active-bg: #555;
   }
+}
+
+.btn-secondary {
+  border-radius: 0;
 }

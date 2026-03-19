@@ -7,6 +7,9 @@
 export {}
 declare global {
   const ALLOWED_THEMES: typeof import('./src/composables/useTheme').ALLOWED_THEMES
+  const COMPONENT_FORM: typeof import('./src/constants/index').COMPONENT_FORM
+  const COMPONENT_LIST: typeof import('./src/constants/index').COMPONENT_LIST
+  const COMPONENT_TYPO: typeof import('./src/constants/index').COMPONENT_TYPO
   const EffectScope: typeof import('vue').EffectScope
   const FieldContextKey: typeof import('vee-validate').FieldContextKey
   const FormContextKey: typeof import('vee-validate').FormContextKey
@@ -65,6 +68,7 @@ declare global {
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
+  const stLayout: typeof import('./src/stores/stLayout').stLayout
   const storeToRefs: typeof import('pinia').storeToRefs
   const toRaw: typeof import('vue').toRaw
   const toRef: typeof import('vue').toRef
@@ -113,4 +117,7 @@ declare global {
   // @ts-ignore
   export type { Theme } from './src/composables/useTheme'
   import('./src/composables/useTheme')
+  // @ts-ignore
+  export type { ListComponentMeta } from './src/constants/index'
+  import('./src/constants/index')
 }

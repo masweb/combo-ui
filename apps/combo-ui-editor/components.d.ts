@@ -11,6 +11,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CoverView: typeof import('./src/components/CoverView.vue')['default']
+    GoBack: typeof import('./src/components/GoBack.vue')['default']
     MainBar: typeof import('./src/components/MainBar.vue')['default']
+    SidePanel: typeof import('./src/components/SidePanel.vue')['default']
   }
 }

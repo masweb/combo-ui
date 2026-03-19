@@ -5,20 +5,19 @@ const { t } = useI18n()
 import { useTheme } from '@/composables/useTheme'
 const { theme, setTheme } = useTheme()
 const { locale, availableLocales } = useI18n()
+
 watch(locale, newLocale => {
   localStorage.setItem('lang', newLocale)
 })
 </script>
 <template>
-  <div class="main-bar mb-3">
-    <div>
+  <div class="main-bar">
+    <div class="d-flex align-items-center">
       <div class="ms-3 fw-light text-">COMBO-UI</div>
     </div>
     <div class="d-flex align-items-center">
       <select v-model="locale" class="form-select form-select-sm">
-        <option v-for="lang in availableLocales" :key="lang" :value="lang">
-          {{ lang }}
-        </option>
+        <option v-for="lang in availableLocales" :key="lang" :value="lang">{{ lang }}</option>
       </select>
       <button
         :title="theme === 'dark' ? t('settings.lightMode') : t('settings.darkMode')"

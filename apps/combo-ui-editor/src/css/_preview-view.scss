@@ -1,0 +1,10 @@
+.preview-view {
+  width: calc(100vw - 380px);
+  background-color: #fff;
+  height: calc(100vh - 40px);
+}
+[data-coreui-theme='dark'] {
+  .preview-view {
+    background-color: #222;
+  }
+}
