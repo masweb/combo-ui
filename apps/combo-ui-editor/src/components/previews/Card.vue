@@ -6,41 +6,42 @@ const { isDark } = useComponentTheme()
 const typographyStore = useTypographyStore()
 const { cardClass, contrastClass } = usePreviewContrast()
 
-const buildShadow = (variant: CardVariant): string => {
-  const shadows: string[] = []
+const buildOffsetShadow = (variant: CardVariant): string => {
+  if (!variant.shadows?.offset?.enabled) return 'none'
+  const s = variant.shadows.offset
+  return `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
+}
 
-  if (variant.shadows?.offset?.enabled) {
-    const s = variant.shadows.offset
-    shadows.push(
-      `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
-    )
+const buildInsetShadow = (variant: CardVariant): string => {
+  if (!variant.shadows?.inset?.enabled) return 'none'
+  const s = variant.shadows.inset
+  return `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetColor : s.color}`
+}
+
+const getBorderRadiusCSS = (variant: CardVariant): string => {
+  return variant.borderRadius.linked
+    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
+    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
+}
+
+const getInsetOverlayStyles = (variant: CardVariant) => {
+  return {
+    borderRadius: getBorderRadiusCSS(variant),
+    boxShadow: buildInsetShadow(variant)
   }
-
-  if (variant.shadows?.inset?.enabled) {
-    const s = variant.shadows.inset
-    shadows.push(
-      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetColor : s.color}`
-    )
-  }
-
-  return shadows.length > 0 ? shadows.join(', ') : 'none'
 }
 
 const getCardStyles = (variant: CardVariant) => {
   const bg = isDark.value ? variant.dark.background : variant.background
   const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
 
-  const radius = variant.borderRadius.linked
-    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
-    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
-
   return {
     backgroundColor: bg,
     borderStyle: variant.border.style,
     borderWidth: `${variant.border.width}${variant.border.unit}`,
     borderColor,
-    borderRadius: radius,
-    boxShadow: buildShadow(variant)
+    borderRadius: getBorderRadiusCSS(variant),
+    boxShadow: buildOffsetShadow(variant)
   }
 }
 
@@ -97,6 +98,7 @@ const getBodyStyles = (variant: CardVariant) => {
         >
           <div class="card-body">
             <div class="preview-card" :style="getCardStyles(variant)">
+              <div class="preview-card-inset-overlay" :style="getInsetOverlayStyles(variant)"></div>
               <div class="preview-card-header" :style="getHeaderStyles(variant)">Card Header</div>
               <div class="preview-card-body" :style="getBodyStyles(variant)">
                 Some quick example text to build on the card title and make up the bulk of the card's content.
@@ -111,3 +113,20 @@ const getBodyStyles = (variant: CardVariant) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.preview-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-card-inset-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+</style>
