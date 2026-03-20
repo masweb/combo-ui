@@ -13,6 +13,9 @@ const deepMerge = <T>(target: T, source: Partial<T>): T => {
 
     if (sourceValue === null) {
       ;(result as Record<string, unknown>)[key] = undefined
+    } else if (sourceValue === undefined) {
+      // Eliminar la propiedad cuando el valor es undefined
+      delete (result as Record<string, unknown>)[key]
     } else if (
       typeof sourceValue === 'object' &&
       !Array.isArray(sourceValue) &&
@@ -21,7 +24,7 @@ const deepMerge = <T>(target: T, source: Partial<T>): T => {
       !Array.isArray(targetValue)
     ) {
       result[key] = deepMerge(targetValue, sourceValue)
-    } else if (sourceValue !== undefined) {
+    } else {
       result[key] = sourceValue as T[Extract<keyof T, string>]
     }
   }

@@ -1,31 +1,31 @@
-import { defineConfig } from "vite-plus";
+import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
   staged: {
-    "*": "vp check --fix",
+    '*': 'vp check --fix'
   },
   lint: { options: { typeAware: true, typeCheck: true } },
   fmt: {
     semi: false,
     singleQuote: true,
-    trailingComma: "none",
+    trailingComma: 'none',
     bracketSpacing: true,
     printWidth: 120,
     tabWidth: 2,
     useTabs: false,
-    arrowParens: "avoid",
-    endOfLine: "lf",
+    arrowParens: 'avoid',
+    endOfLine: 'lf',
     singleAttributePerLine: false,
     importOrderSeparation: true,
     importOrderCombineAsImports: true,
     importOrderSortSpecifiers: true,
     overrides: [
       {
-        files: ["*.html"],
+        files: ['*.html'],
         options: {
-          tabWidth: 1,
-        },
-      },
-    ],
-  },
-});
+          tabWidth: 1
+        }
+      }
+    ]
+  }
+})

@@ -1,7 +1,3 @@
-import { usePersistence } from '@/composables/usePersistence'
-import type { ButtonVariant } from '@/types/button'
-import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
-
 const defaultBorder: BorderValue = {
   style: 'solid',
   width: 1,

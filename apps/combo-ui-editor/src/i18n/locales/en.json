@@ -140,6 +140,7 @@
     "spread": "Spread",
     "inset": "Inset Shadow",
     "speed": "Speed",
+    "color": "Color",
     "trackColor": "Track Color"
   }
 }

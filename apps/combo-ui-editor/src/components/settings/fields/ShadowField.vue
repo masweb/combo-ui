@@ -34,9 +34,11 @@ const toggleOffset = (enabled: boolean) => {
       offset: { ...defaultShadow(), enabled: true }
     })
   } else {
-    const { offset: _, ...rest } = current
-    const newValue = Object.keys(rest).length > 0 ? rest : undefined
-    emit('update:modelValue', newValue as ComponentShadows | undefined)
+    // Emitir undefined explícitamente para offset para que deepMerge lo elimine
+    emit('update:modelValue', {
+      ...current,
+      offset: undefined
+    } as ComponentShadows | undefined)
   }
 }
 
@@ -48,9 +50,11 @@ const toggleInset = (enabled: boolean) => {
       inset: { ...defaultShadow(), enabled: true }
     })
   } else {
-    const { inset: _, ...rest } = current
-    const newValue = Object.keys(rest).length > 0 ? rest : undefined
-    emit('update:modelValue', newValue as ComponentShadows | undefined)
+    // Emitir undefined explícitamente para inset para que deepMerge lo elimine
+    emit('update:modelValue', {
+      ...current,
+      inset: undefined
+    } as ComponentShadows | undefined)
   }
 }
 

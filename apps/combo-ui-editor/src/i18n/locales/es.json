@@ -141,6 +141,7 @@
     "spread": "Extensión",
     "inset": "Sombra interior",
     "speed": "Velocidad",
+    "color": "Color",
     "trackColor": "Color de pista"
   }
 }
