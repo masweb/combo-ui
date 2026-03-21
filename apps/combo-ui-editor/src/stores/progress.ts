@@ -1,4 +1,4 @@
-import { usePersistence } from '@/composables/usePersistence'
+import { createComponentStore } from '@/composables/useComponentStoreFactory'
 import type { ProgressVariant } from '@/types/progress'
 import type { BorderValue, BorderRadiusValue, UnitNumber } from '@/types/generics'
 
@@ -59,24 +59,9 @@ const createDefaultVariant = (name: string): ProgressVariant => ({
   }
 })
 
-export const useProgressStore = defineStore('progress', () => {
-  const persistence = usePersistence<ProgressVariant>({
+export const useProgressStore = defineStore('progress', () =>
+  createComponentStore<ProgressVariant>({
     componentId: 'progress',
-    initialVariants: [createDefaultVariant('variante-1')],
     createDefault: createDefaultVariant
   })
-
-  return {
-    variants: persistence.variants,
-    selectedVariantIndex: persistence.selectedVariantIndex,
-    selectedVariant: persistence.selectedVariant,
-    isLoaded: persistence.isLoaded,
-    isLoading: persistence.isLoading,
-    hasChanges: persistence.hasChanges,
-    saveError: persistence.saveError,
-    addVariant: persistence.addVariant,
-    updateVariant: persistence.updateVariant,
-    deleteVariant: persistence.deleteVariant,
-    selectVariant: persistence.selectVariant
-  }
-})
+)

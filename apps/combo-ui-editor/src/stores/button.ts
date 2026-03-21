@@ -1,3 +1,7 @@
+import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import type { ButtonVariant } from '@/types/button'
+import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
+
 const defaultBorder: BorderValue = {
   style: 'solid',
   width: 1,
@@ -77,24 +81,9 @@ const createDefaultVariant = (name: string): ButtonVariant => ({
   }
 })
 
-export const useButtonStore = defineStore('button', () => {
-  const persistence = usePersistence<ButtonVariant>({
+export const useButtonStore = defineStore('button', () =>
+  createComponentStore<ButtonVariant>({
     componentId: 'button',
-    initialVariants: [createDefaultVariant('variante-1')],
     createDefault: createDefaultVariant
   })
-
-  return {
-    variants: persistence.variants,
-    selectedVariantIndex: persistence.selectedVariantIndex,
-    selectedVariant: persistence.selectedVariant,
-    isLoaded: persistence.isLoaded,
-    isLoading: persistence.isLoading,
-    hasChanges: persistence.hasChanges,
-    saveError: persistence.saveError,
-    addVariant: persistence.addVariant,
-    updateVariant: persistence.updateVariant,
-    deleteVariant: persistence.deleteVariant,
-    selectVariant: persistence.selectVariant
-  }
-})
+)

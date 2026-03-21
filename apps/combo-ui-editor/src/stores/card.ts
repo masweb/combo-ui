@@ -1,4 +1,4 @@
-import { usePersistence } from '@/composables/usePersistence'
+import { createComponentStore } from '@/composables/useComponentStoreFactory'
 import type { CardVariant } from '@/types/card'
 import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
@@ -97,24 +97,9 @@ const createDefaultVariant = (name: string): CardVariant => ({
   }
 })
 
-export const useCardStore = defineStore('card', () => {
-  const persistence = usePersistence<CardVariant>({
+export const useCardStore = defineStore('card', () =>
+  createComponentStore<CardVariant>({
     componentId: 'card',
-    initialVariants: [createDefaultVariant('variante-1')],
     createDefault: createDefaultVariant
   })
-
-  return {
-    variants: persistence.variants,
-    selectedVariantIndex: persistence.selectedVariantIndex,
-    selectedVariant: persistence.selectedVariant,
-    isLoaded: persistence.isLoaded,
-    isLoading: persistence.isLoading,
-    hasChanges: persistence.hasChanges,
-    saveError: persistence.saveError,
-    addVariant: persistence.addVariant,
-    updateVariant: persistence.updateVariant,
-    deleteVariant: persistence.deleteVariant,
-    selectVariant: persistence.selectVariant
-  }
-})
+)

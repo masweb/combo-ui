@@ -1,4 +1,4 @@
-import { usePersistence } from '@/composables/usePersistence'
+import { createComponentStore } from '@/composables/useComponentStoreFactory'
 import type { BadgeVariant } from '@/types/badge'
 import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
@@ -61,24 +61,9 @@ const createDefaultVariant = (name: string): BadgeVariant => ({
   }
 })
 
-export const useBadgeStore = defineStore('badge', () => {
-  const persistence = usePersistence<BadgeVariant>({
+export const useBadgeStore = defineStore('badge', () =>
+  createComponentStore<BadgeVariant>({
     componentId: 'badge',
-    initialVariants: [createDefaultVariant('variante-1')],
     createDefault: createDefaultVariant
   })
-
-  return {
-    variants: persistence.variants,
-    selectedVariantIndex: persistence.selectedVariantIndex,
-    selectedVariant: persistence.selectedVariant,
-    isLoaded: persistence.isLoaded,
-    isLoading: persistence.isLoading,
-    hasChanges: persistence.hasChanges,
-    saveError: persistence.saveError,
-    addVariant: persistence.addVariant,
-    updateVariant: persistence.updateVariant,
-    deleteVariant: persistence.deleteVariant,
-    selectVariant: persistence.selectVariant
-  }
-})
+)

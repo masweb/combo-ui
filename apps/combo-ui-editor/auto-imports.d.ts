@@ -23,6 +23,7 @@ declare global {
   const computed: typeof import('vue').computed
   const configure: typeof import('vee-validate').configure
   const createApp: typeof import('vue').createApp
+  const createComponentStore: typeof import('./src/composables/useComponentStoreFactory').createComponentStore
   const createPinia: typeof import('pinia').createPinia
   const customRef: typeof import('vue').customRef
   const db: typeof import('./src/db/index').db

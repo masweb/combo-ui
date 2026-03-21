@@ -1,4 +1,4 @@
-import { usePersistence } from '@/composables/usePersistence'
+import { createComponentStore } from '@/composables/useComponentStoreFactory'
 import type { BorderValue, UnitNumber } from '@/types/generics'
 import type { DividerVariant, DividerWidthValue } from '@/types/divider'
 
@@ -29,24 +29,9 @@ const createDefaultVariant = (name: string): DividerVariant => ({
   }
 })
 
-export const useDividerStore = defineStore('divider', () => {
-  const persistence = usePersistence<DividerVariant>({
+export const useDividerStore = defineStore('divider', () =>
+  createComponentStore<DividerVariant>({
     componentId: 'divider',
-    initialVariants: [createDefaultVariant('variante-1')],
     createDefault: createDefaultVariant
   })
-
-  return {
-    variants: persistence.variants,
-    selectedVariantIndex: persistence.selectedVariantIndex,
-    selectedVariant: persistence.selectedVariant,
-    isLoaded: persistence.isLoaded,
-    isLoading: persistence.isLoading,
-    hasChanges: persistence.hasChanges,
-    saveError: persistence.saveError,
-    addVariant: persistence.addVariant,
-    updateVariant: persistence.updateVariant,
-    deleteVariant: persistence.deleteVariant,
-    selectVariant: persistence.selectVariant
-  }
-})
+)

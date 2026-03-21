@@ -1,4 +1,4 @@
-import { usePersistence } from '@/composables/usePersistence'
+import { createComponentStore } from '@/composables/useComponentStoreFactory'
 import type { SpinnerVariant } from '@/types/spinner'
 import type { BorderValue, UnitNumber } from '@/types/generics'
 
@@ -29,24 +29,9 @@ const createDefaultVariant = (name: string): SpinnerVariant => ({
   }
 })
 
-export const useSpinnerStore = defineStore('spinner', () => {
-  const persistence = usePersistence<SpinnerVariant>({
+export const useSpinnerStore = defineStore('spinner', () =>
+  createComponentStore<SpinnerVariant>({
     componentId: 'spinner',
-    initialVariants: [createDefaultVariant('variante-1')],
     createDefault: createDefaultVariant
   })
-
-  return {
-    variants: persistence.variants,
-    selectedVariantIndex: persistence.selectedVariantIndex,
-    selectedVariant: persistence.selectedVariant,
-    isLoaded: persistence.isLoaded,
-    isLoading: persistence.isLoading,
-    hasChanges: persistence.hasChanges,
-    saveError: persistence.saveError,
-    addVariant: persistence.addVariant,
-    updateVariant: persistence.updateVariant,
-    deleteVariant: persistence.deleteVariant,
-    selectVariant: persistence.selectVariant
-  }
-})
+)
