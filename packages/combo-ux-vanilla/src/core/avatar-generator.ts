@@ -11,7 +11,9 @@ import {
   buildPadding,
   buildShadows,
   buildFontSize,
-  buildLetterSpacing
+  buildLetterSpacing,
+  buildShadowsDark,
+  getEffectiveFontFamily
 } from './utils'
 
 /**
@@ -108,16 +110,6 @@ function generateAvatarBase(): string {
 }
 
 /**
- * Get effective font family for avatar (fallback to global)
- */
-function getEffectiveFontFamily(variant: AvatarVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.fontFamily !== null && variant.fontFamily !== undefined) {
-    return variant.fontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
  * Generate CSS for a specific avatar variant
  */
 function generateAvatarVariant(
@@ -130,7 +122,7 @@ function generateAvatarVariant(
   lines.push(`.cux-avatar.--${variantName} {`)
 
   // Get effective font family (fallback to global)
-  const effectiveFontFamily = getEffectiveFontFamily(variant, globalConfig)
+  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
 
   // Basic properties
   lines.push(`  --cux-avatar-bg: ${variant.background};`)
@@ -204,31 +196,9 @@ function generateAvatarVariantDark(variant: AvatarVariant, variantName: string):
 
   // Shadow for dark mode
   if (variant.shadows) {
-    const shadowParts: string[] = []
-
-    // Offset shadow with dark color
-    if (variant.shadows.offset?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.offset
-      const color = dark.shadowColor || variant.shadows.offset.color
-      shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
-    }
-
-    // Inset shadow with dark color
-    if (variant.shadows.inset?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.inset
-      const color = dark.shadowInsetColor || variant.shadows.inset.color
-      shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
-    }
-
-    // Inset highlight shadow with dark color
-    if (variant.shadows.insetHighlight?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.insetHighlight
-      const color = dark.shadowInsetHighlightColor || variant.shadows.insetHighlight.color
-      shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
-    }
-
-    if (shadowParts.length > 0) {
-      lines.push(`  --cux-avatar-shadow: ${shadowParts.join(', ')};`)
+    const shadowValue = buildShadowsDark(variant.shadows, dark)
+    if (shadowValue) {
+      lines.push(`  --cux-avatar-shadow: ${shadowValue};`)
     }
   }
 

@@ -5,7 +5,7 @@
  * Inset shadows are applied via an overlay layer for uniform coverage
  */
 
-import type { CardVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
+import type { CardVariant, TypographyGlobalConfig } from '../types'
 import {
   toKebabCase,
   buildBorder,
@@ -14,7 +14,10 @@ import {
   buildFontSize,
   buildLetterSpacing,
   buildOffsetShadow,
-  buildInsetShadows
+  buildInsetShadows,
+  getEffectiveFontFamily,
+  buildOffsetShadowDark,
+  buildInsetShadowsDark
 } from './utils'
 
 /**
@@ -115,8 +118,8 @@ function generateCardVariant(variant: CardVariant, variantName: string, globalCo
   lines.push(`.cux-card.--${variantName} {`)
 
   // Get effective font family (fallback to global)
-  const effectiveFontFamily = getEffectiveFontFamily(variant, globalConfig)
-  const effectiveHeaderFontFamily = getEffectiveHeaderFontFamily(variant, globalConfig)
+  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
+  const effectiveHeaderFontFamily = getEffectiveFontFamily(variant.headerFontFamily, globalConfig?.fontFamily)
 
   // Basic properties
   lines.push(`  --cux-card-bg: ${variant.background};`)
@@ -219,63 +222,6 @@ function generateCardVariant(variant: CardVariant, variantName: string, globalCo
   }
 
   return lines.join('\n')
-}
-
-/**
- * Get effective font family for card body (fallback to global)
- */
-function getEffectiveFontFamily(variant: CardVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.fontFamily !== null && variant.fontFamily !== undefined) {
-    return variant.fontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
- * Get effective font family for card header (fallback to global)
- */
-function getEffectiveHeaderFontFamily(variant: CardVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.headerFontFamily !== null && variant.headerFontFamily !== undefined) {
-    return variant.headerFontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
- * Build offset shadow with dark mode color override
- */
-function buildOffsetShadowDark(shadows: ComponentShadows | undefined, shadowColor?: string): string {
-  if (!shadows?.offset?.enabled) return 'none'
-
-  const { offsetX, offsetY, blur, spread, color } = shadows.offset
-  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowColor || color}`
-}
-
-/**
- * Build inset shadows with dark mode color overrides
- */
-function buildInsetShadowsDark(
-  shadows: ComponentShadows | undefined,
-  shadowInsetColor?: string,
-  shadowInsetHighlightColor?: string
-): string {
-  if (!shadows) return 'none'
-
-  const shadowParts: string[] = []
-
-  // Add inset (internal) shadow
-  if (shadows.inset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.inset
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetColor || color}`)
-  }
-
-  // Add inset highlight shadow
-  if (shadows.insetHighlight?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetHighlightColor || color}`)
-  }
-
-  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
 }
 
 /**

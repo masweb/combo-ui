@@ -4,7 +4,7 @@
  * Supports 3 shadow layers: offset, inset, and insetHighlight (no overlay)
  */
 
-import type { ButtonVariant, ComponentShadows } from '../types'
+import type { ButtonVariant } from '../types'
 import {
   toKebabCase,
   buildBorder,
@@ -15,7 +15,8 @@ import {
   buildLetterSpacing,
   buildBorderOptional,
   buildOffset,
-  deepMerge
+  deepMerge,
+  buildShadowsDark
 } from './utils'
 
 /**
@@ -283,37 +284,4 @@ function generateButtonVariantDark(variant: ButtonVariant, variantName: string):
 
   lines.push('}')
   return lines.join('\n')
-}
-
-/**
- * Build shadows with dark mode color overrides
- */
-function buildShadowsDark(
-  shadows: ComponentShadows,
-  dark?: { shadowColor?: string; shadowInsetColor?: string; shadowInsetHighlightColor?: string }
-): string {
-  const shadowParts: string[] = []
-
-  // Offset shadow with dark color
-  if (shadows.offset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.offset
-    const darkColor = dark?.shadowColor || color
-    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  // Inset shadow with dark color
-  if (shadows.inset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.inset
-    const darkColor = dark?.shadowInsetColor || color
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  // Inset highlight shadow with dark color
-  if (shadows.insetHighlight?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
-    const darkColor = dark?.shadowInsetHighlightColor || color
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  return shadowParts.join(', ')
 }

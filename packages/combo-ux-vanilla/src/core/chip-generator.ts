@@ -4,7 +4,7 @@
  * Supports 3 shadow layers: offset, inset, and insetHighlight (no overlay)
  */
 
-import type { ChipVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
+import type { ChipVariant, TypographyGlobalConfig } from '../types'
 import {
   toKebabCase,
   buildBorder,
@@ -12,7 +12,9 @@ import {
   buildPadding,
   buildShadows,
   buildFontSize,
-  buildLetterSpacing
+  buildLetterSpacing,
+  buildShadowsDark,
+  getEffectiveFontFamily
 } from './utils'
 
 /**
@@ -104,46 +106,6 @@ function generateChipBase(): string {
 }
 
 /**
- * Build shadows with dark mode color overrides
- */
-function buildShadowsDark(shadows: ComponentShadows, dark?: ChipVariant['dark']): string {
-  const shadowParts: string[] = []
-
-  // Offset shadow with dark color
-  if (shadows.offset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.offset
-    const darkColor = dark?.shadowColor || color
-    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  // Inset shadow with dark color
-  if (shadows.inset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.inset
-    const darkColor = dark?.shadowInsetColor || color
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  // Inset highlight shadow with dark color
-  if (shadows.insetHighlight?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
-    const darkColor = dark?.shadowInsetHighlightColor || color
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  return shadowParts.join(', ')
-}
-
-/**
- * Get effective font family for chip (fallback to global)
- */
-function getEffectiveFontFamily(variant: ChipVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.fontFamily !== null && variant.fontFamily !== undefined) {
-    return variant.fontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
  * Generate CSS for a specific chip variant
  */
 function generateChipVariant(variant: ChipVariant, variantName: string, globalConfig?: TypographyGlobalConfig): string {
@@ -151,7 +113,7 @@ function generateChipVariant(variant: ChipVariant, variantName: string, globalCo
   lines.push(`/* Variant: ${variant.name} */`)
   lines.push(`.cux-chip.--${variantName} {`)
 
-  const effectiveFontFamily = getEffectiveFontFamily(variant, globalConfig)
+  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
 
   // Basic properties
   lines.push(`  --cux-chip-bg: ${variant.background};`)

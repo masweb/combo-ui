@@ -233,3 +233,90 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, source: 
 
   return result
 }
+
+/**
+ * Build shadows with dark mode color overrides
+ * Shared utility used by all component generators
+ */
+export function buildShadowsDark(
+  shadows: ComponentShadows,
+  dark?: { shadowColor?: string; shadowInsetColor?: string; shadowInsetHighlightColor?: string }
+): string {
+  const shadowParts: string[] = []
+
+  // Offset shadow with dark color
+  if (shadows.offset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.offset
+    const darkColor = dark?.shadowColor || color
+    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  // Inset shadow with dark color
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    const darkColor = dark?.shadowInsetColor || color
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  // Inset highlight shadow with dark color
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    const darkColor = dark?.shadowInsetHighlightColor || color
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  return shadowParts.join(', ')
+}
+
+/**
+ * Get effective font family (fallback to global config)
+ * Shared utility used by all component generators
+ */
+export function getEffectiveFontFamily(
+  variantFontFamily: string | null | undefined,
+  globalFontFamily?: string
+): string | null {
+  if (variantFontFamily !== null && variantFontFamily !== undefined) {
+    return variantFontFamily
+  }
+  return globalFontFamily || null
+}
+
+/**
+ * Build offset shadow with dark mode color override
+ * For card component which separates offset and inset shadows
+ */
+export function buildOffsetShadowDark(shadows: ComponentShadows | undefined, shadowColor?: string): string {
+  if (!shadows?.offset?.enabled) return 'none'
+
+  const { offsetX, offsetY, blur, spread, color } = shadows.offset
+  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowColor || color}`
+}
+
+/**
+ * Build inset shadows with dark mode color overrides
+ * For card component which separates offset and inset shadows
+ */
+export function buildInsetShadowsDark(
+  shadows: ComponentShadows | undefined,
+  shadowInsetColor?: string,
+  shadowInsetHighlightColor?: string
+): string {
+  if (!shadows) return 'none'
+
+  const shadowParts: string[] = []
+
+  // Add inset (internal) shadow
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetColor || color}`)
+  }
+
+  // Add inset highlight shadow
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetHighlightColor || color}`)
+  }
+
+  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
+}

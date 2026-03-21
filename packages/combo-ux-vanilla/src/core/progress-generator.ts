@@ -5,14 +5,17 @@
  * Inset shadows are applied via an overlay layer for uniform coverage
  */
 
-import type { ProgressVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
+import type { ProgressVariant, TypographyGlobalConfig } from '../types'
 import {
   toKebabCase,
   buildBorder,
   buildBorderRadius,
   buildFontSize,
   buildOffsetShadow,
-  buildInsetShadows
+  buildInsetShadows,
+  getEffectiveFontFamily,
+  buildOffsetShadowDark,
+  buildInsetShadowsDark
 } from './utils'
 
 /**
@@ -133,51 +136,6 @@ function generateProgressBase(): string {
 }
 
 /**
- * Build offset shadow with dark mode color override
- */
-function buildOffsetShadowDark(shadows: ComponentShadows | undefined, shadowColor?: string): string {
-  if (!shadows?.offset?.enabled) return 'none'
-
-  const { offsetX, offsetY, blur, spread, color } = shadows.offset
-  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowColor || color}`
-}
-
-/**
- * Build inset shadows with dark mode color overrides
- */
-function buildInsetShadowsDark(
-  shadows: ComponentShadows | undefined,
-  shadowInsetColor?: string,
-  shadowInsetHighlightColor?: string
-): string {
-  if (!shadows) return 'none'
-
-  const shadowParts: string[] = []
-
-  if (shadows.inset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.inset
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetColor || color}`)
-  }
-
-  if (shadows.insetHighlight?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetHighlightColor || color}`)
-  }
-
-  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
-}
-
-/**
- * Get effective font family for progress label (fallback to global)
- */
-function getEffectiveFontFamily(variant: ProgressVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.fontFamily !== null && variant.fontFamily !== undefined) {
-    return variant.fontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
  * Generate CSS for a specific progress variant
  */
 function generateProgressVariant(
@@ -189,7 +147,7 @@ function generateProgressVariant(
   lines.push(`/* Variant: ${variant.name} */`)
   lines.push(`.cux-progress.--${variantName} {`)
 
-  const effectiveFontFamily = getEffectiveFontFamily(variant, globalConfig)
+  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
 
   // Track and fill colors
   lines.push(`  --cux-progress-track-color: ${variant.trackColor};`)

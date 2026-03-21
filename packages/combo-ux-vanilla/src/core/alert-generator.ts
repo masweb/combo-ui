@@ -5,7 +5,7 @@
  * Inset shadows are applied via an overlay layer for uniform coverage
  */
 
-import type { AlertVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
+import type { AlertVariant, TypographyGlobalConfig } from '../types'
 import {
   toKebabCase,
   buildBorder,
@@ -14,7 +14,10 @@ import {
   buildFontSize,
   buildLetterSpacing,
   buildOffsetShadow,
-  buildInsetShadows
+  buildInsetShadows,
+  getEffectiveFontFamily,
+  buildOffsetShadowDark,
+  buildInsetShadowsDark
 } from './utils'
 
 /**
@@ -155,43 +158,6 @@ function generateAlertBase(): string {
 }
 
 /**
- * Build offset shadow with dark mode color override
- */
-function buildOffsetShadowDark(shadows: ComponentShadows | undefined, shadowColor?: string): string {
-  if (!shadows?.offset?.enabled) return 'none'
-
-  const { offsetX, offsetY, blur, spread, color } = shadows.offset
-  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowColor || color}`
-}
-
-/**
- * Build inset shadows with dark mode color overrides
- */
-function buildInsetShadowsDark(
-  shadows: ComponentShadows | undefined,
-  shadowInsetColor?: string,
-  shadowInsetHighlightColor?: string
-): string {
-  if (!shadows) return 'none'
-
-  const shadowParts: string[] = []
-
-  // Add inset (internal) shadow
-  if (shadows.inset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.inset
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetColor || color}`)
-  }
-
-  // Add inset highlight shadow
-  if (shadows.insetHighlight?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetHighlightColor || color}`)
-  }
-
-  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
-}
-
-/**
  * Generate CSS for a specific alert variant
  */
 function generateAlertVariant(
@@ -204,8 +170,8 @@ function generateAlertVariant(
   lines.push(`.cux-alert.--${variantName} {`)
 
   // Get effective font family (fallback to global)
-  const effectiveFontFamily = getEffectiveFontFamily(variant, globalConfig)
-  const effectiveHeaderFontFamily = getEffectiveHeaderFontFamily(variant, globalConfig)
+  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
+  const effectiveHeaderFontFamily = getEffectiveFontFamily(variant.headerFontFamily, globalConfig?.fontFamily)
 
   // Basic properties
   lines.push(`  --cux-alert-bg: ${variant.background};`)
@@ -369,24 +335,4 @@ function generateAlertVariantDark(variant: AlertVariant, variantName: string): s
 
   lines.push('}')
   return lines.join('\n')
-}
-
-/**
- * Get effective font family for alert body (fallback to global)
- */
-function getEffectiveFontFamily(variant: AlertVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.fontFamily !== null && variant.fontFamily !== undefined) {
-    return variant.fontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
- * Get effective font family for alert header (fallback to global)
- */
-function getEffectiveHeaderFontFamily(variant: AlertVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.headerFontFamily !== null && variant.headerFontFamily !== undefined) {
-    return variant.headerFontFamily
-  }
-  return globalConfig?.fontFamily || null
 }

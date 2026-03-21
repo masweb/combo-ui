@@ -4,7 +4,7 @@
  * Supports 3 shadow layers: offset, inset, and insetHighlight (no overlay)
  */
 
-import type { BadgeVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
+import type { BadgeVariant, TypographyGlobalConfig } from '../types'
 import {
   toKebabCase,
   buildBorder,
@@ -12,7 +12,9 @@ import {
   buildPadding,
   buildShadows,
   buildFontSize,
-  buildLetterSpacing
+  buildLetterSpacing,
+  buildShadowsDark,
+  getEffectiveFontFamily
 } from './utils'
 
 /**
@@ -68,46 +70,6 @@ function generateBadgeBase(): string {
 }
 
 /**
- * Build shadows with dark mode color overrides
- */
-function buildShadowsDark(shadows: ComponentShadows, dark?: BadgeVariant['dark']): string {
-  const shadowParts: string[] = []
-
-  // Offset shadow with dark color
-  if (shadows.offset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.offset
-    const darkColor = dark?.shadowColor || color
-    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  // Inset shadow with dark color
-  if (shadows.inset?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.inset
-    const darkColor = dark?.shadowInsetColor || color
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  // Inset highlight shadow with dark color
-  if (shadows.insetHighlight?.enabled) {
-    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
-    const darkColor = dark?.shadowInsetHighlightColor || color
-    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
-  }
-
-  return shadowParts.join(', ')
-}
-
-/**
- * Get effective font family for badge (fallback to global)
- */
-function getEffectiveFontFamily(variant: BadgeVariant, globalConfig?: TypographyGlobalConfig): string | null {
-  if (variant.fontFamily !== null && variant.fontFamily !== undefined) {
-    return variant.fontFamily
-  }
-  return globalConfig?.fontFamily || null
-}
-
-/**
  * Generate CSS for a specific badge variant
  */
 function generateBadgeVariant(
@@ -119,7 +81,7 @@ function generateBadgeVariant(
   lines.push(`/* Variant: ${variant.name} */`)
   lines.push(`.cux-badge.--${variantName} {`)
 
-  const effectiveFontFamily = getEffectiveFontFamily(variant, globalConfig)
+  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
 
   // Basic properties
   lines.push(`  --cux-badge-bg: ${variant.background};`)
