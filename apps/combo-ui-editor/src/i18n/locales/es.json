@@ -137,6 +137,7 @@
     "shadow": "Sombra",
     "shadowOffset": "Sombra exterior",
     "shadowInset": "Sombra interior",
+    "shadowInsetHighlight": "Brillo interior",
     "blur": "Desenfoque",
     "spread": "Extensión",
     "inset": "Sombra interior",

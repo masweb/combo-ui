@@ -24,7 +24,11 @@ export interface ButtonVariant {
   disabledBorder: BorderValue
   disabledOpacity: number
   showDisabled: boolean
-  shadows?: ComponentShadows
+  shadows?: {
+    offset?: ShadowValue
+    inset?: ShadowValue
+    insetHighlight?: ShadowValue
+  }
   dark: DarkButton
 }
 
@@ -44,4 +48,5 @@ export interface DarkButton {
   disabledBorderColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

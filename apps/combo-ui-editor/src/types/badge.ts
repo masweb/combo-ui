@@ -13,6 +13,7 @@ export interface BadgeVariant {
   shadows?: {
     offset?: ShadowValue
     inset?: ShadowValue
+    insetHighlight?: ShadowValue
   }
   dark: DarkBadge
 }
@@ -23,4 +24,5 @@ export interface DarkBadge {
   borderColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

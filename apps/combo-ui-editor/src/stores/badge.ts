@@ -56,7 +56,8 @@ const createDefaultVariant = (name: string): BadgeVariant => ({
     color: '#ffffff',
     borderColor: '#0d6efd',
     shadowColor: 'rgba(0,0,0,0.3)',
-    shadowInsetColor: 'rgba(0,0,0,0.2)'
+    shadowInsetColor: 'rgba(0,0,0,0.2)',
+    shadowInsetHighlightColor: 'rgba(255,255,255,0.75)'
   }
 })
 

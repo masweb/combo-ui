@@ -13,9 +13,23 @@ const buildOffsetShadow = (variant: CardVariant): string => {
 }
 
 const buildInsetShadow = (variant: CardVariant): string => {
-  if (!variant.shadows?.inset?.enabled) return 'none'
-  const s = variant.shadows.inset
-  return `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetColor : s.color}`
+  const shadows: string[] = []
+
+  if (variant.shadows?.inset?.enabled) {
+    const s = variant.shadows.inset
+    shadows.push(
+      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetColor : s.color}`
+    )
+  }
+
+  if (variant.shadows?.insetHighlight?.enabled) {
+    const s = variant.shadows.insetHighlight
+    shadows.push(
+      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetHighlightColor : s.color}`
+    )
+  }
+
+  return shadows.length > 0 ? shadows.join(', ') : 'none'
 }
 
 const getBorderRadiusCSS = (variant: CardVariant): string => {
@@ -113,20 +127,3 @@ const getBodyStyles = (variant: CardVariant) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.preview-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.preview-card-inset-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-</style>

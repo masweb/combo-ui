@@ -17,6 +17,7 @@ export interface ChipVariant {
   shadows?: {
     offset?: ShadowValue
     inset?: ShadowValue
+    insetHighlight?: ShadowValue
   }
   dark: DarkChip
 }
@@ -30,4 +31,5 @@ export interface DarkChip {
   closeActiveColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

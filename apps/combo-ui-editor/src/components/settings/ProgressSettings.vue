@@ -233,6 +233,11 @@ const updateHeightUnit = (unit: string) => {
           :model-value="variant.dark.shadowInsetColor"
           @update:model-value="patchDark({ shadowInsetColor: $event })"
         />
+        <ColorField
+          :label="t('settings.shadowInsetHighlight')"
+          :model-value="variant.dark.shadowInsetHighlightColor"
+          @update:model-value="patchDark({ shadowInsetHighlightColor: $event })"
+        />
       </SettingsSection>
     </template>
   </div>

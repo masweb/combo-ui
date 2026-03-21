@@ -92,7 +92,8 @@ const createDefaultVariant = (name: string): CardVariant => ({
     headerColor: '#ffffff',
     headerBorderBottomColor: '#3d3d3d',
     shadowColor: 'rgba(0,0,0,0.4)',
-    shadowInsetColor: 'rgba(0,0,0,0.2)'
+    shadowInsetColor: 'rgba(0,0,0,0.2)',
+    shadowInsetHighlightColor: 'rgba(255,255,255,0.75)'
   }
 })
 

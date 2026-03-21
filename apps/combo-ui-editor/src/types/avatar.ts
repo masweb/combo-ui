@@ -13,6 +13,7 @@ export interface AvatarVariant {
   shadows?: {
     offset?: ShadowValue
     inset?: ShadowValue
+    insetHighlight?: ShadowValue
   }
   dark: DarkAvatar
 }
@@ -23,4 +24,5 @@ export interface DarkAvatar {
   borderColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

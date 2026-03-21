@@ -68,7 +68,8 @@ const createDefaultVariant = (name: string): ChipVariant => ({
     closeHoverColor: '#ced4da',
     closeActiveColor: '#dee2e6',
     shadowColor: 'rgba(0,0,0,0.4)',
-    shadowInsetColor: 'rgba(0,0,0,0.3)'
+    shadowInsetColor: 'rgba(0,0,0,0.3)',
+    shadowInsetHighlightColor: 'rgba(255,255,255,0.75)'
   }
 })
 

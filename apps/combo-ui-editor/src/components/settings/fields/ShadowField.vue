@@ -20,11 +20,31 @@ const defaultShadow = (): ShadowValue => ({
   color: 'rgba(0,0,0,0.15)'
 })
 
+const defaultInsetShadow = (): ShadowValue => ({
+  enabled: true,
+  offsetX: -4,
+  offsetY: -4,
+  blur: 8,
+  spread: 0,
+  color: 'rgba(0,0,0,0.25)'
+})
+
+const defaultHighlightShadow = (): ShadowValue => ({
+  enabled: true,
+  offsetX: 4,
+  offsetY: 4,
+  blur: 8,
+  spread: 0,
+  color: 'rgba(255,255,255,0.75)'
+})
+
 const hasOffset = computed(() => props.modelValue?.offset?.enabled ?? false)
 const hasInset = computed(() => props.modelValue?.inset?.enabled ?? false)
+const hasInsetHighlight = computed(() => props.modelValue?.insetHighlight?.enabled ?? false)
 
 const offsetShadow = computed(() => props.modelValue?.offset ?? defaultShadow())
-const insetShadow = computed(() => props.modelValue?.inset ?? defaultShadow())
+const insetShadow = computed(() => props.modelValue?.inset ?? defaultInsetShadow())
+const insetHighlightShadow = computed(() => props.modelValue?.insetHighlight ?? defaultHighlightShadow())
 
 const toggleOffset = (enabled: boolean) => {
   const current = props.modelValue ?? {}
@@ -47,7 +67,7 @@ const toggleInset = (enabled: boolean) => {
   if (enabled) {
     emit('update:modelValue', {
       ...current,
-      inset: { ...defaultShadow(), enabled: true }
+      inset: { ...defaultInsetShadow(), enabled: true }
     })
   } else {
     // Emitir undefined explícitamente para inset para que deepMerge lo elimine
@@ -71,6 +91,29 @@ const updateInset = (patch: Partial<ShadowValue>) => {
   emit('update:modelValue', {
     ...current,
     inset: { ...insetShadow.value, ...patch }
+  })
+}
+
+const toggleInsetHighlight = (enabled: boolean) => {
+  const current = props.modelValue ?? {}
+  if (enabled) {
+    emit('update:modelValue', {
+      ...current,
+      insetHighlight: { ...defaultHighlightShadow(), enabled: true }
+    })
+  } else {
+    emit('update:modelValue', {
+      ...current,
+      insetHighlight: undefined
+    } as ComponentShadows | undefined)
+  }
+}
+
+const updateInsetHighlight = (patch: Partial<ShadowValue>) => {
+  const current = props.modelValue ?? {}
+  emit('update:modelValue', {
+    ...current,
+    insetHighlight: { ...insetHighlightShadow.value, ...patch }
   })
 }
 </script>
@@ -178,6 +221,59 @@ const updateInset = (patch: Partial<ShadowValue>) => {
             :label="t('settings.color')"
             :model-value="insetShadow.color"
             @update:model-value="updateInset({ color: $event })"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <label class="field-label mb-0">{{ t('settings.shadowInsetHighlight') }}</label>
+        <SwitchField :model-value="hasInsetHighlight" @update:model-value="toggleInsetHighlight" />
+      </div>
+      <div v-if="hasInsetHighlight" class="shadow-slot">
+        <div class="shadow-slot-body">
+          <div class="shadow-row">
+            <label class="field-label-inline">X</label>
+            <input
+              v-wheel-number
+              type="number"
+              class="form-control form-control-sm"
+              :value="insetHighlightShadow.offsetX"
+              @input="updateInsetHighlight({ offsetX: Number(($event.target as HTMLInputElement).value) })"
+            />
+            <label class="field-label-inline">Y</label>
+            <input
+              v-wheel-number
+              type="number"
+              class="form-control form-control-sm"
+              :value="insetHighlightShadow.offsetY"
+              @input="updateInsetHighlight({ offsetY: Number(($event.target as HTMLInputElement).value) })"
+            />
+          </div>
+          <div class="shadow-row">
+            <label class="field-label-inline">{{ t('settings.blur') }}</label>
+            <input
+              v-wheel-number
+              type="number"
+              class="form-control form-control-sm"
+              min="0"
+              :value="insetHighlightShadow.blur"
+              @input="updateInsetHighlight({ blur: Math.max(0, Number(($event.target as HTMLInputElement).value)) })"
+            />
+            <label class="field-label-inline">{{ t('settings.spread') }}</label>
+            <input
+              v-wheel-number
+              type="number"
+              class="form-control form-control-sm"
+              :value="insetHighlightShadow.spread"
+              @input="updateInsetHighlight({ spread: Number(($event.target as HTMLInputElement).value) })"
+            />
+          </div>
+          <ColorField
+            :label="t('settings.color')"
+            :model-value="insetHighlightShadow.color"
+            @update:model-value="updateInsetHighlight({ color: $event })"
           />
         </div>
       </div>

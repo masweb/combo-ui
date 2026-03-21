@@ -7,15 +7,14 @@ const { isDark } = useComponentTheme()
 const typographyStore = useTypographyStore()
 const { cardClass, contrastClass } = usePreviewContrast()
 
-const buildShadow = (variant: ProgressVariant): string => {
-  const shadows: string[] = []
+const buildOffsetShadow = (variant: ProgressVariant): string => {
+  if (!variant.shadows?.offset?.enabled) return 'none'
+  const s = variant.shadows.offset
+  return `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
+}
 
-  if (variant.shadows?.offset?.enabled) {
-    const s = variant.shadows.offset
-    shadows.push(
-      `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
-    )
-  }
+const buildInsetShadow = (variant: ProgressVariant): string => {
+  const shadows: string[] = []
 
   if (variant.shadows?.inset?.enabled) {
     const s = variant.shadows.inset
@@ -24,7 +23,27 @@ const buildShadow = (variant: ProgressVariant): string => {
     )
   }
 
+  if (variant.shadows?.insetHighlight?.enabled) {
+    const s = variant.shadows.insetHighlight
+    shadows.push(
+      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetHighlightColor : s.color}`
+    )
+  }
+
   return shadows.length > 0 ? shadows.join(', ') : 'none'
+}
+
+const getBorderRadiusCSS = (variant: ProgressVariant): string => {
+  return variant.borderRadius.linked
+    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
+    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
+}
+
+const getInsetOverlayStyles = (variant: ProgressVariant) => {
+  return {
+    borderRadius: getBorderRadiusCSS(variant),
+    boxShadow: buildInsetShadow(variant)
+  }
 }
 
 const getContainerStyles = (variant: ProgressVariant) => {
@@ -37,14 +56,11 @@ const getContainerStyles = (variant: ProgressVariant) => {
 
 const getTrackStyles = (variant: ProgressVariant) => {
   const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
-  const radius = variant.borderRadius.linked
-    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
-    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
 
   return {
     backgroundColor: isDark.value ? variant.dark.trackColor : variant.trackColor,
     height: `${variant.height.value}${variant.height.unit}`,
-    borderRadius: radius,
+    borderRadius: getBorderRadiusCSS(variant),
     overflow: 'hidden',
     position: 'relative' as const,
     display: 'flex' as const,
@@ -53,7 +69,7 @@ const getTrackStyles = (variant: ProgressVariant) => {
     borderStyle: variant.border.style,
     borderWidth: `${variant.border.width}${variant.border.unit}`,
     borderColor,
-    boxShadow: buildShadow(variant)
+    boxShadow: buildOffsetShadow(variant)
   }
 }
 
@@ -114,6 +130,7 @@ const getLabelStyles = (variant: ProgressVariant) => {
           <div class="card-body">
             <div class="preview-progress-container" :style="getContainerStyles(variant)">
               <div class="preview-progress-track" :style="getTrackStyles(variant)">
+                <div class="preview-progress-inset-overlay" :style="getInsetOverlayStyles(variant)"></div>
                 <div
                   class="preview-progress-fill"
                   :class="{

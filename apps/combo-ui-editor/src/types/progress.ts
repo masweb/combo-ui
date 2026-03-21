@@ -18,6 +18,7 @@ export interface ProgressVariant {
   shadows?: {
     offset?: ShadowValue
     inset?: ShadowValue
+    insetHighlight?: ShadowValue
   }
   dark: DarkProgress
 }
@@ -31,4 +32,5 @@ export interface DarkProgress {
   labelColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

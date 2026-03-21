@@ -26,6 +26,13 @@ const buildShadow = (variant: ButtonVariant): string => {
     )
   }
 
+  if (variant.shadows?.insetHighlight?.enabled) {
+    const s = variant.shadows.insetHighlight
+    shadows.push(
+      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetHighlightColor : s.color}`
+    )
+  }
+
   return shadows.length > 0 ? shadows.join(', ') : 'none'
 }
 

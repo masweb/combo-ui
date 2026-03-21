@@ -33,6 +33,7 @@ export interface AlertVariant {
   shadows?: {
     offset?: ShadowValue
     inset?: ShadowValue
+    insetHighlight?: ShadowValue
   }
   dark: DarkAlert
 }
@@ -49,4 +50,5 @@ export interface DarkAlert {
   closeActiveColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

@@ -24,6 +24,7 @@ export interface CardVariant {
   shadows?: {
     offset?: ShadowValue
     inset?: ShadowValue
+    insetHighlight?: ShadowValue
   }
   dark: DarkCard
 }
@@ -37,4 +38,5 @@ export interface DarkCard {
   headerBorderBottomColor: string
   shadowColor: string
   shadowInsetColor: string
+  shadowInsetHighlightColor: string
 }

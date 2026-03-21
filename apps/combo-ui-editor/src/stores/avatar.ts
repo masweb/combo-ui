@@ -56,7 +56,8 @@ const createDefaultVariant = (name: string): AvatarVariant => ({
     color: '#ffffff',
     borderColor: '#4d4d4d',
     shadowColor: 'rgba(0,0,0,0.4)',
-    shadowInsetColor: 'rgba(0,0,0,0.2)'
+    shadowInsetColor: 'rgba(0,0,0,0.2)',
+    shadowInsetHighlightColor: 'rgba(255,255,255,0.75)'
   }
 })
 

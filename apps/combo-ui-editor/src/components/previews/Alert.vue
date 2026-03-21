@@ -7,15 +7,14 @@ const { isDark } = useComponentTheme()
 const typographyStore = useTypographyStore()
 const { cardClass, contrastClass } = usePreviewContrast()
 
-const buildShadow = (variant: AlertVariant): string => {
-  const shadows: string[] = []
+const buildOffsetShadow = (variant: AlertVariant): string => {
+  if (!variant.shadows?.offset?.enabled) return 'none'
+  const s = variant.shadows.offset
+  return `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
+}
 
-  if (variant.shadows?.offset?.enabled) {
-    const s = variant.shadows.offset
-    shadows.push(
-      `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
-    )
-  }
+const buildInsetShadow = (variant: AlertVariant): string => {
+  const shadows: string[] = []
 
   if (variant.shadows?.inset?.enabled) {
     const s = variant.shadows.inset
@@ -24,24 +23,40 @@ const buildShadow = (variant: AlertVariant): string => {
     )
   }
 
+  if (variant.shadows?.insetHighlight?.enabled) {
+    const s = variant.shadows.insetHighlight
+    shadows.push(
+      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetHighlightColor : s.color}`
+    )
+  }
+
   return shadows.length > 0 ? shadows.join(', ') : 'none'
+}
+
+const getBorderRadiusCSS = (variant: AlertVariant): string => {
+  return variant.borderRadius.linked
+    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
+    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
+}
+
+const getInsetOverlayStyles = (variant: AlertVariant) => {
+  return {
+    borderRadius: getBorderRadiusCSS(variant),
+    boxShadow: buildInsetShadow(variant)
+  }
 }
 
 const getAlertStyles = (variant: AlertVariant) => {
   const bg = isDark.value ? variant.dark.background : variant.background
   const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
 
-  const radius = variant.borderRadius.linked
-    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
-    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
-
   return {
     backgroundColor: bg,
     borderStyle: variant.border.style,
     borderWidth: `${variant.border.width}${variant.border.unit}`,
     borderColor,
-    borderRadius: radius,
-    boxShadow: buildShadow(variant),
+    borderRadius: getBorderRadiusCSS(variant),
+    boxShadow: buildOffsetShadow(variant),
     maxWidth: `${variant.maxWidth.value}${variant.maxWidth.unit}`
   }
 }
@@ -104,6 +119,7 @@ const getCloseHoverColor = (variant: AlertVariant) =>
         >
           <div class="card-body">
             <div class="preview-alert" :style="getAlertStyles(variant)">
+              <div class="preview-alert-inset-overlay" :style="getInsetOverlayStyles(variant)"></div>
               <div class="preview-alert-header" :style="getHeaderStyles(variant)">
                 <span>Alert Header</span>
                 <button

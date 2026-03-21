@@ -854,3 +854,52 @@
   align-items: center;
   margin-bottom: 0.5rem;
 }
+
+// ─── Preview Components: Inset Overlay ────────────────────────────────────────
+
+// Card preview
+.preview-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-card-inset-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// Alert preview
+.preview-alert {
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-alert-inset-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// Progress preview
+.preview-progress-track {
+  position: relative;
+}
+
+.preview-progress-inset-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}

@@ -69,4 +69,5 @@ export interface ShadowValue {
 export interface ComponentShadows {
   offset?: ShadowValue
   inset?: ShadowValue
+  insetHighlight?: ShadowValue
 }

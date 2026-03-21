@@ -119,7 +119,8 @@ const createDefaultVariant = (name: string): AlertVariant => ({
     closeHoverColor: '#ffffff',
     closeActiveColor: '#bee5eb',
     shadowColor: 'rgba(0,0,0,0.4)',
-    shadowInsetColor: 'rgba(0,0,0,0.2)'
+    shadowInsetColor: 'rgba(0,0,0,0.2)',
+    shadowInsetHighlightColor: 'rgba(255,255,255,0.75)'
   }
 })
 
