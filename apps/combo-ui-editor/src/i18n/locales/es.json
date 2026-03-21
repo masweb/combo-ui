@@ -143,6 +143,12 @@
     "inset": "Sombra interior",
     "speed": "Velocidad",
     "color": "Color",
-    "trackColor": "Color de pista"
+    "trackColor": "Color de pista",
+    "type": "Tipo",
+    "closeButton": "Botón cerrar",
+    "closeColor": "Color botón cerrar",
+    "closeHoverColor": "Color hover botón cerrar",
+    "closeActiveColor": "Color activo botón cerrar",
+    "closeSize": "Tamaño botón cerrar"
   }
 }

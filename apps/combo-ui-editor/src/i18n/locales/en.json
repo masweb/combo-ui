@@ -114,7 +114,8 @@
     "width": "Width",
     "size": "Size",
     "continue": "Continue",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "height": "Height"
   },
   "sidebar": {
     "title": "Combo UX Editor",
@@ -142,6 +143,12 @@
     "inset": "Inset Shadow",
     "speed": "Speed",
     "color": "Color",
-    "trackColor": "Track Color"
+    "trackColor": "Track Color",
+    "type": "Type",
+    "closeButton": "Close button",
+    "closeColor": "Close button color",
+    "closeHoverColor": "Close button hover color",
+    "closeActiveColor": "Close button active color",
+    "closeSize": "Close button size"
   }
 }
