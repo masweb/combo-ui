@@ -49,6 +49,7 @@ declare global {
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
+  const isThemeComponentData: typeof import('./src/types/theme').isThemeComponentData
   const loadFontsFromVariant: typeof import('./src/composables/useGoogleFonts').loadFontsFromVariant
   const loadFontsFromVariants: typeof import('./src/composables/useGoogleFonts').loadFontsFromVariants
   const loadGoogleFont: typeof import('./src/composables/useGoogleFonts').loadGoogleFont
@@ -134,6 +135,7 @@ declare global {
   const useSlots: typeof import('vue').useSlots
   const useSpinnerStore: typeof import('./src/stores/spinner').useSpinnerStore
   const useStoreManager: typeof import('./src/composables/useStoreManager').useStoreManager
+  const useStyleBuilder: typeof import('./src/composables/useStyleBuilder').useStyleBuilder
   const useSubmitCount: typeof import('vee-validate').useSubmitCount
   const useSubmitForm: typeof import('vee-validate').useSubmitForm
   const useTemplateRef: typeof import('vue').useTemplateRef
@@ -267,6 +269,9 @@ declare global {
   // @ts-ignore
   export type { SpinnerVariant, DarkSpinner } from './src/types/spinner'
   import('./src/types/spinner')
+  // @ts-ignore
+  export type { ThemeComponentData, ThemeTypographyData, ThemeFormsData, ThemeData } from './src/types/theme'
+  import('./src/types/theme')
   // @ts-ignore
   export type {
     TypographyVariantName,

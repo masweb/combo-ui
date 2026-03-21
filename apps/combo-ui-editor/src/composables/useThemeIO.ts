@@ -4,17 +4,6 @@ import { loadGoogleFont } from './useGoogleFonts'
 import { useTypographyStore, getTypographyDefaults } from '@/stores/typography'
 import { useFormsStore, getFormsDefaults } from '@/stores/forms'
 
-// oxlint-disable-next-line @typescript-eslint/no-explicit-any
-type ThemeComponentData = any
-
-interface ThemeData {
-  name: string
-  version: string
-  typography?: ThemeComponentData
-  forms?: ThemeComponentData
-  [key: string]: ThemeComponentData
-}
-
 const THEME_VERSION = '1.0'
 const DEFAULT_THEME_NAME = 'NewTheme'
 
@@ -85,10 +74,12 @@ export const useThemeIO = () => {
       const data = await table.get('main')
 
       if (data && data.variants && data.variants.length > 0) {
-        themeData[tableName] = {
-          variants: data.variants,
-          selectedVariantIndex: data.selectedVariantIndex
-        }
+        Object.assign(themeData, {
+          [tableName]: {
+            variants: data.variants,
+            selectedVariantIndex: data.selectedVariantIndex
+          }
+        })
       }
     }
 
@@ -186,13 +177,13 @@ export const useThemeIO = () => {
             if (componentId === 'forms') continue
 
             const componentData = themeData[tableName]
-            if (componentData && typeof componentData === 'object' && 'variants' in componentData) {
+            if (isThemeComponentData(componentData)) {
               const table = db[tableName] as unknown as {
                 put: (data: { id: string; variants: unknown[]; selectedVariantIndex: number }) => Promise<void>
               }
               await table.put({
                 id: 'main',
-                variants: componentData.variants as unknown[],
+                variants: componentData.variants,
                 selectedVariantIndex: componentData.selectedVariantIndex ?? 0
               })
             } else {
