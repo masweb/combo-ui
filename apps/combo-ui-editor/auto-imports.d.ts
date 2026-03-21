@@ -138,6 +138,7 @@ declare global {
   const useSubmitForm: typeof import('vee-validate').useSubmitForm
   const useTemplateRef: typeof import('vue').useTemplateRef
   const useTheme: typeof import('./src/composables/useTheme').useTheme
+  const useThemeIO: typeof import('./src/composables/useThemeIO').useThemeIO
   const useThemeStore: typeof import('./src/stores/theme').useThemeStore
   const useTypographyPersistence: typeof import('./src/composables/useTypographyPersistence').useTypographyPersistence
   const useTypographyStore: typeof import('./src/stores/typography').useTypographyStore

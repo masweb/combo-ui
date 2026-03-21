@@ -1,13 +1,13 @@
 export const COMPONENT_LIST: ListComponentMeta[] = [
-  { id: 'button', label: 'Button', description: 'Trigger actions' },
-  { id: 'card', label: 'Card', description: 'Content container' },
-  { id: 'alert', label: 'Alert', description: 'Feedback messages' },
-  { id: 'avatar', label: 'Avatar', description: 'User representation' },
-  { id: 'badge', label: 'Badge', description: 'Status indicators' },
-  { id: 'divider', label: 'Divider', description: 'Visual separator' },
-  { id: 'progress', label: 'Progress', description: 'Completion indicator' },
-  { id: 'chip', label: 'Chip', description: 'Compact info' },
-  { id: 'spinner', label: 'Spinner', description: 'Loading state' }
+  { id: 'button', label: 'Button', description: 'Trigger actions', icon: 'IconXboxB' },
+  { id: 'card', label: 'Card', description: 'Content container', icon: 'IconCreditCard' },
+  { id: 'alert', label: 'Alert', description: 'Feedback messages', icon: 'IconAlertSquareRounded' },
+  { id: 'avatar', label: 'Avatar', description: 'User representation', icon: 'IconUserCircle' },
+  { id: 'badge', label: 'Badge', description: 'Status indicators', icon: 'IconCodeVariable' },
+  { id: 'divider', label: 'Divider', description: 'Visual separator', icon: 'IconLineDashed' },
+  { id: 'progress', label: 'Progress', description: 'Completion indicator', icon: 'IconEqualDouble' },
+  { id: 'chip', label: 'Chip', description: 'Compact info', icon: 'IconInputX' },
+  { id: 'spinner', label: 'Spinner', description: 'Loading state', icon: 'IconInnerShadowTopRight' }
 ]
 
 export const COMPONENT_TYPOGRAPHY_META: ListComponentMeta = {
@@ -50,4 +50,5 @@ export type ListComponentMeta = {
   id: string
   label: string
   description: string
+  icon?: string
 }

@@ -29,6 +29,7 @@ declare module 'vue' {
     Chip: typeof import('./src/components/previews/Chip.vue')['default']
     ChipSettings: typeof import('./src/components/settings/ChipSettings.vue')['default']
     ColorField: typeof import('./src/components/settings/fields/ColorField.vue')['default']
+    ConfirmModal: typeof import('./src/components/shared/ConfirmModal.vue')['default']
     CoverView: typeof import('./src/components/layout/CoverView.vue')['default']
     Divider: typeof import('./src/components/previews/Divider.vue')['default']
     DividerSettings: typeof import('./src/components/settings/DividerSettings.vue')['default']

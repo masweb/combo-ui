@@ -1,5 +1,28 @@
 <script setup lang="ts">
 import { COMPONENT_LIST, COMPONENT_TYPOGRAPHY_META, COMPONENT_FORM_META } from '@/constants'
+
+import {
+  IconXboxB,
+  IconCreditCard,
+  IconAlertSquareRounded,
+  IconUserCircle,
+  IconCodeVariable,
+  IconLineDashed,
+  IconEqualDouble,
+  IconInputX,
+  IconInnerShadowTopRight
+} from '@tabler/icons-vue'
+const icons: Record<string, Component> = {
+  IconXboxB,
+  IconCreditCard,
+  IconAlertSquareRounded,
+  IconUserCircle,
+  IconCodeVariable,
+  IconLineDashed,
+  IconEqualDouble,
+  IconInputX,
+  IconInnerShadowTopRight
+}
 const { t } = useI18n()
 const { cardClass, contrastClass } = usePreviewContrast()
 const nav = useNavigationStore()
@@ -36,7 +59,9 @@ const { previewBackground } = useComponentTheme()
           @click="() => (nav.currentComponent = item)"
         >
           <div class="card-header text-center">{{ t(`components.${item.id}`) }}</div>
-          <div class="card-body text-center">{{ item.id }}</div>
+          <div class="card-body text-center">
+            <component :is="icons[item.icon ?? '']" :size="120" stroke-width=".5" />
+          </div>
           <div class="card-footer text-center">{{ t(`components.${item.id}-descr`) }}</div>
         </div>
       </div>
