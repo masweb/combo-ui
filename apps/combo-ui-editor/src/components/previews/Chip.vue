@@ -1,61 +1,23 @@
 <script setup lang="ts">
 import { IconX } from '@tabler/icons-vue'
 import { usePreviewContrast } from '@/composables/usePreviewContrast'
-import { useChipStore } from '@/stores/chip'
+import { useStyleBuilder } from '@/composables/useStyleBuilder'
 
 const chipStore = useChipStore()
 const { isDark } = useComponentTheme()
 const typographyStore = useTypographyStore()
 const { cardClass, contrastClass } = usePreviewContrast()
-
-const buildShadow = (variant: ChipVariant): string => {
-  const shadows: string[] = []
-
-  if (variant.shadows?.offset?.enabled) {
-    const s = variant.shadows.offset
-    shadows.push(
-      `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
-    )
-  }
-
-  if (variant.shadows?.inset?.enabled) {
-    const s = variant.shadows.inset
-    shadows.push(
-      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetColor : s.color}`
-    )
-  }
-
-  if (variant.shadows?.insetHighlight?.enabled) {
-    const s = variant.shadows.insetHighlight
-    shadows.push(
-      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetHighlightColor : s.color}`
-    )
-  }
-
-  return shadows.length > 0 ? shadows.join(', ') : 'none'
-}
+const { buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = useStyleBuilder(isDark)
 
 const getChipStyles = (variant: ChipVariant) => {
-  const bg = isDark.value ? variant.dark.background : variant.background
-  const color = isDark.value ? variant.dark.color : variant.color
-  const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
-
-  const radius = variant.borderRadius.linked
-    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
-    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
-
-  const padding = `${variant.padding.top}${variant.padding.unit} ${variant.padding.right}${variant.padding.unit} ${variant.padding.bottom}${variant.padding.unit} ${variant.padding.left}${variant.padding.unit}`
-
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily
 
   return {
-    backgroundColor: bg,
-    color,
-    borderStyle: variant.border.style,
-    borderWidth: `${variant.border.width}${variant.border.unit}`,
-    borderColor,
-    borderRadius: radius,
-    padding,
+    backgroundColor: resolveColor(variant.background, variant.dark.background),
+    color: resolveColor(variant.color, variant.dark.color),
+    ...buildBorderCSS(variant.border, variant.dark.borderColor),
+    borderRadius: buildBorderRadius(variant.borderRadius),
+    padding: buildPadding(variant.padding),
     fontFamily,
     fontSize: `${variant.fontSize.value}${variant.fontSize.unit}`,
     fontStyle: variant.fontStyle,
@@ -69,13 +31,14 @@ const getChipStyles = (variant: ChipVariant) => {
 }
 
 const getCloseButtonStyles = (variant: ChipVariant, state: 'default' | 'hover' | 'active') => {
-  let color: string
-  if (state === 'default') color = isDark.value ? variant.dark.closeColor : variant.closeColor
-  else if (state === 'hover') color = isDark.value ? variant.dark.closeHoverColor : variant.closeHoverColor
-  else color = isDark.value ? variant.dark.closeActiveColor : variant.closeActiveColor
+  const colors = {
+    default: resolveColor(variant.closeColor, variant.dark.closeColor),
+    hover: resolveColor(variant.closeHoverColor, variant.dark.closeHoverColor),
+    active: resolveColor(variant.closeActiveColor, variant.dark.closeActiveColor)
+  }
 
   return {
-    color,
+    color: colors[state],
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

@@ -1,59 +1,22 @@
 <script setup lang="ts">
 import { usePreviewContrast } from '@/composables/usePreviewContrast'
+import { useStyleBuilder } from '@/composables/useStyleBuilder'
 
 const badgeStore = useBadgeStore()
 const { isDark } = useComponentTheme()
 const typographyStore = useTypographyStore()
 const { cardClass, contrastClass } = usePreviewContrast()
-
-const buildShadow = (variant: BadgeVariant): string => {
-  const shadows: string[] = []
-
-  if (variant.shadows?.offset?.enabled) {
-    const s = variant.shadows.offset
-    shadows.push(
-      `${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowColor : s.color}`
-    )
-  }
-
-  if (variant.shadows?.inset?.enabled) {
-    const s = variant.shadows.inset
-    shadows.push(
-      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetColor : s.color}`
-    )
-  }
-
-  if (variant.shadows?.insetHighlight?.enabled) {
-    const s = variant.shadows.insetHighlight
-    shadows.push(
-      `inset ${s.offsetX}px ${s.offsetY}px ${s.blur}px ${s.spread}px ${isDark.value ? variant.dark.shadowInsetHighlightColor : s.color}`
-    )
-  }
-
-  return shadows.length > 0 ? shadows.join(', ') : 'none'
-}
+const { buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = useStyleBuilder(isDark)
 
 const getBadgeStyles = (variant: BadgeVariant) => {
-  const bg = isDark.value ? variant.dark.background : variant.background
-  const color = isDark.value ? variant.dark.color : variant.color
-  const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
-
-  const radius = variant.borderRadius.linked
-    ? `${variant.borderRadius.tl}${variant.borderRadius.unit}`
-    : `${variant.borderRadius.tl}${variant.borderRadius.unit} ${variant.borderRadius.tr}${variant.borderRadius.unit} ${variant.borderRadius.br}${variant.borderRadius.unit} ${variant.borderRadius.bl}${variant.borderRadius.unit}`
-
-  const padding = `${variant.padding.top}${variant.padding.unit} ${variant.padding.right}${variant.padding.unit} ${variant.padding.bottom}${variant.padding.unit} ${variant.padding.left}${variant.padding.unit}`
-
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily
 
   return {
-    backgroundColor: bg,
-    color,
-    borderStyle: variant.border.style,
-    borderWidth: `${variant.border.width}${variant.border.unit}`,
-    borderColor,
-    borderRadius: radius,
-    padding,
+    backgroundColor: resolveColor(variant.background, variant.dark.background),
+    color: resolveColor(variant.color, variant.dark.color),
+    ...buildBorderCSS(variant.border, variant.dark.borderColor),
+    borderRadius: buildBorderRadius(variant.borderRadius),
+    padding: buildPadding(variant.padding),
     fontFamily,
     fontSize: `${variant.fontSize.value}${variant.fontSize.unit}`,
     fontStyle: variant.fontStyle,
