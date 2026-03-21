@@ -70,7 +70,7 @@ export function buildShadow(shadow: ShadowValue | undefined): string {
 }
 
 /**
- * Build a CSS box-shadow string from ComponentShadows (handles both offset and inset)
+ * Build a CSS box-shadow string from ComponentShadows (handles offset, inset, and insetHighlight)
  */
 export function buildShadows(shadows: ComponentShadows | undefined): string {
   if (!shadows) return ''
@@ -89,7 +89,47 @@ export function buildShadows(shadows: ComponentShadows | undefined): string {
     shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
   }
 
+  // Add inset highlight shadow
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+  }
+
   return shadowParts.join(', ')
+}
+
+/**
+ * Build offset shadow only (for the card element)
+ */
+export function buildOffsetShadow(shadows: ComponentShadows | undefined): string {
+  if (!shadows?.offset?.enabled) return 'none'
+
+  const { offsetX, offsetY, blur, spread, color } = shadows.offset
+  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`
+}
+
+/**
+ * Build inset shadows only (for the overlay element)
+ * Combines inset and insetHighlight shadows
+ */
+export function buildInsetShadows(shadows: ComponentShadows | undefined): string {
+  if (!shadows) return 'none'
+
+  const shadowParts: string[] = []
+
+  // Add inset (internal) shadow
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+  }
+
+  // Add inset highlight shadow
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+  }
+
+  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
 }
 
 /**

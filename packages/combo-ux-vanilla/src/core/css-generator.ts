@@ -2,11 +2,23 @@
  * CSS Generator with Custom Properties
  */
 
-import type { ButtonVariant, CardVariant, AlertVariant, AvatarVariant, TypographyGlobalConfig } from '../types'
+import type {
+  ButtonVariant,
+  CardVariant,
+  AlertVariant,
+  AvatarVariant,
+  ProgressVariant,
+  BadgeVariant,
+  ChipVariant,
+  TypographyGlobalConfig
+} from '../types'
 import { generateButtonCSS as generateButtonCSSFn } from './button-generator'
 import { generateCardCSS as generateCardCSSFn } from './card-generator'
 import { generateAlertCSS as generateAlertCSSFn } from './alert-generator'
 import { generateAvatarCSS as generateAvatarCSSFn } from './avatar-generator'
+import { generateProgressCSS as generateProgressCSSFn } from './progress-generator'
+import { generateBadgeCSS as generateBadgeCSSFn } from './badge-generator'
+import { generateChipCSS as generateChipCSSFn } from './chip-generator'
 
 const STYLE_ID = 'cux-styles'
 
@@ -65,6 +77,27 @@ export class CSSGenerator {
    */
   generateAvatarCSS(variants: AvatarVariant[], globalConfig?: TypographyGlobalConfig): string {
     return generateAvatarCSSFn(variants, globalConfig)
+  }
+
+  /**
+   * Generate complete CSS for progress component
+   */
+  generateProgressCSS(variants: ProgressVariant[], globalConfig?: TypographyGlobalConfig): string {
+    return generateProgressCSSFn(variants, globalConfig)
+  }
+
+  /**
+   * Generate complete CSS for badge component
+   */
+  generateBadgeCSS(variants: BadgeVariant[], globalConfig?: TypographyGlobalConfig): string {
+    return generateBadgeCSSFn(variants, globalConfig)
+  }
+
+  /**
+   * Generate complete CSS for chip component
+   */
+  generateChipCSS(variants: ChipVariant[], globalConfig?: TypographyGlobalConfig): string {
+    return generateChipCSSFn(variants, globalConfig)
   }
 
   /**

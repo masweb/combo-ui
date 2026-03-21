@@ -220,6 +220,13 @@ function generateAvatarVariantDark(variant: AvatarVariant, variantName: string):
       shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
     }
 
+    // Inset highlight shadow with dark color
+    if (variant.shadows.insetHighlight?.enabled) {
+      const { offsetX, offsetY, blur, spread } = variant.shadows.insetHighlight
+      const color = dark.shadowInsetHighlightColor || variant.shadows.insetHighlight.color
+      shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+    }
+
     if (shadowParts.length > 0) {
       lines.push(`  --cux-avatar-shadow: ${shadowParts.join(', ')};`)
     }

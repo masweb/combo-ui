@@ -24,9 +24,12 @@ const icons: Record<string, Component> = {
   IconInnerShadowTopRight
 }
 const { t } = useI18n()
-const { cardClass, contrastClass } = usePreviewContrast()
+const { isDark } = useTheme()
 const nav = useNavigationStore()
-const { previewBackground } = useComponentTheme()
+
+const cardClass = computed(() => (isDark.value ? 'card-contrast-light' : 'card-contrast-dark'))
+const contrastClass = computed(() => (isDark.value ? 'contrast-light' : 'contrast-dark'))
+const previewBackground = computed(() => (isDark.value ? '#222222' : '#ffffff'))
 </script>
 
 <template>

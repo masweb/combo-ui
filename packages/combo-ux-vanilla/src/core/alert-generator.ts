@@ -1,17 +1,20 @@
 /**
  * Alert CSS Generator
  * Generates CSS for alert variants with custom properties
+ * Supports 3 shadow layers: offset, inset, and insetHighlight
+ * Inset shadows are applied via an overlay layer for uniform coverage
  */
 
-import type { AlertVariant, TypographyGlobalConfig } from '../types'
+import type { AlertVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
 import {
   toKebabCase,
   buildBorder,
   buildBorderRadius,
   buildPadding,
-  buildShadows,
   buildFontSize,
-  buildLetterSpacing
+  buildLetterSpacing,
+  buildOffsetShadow,
+  buildInsetShadows
 } from './utils'
 
 /**
@@ -51,6 +54,9 @@ function generateAlertBase(): string {
   --cux-alert-padding: 0;
   --cux-alert-shadow: none;
 
+  /* Inset shadow overlay properties */
+  --cux-alert-inset-shadow: none;
+
   /* Header properties */
   --cux-alert-header-bg: transparent;
   --cux-alert-header-color: inherit;
@@ -59,15 +65,16 @@ function generateAlertBase(): string {
 
   /* Close button properties */
   --cux-alert-close-size: 20px;
-  --cux-alert-close-color: inherit;
-  --cux-alert-close-hover-color: inherit;
-  --cux-alert-close-active-color: inherit;
+  --cux-alert-close-color: #6c757d;
+  --cux-alert-close-hover-color: #495057;
+  --cux-alert-close-active-color: #212529;
 
   /* Layout */
   --cux-alert-max-width: 500px;
   --cux-alert-offset: 16px;
 
   /* Base styles */
+  position: relative;
   background: var(--cux-alert-bg);
   color: var(--cux-alert-color);
   border: var(--cux-alert-border);
@@ -77,7 +84,23 @@ function generateAlertBase(): string {
   overflow: hidden;
 }
 
+/* Inset shadow overlay - covers entire alert for uniform shadow effect */
+.cux-alert-inset-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: var(--cux-alert-radius);
+  box-shadow: var(--cux-alert-inset-shadow);
+  pointer-events: none;
+}
+
 .cux-alert-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   background: var(--cux-alert-header-bg);
   color: var(--cux-alert-header-color);
   padding: var(--cux-alert-header-padding);
@@ -85,36 +108,38 @@ function generateAlertBase(): string {
 }
 
 .cux-alert-body {
+  position: relative;
+  z-index: 1;
   padding: var(--cux-alert-padding);
 }
 
 .cux-alert-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  flex-shrink: 0;
   width: var(--cux-alert-close-size);
   height: var(--cux-alert-close-size);
   background: transparent;
   border: none;
   color: var(--cux-alert-close-color);
-  font-size: var(--cux-alert-close-size);
-  line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  padding: 0;
+  border-radius: 4px;
+  transition: color 0.15s ease;
 }
 
 .cux-alert-close:hover {
-  background: rgba(0, 0, 0, 0.05);
   color: var(--cux-alert-close-hover-color);
 }
 
 .cux-alert-close:active {
-  background: rgba(0, 0, 0, 0.1);
   color: var(--cux-alert-close-active-color);
+}
+
+.cux-alert-close svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* Position modifiers */
@@ -127,6 +152,43 @@ function generateAlertBase(): string {
 .cux-alert.--bottom-left { position: fixed; bottom: var(--cux-alert-offset); left: var(--cux-alert-offset); z-index: 9999; }
 .cux-alert.--bottom-center { position: fixed; bottom: var(--cux-alert-offset); left: 50%; transform: translateX(-50%); z-index: 9999; }
 .cux-alert.--bottom-right { position: fixed; bottom: var(--cux-alert-offset); right: var(--cux-alert-offset); z-index: 9999; }`
+}
+
+/**
+ * Build offset shadow with dark mode color override
+ */
+function buildOffsetShadowDark(shadows: ComponentShadows | undefined, shadowColor?: string): string {
+  if (!shadows?.offset?.enabled) return 'none'
+
+  const { offsetX, offsetY, blur, spread, color } = shadows.offset
+  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowColor || color}`
+}
+
+/**
+ * Build inset shadows with dark mode color overrides
+ */
+function buildInsetShadowsDark(
+  shadows: ComponentShadows | undefined,
+  shadowInsetColor?: string,
+  shadowInsetHighlightColor?: string
+): string {
+  if (!shadows) return 'none'
+
+  const shadowParts: string[] = []
+
+  // Add inset (internal) shadow
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetColor || color}`)
+  }
+
+  // Add inset highlight shadow
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetHighlightColor || color}`)
+  }
+
+  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
 }
 
 /**
@@ -161,11 +223,17 @@ function generateAlertVariant(
     lines.push(`  --cux-alert-padding: ${buildPadding(variant.padding)};`)
   }
 
-  // Shadow
+  // Offset shadow (external) - applied to the alert itself
   if (variant.shadows) {
-    const shadowValue = buildShadows(variant.shadows)
-    if (shadowValue) {
-      lines.push(`  --cux-alert-shadow: ${shadowValue};`)
+    const offsetShadowValue = buildOffsetShadow(variant.shadows)
+    if (offsetShadowValue !== 'none') {
+      lines.push(`  --cux-alert-shadow: ${offsetShadowValue};`)
+    }
+
+    // Inset shadows - applied to the overlay layer
+    const insetShadowValue = buildInsetShadows(variant.shadows)
+    if (insetShadowValue !== 'none') {
+      lines.push(`  --cux-alert-inset-shadow: ${insetShadowValue};`)
     }
   }
 
@@ -284,26 +352,18 @@ function generateAlertVariantDark(variant: AlertVariant, variantName: string): s
     lines.push(`  --cux-alert-close-active-color: ${dark.closeActiveColor};`)
   }
 
-  // Shadow for dark mode
+  // Shadows for dark mode
   if (variant.shadows) {
-    const shadowParts: string[] = []
-
     // Offset shadow with dark color
-    if (variant.shadows.offset?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.offset
-      const color = dark.shadowColor || variant.shadows.offset.color
-      shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+    const offsetShadow = buildOffsetShadowDark(variant.shadows, dark.shadowColor)
+    if (offsetShadow !== 'none') {
+      lines.push(`  --cux-alert-shadow: ${offsetShadow};`)
     }
 
-    // Inset shadow with dark color
-    if (variant.shadows.inset?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.inset
-      const color = dark.shadowInsetColor || variant.shadows.inset.color
-      shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
-    }
-
-    if (shadowParts.length > 0) {
-      lines.push(`  --cux-alert-shadow: ${shadowParts.join(', ')};`)
+    // Inset shadows with dark colors
+    const insetShadow = buildInsetShadowsDark(variant.shadows, dark.shadowInsetColor, dark.shadowInsetHighlightColor)
+    if (insetShadow !== 'none') {
+      lines.push(`  --cux-alert-inset-shadow: ${insetShadow};`)
     }
   }
 

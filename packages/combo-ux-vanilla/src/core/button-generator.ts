@@ -1,9 +1,10 @@
 /**
  * Button CSS Generator
  * Generates CSS for button variants with custom properties
+ * Supports 3 shadow layers: offset, inset, and insetHighlight (no overlay)
  */
 
-import type { ButtonVariant } from '../types'
+import type { ButtonVariant, ComponentShadows } from '../types'
 import {
   toKebabCase,
   buildBorder,
@@ -253,6 +254,14 @@ function generateButtonVariantDark(variant: ButtonVariant, variantName: string):
     lines.push(`  --cux-btn-font: '${variant.fontFamily}', sans-serif;`)
   }
 
+  // Shadow for dark mode - use dark shadow colors
+  if (variant.shadows) {
+    const shadowValue = buildShadowsDark(variant.shadows, variant.dark)
+    if (shadowValue) {
+      lines.push(`  --cux-btn-shadow: ${shadowValue};`)
+    }
+  }
+
   // Hover state (dark)
   if (variant.hoverBackground) {
     lines.push(`  --cux-btn-hover-bg: ${variant.hoverBackground};`)
@@ -274,4 +283,37 @@ function generateButtonVariantDark(variant: ButtonVariant, variantName: string):
 
   lines.push('}')
   return lines.join('\n')
+}
+
+/**
+ * Build shadows with dark mode color overrides
+ */
+function buildShadowsDark(
+  shadows: ComponentShadows,
+  dark?: { shadowColor?: string; shadowInsetColor?: string; shadowInsetHighlightColor?: string }
+): string {
+  const shadowParts: string[] = []
+
+  // Offset shadow with dark color
+  if (shadows.offset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.offset
+    const darkColor = dark?.shadowColor || color
+    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  // Inset shadow with dark color
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    const darkColor = dark?.shadowInsetColor || color
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  // Inset highlight shadow with dark color
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    const darkColor = dark?.shadowInsetHighlightColor || color
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  return shadowParts.join(', ')
 }

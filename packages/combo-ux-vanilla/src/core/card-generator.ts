@@ -1,17 +1,20 @@
 /**
  * Card CSS Generator
  * Generates CSS for card variants with custom properties
+ * Supports 3 shadow layers: offset, inset, and insetHighlight
+ * Inset shadows are applied via an overlay layer for uniform coverage
  */
 
-import type { CardVariant, TypographyGlobalConfig } from '../types'
+import type { CardVariant, TypographyGlobalConfig, ComponentShadows } from '../types'
 import {
   toKebabCase,
   buildBorder,
   buildBorderRadius,
   buildPadding,
-  buildShadows,
   buildFontSize,
-  buildLetterSpacing
+  buildLetterSpacing,
+  buildOffsetShadow,
+  buildInsetShadows
 } from './utils'
 
 /**
@@ -51,6 +54,9 @@ function generateCardBase(): string {
   --cux-card-padding: 0;
   --cux-card-shadow: none;
 
+  /* Inset shadow overlay properties */
+  --cux-card-inset-shadow: none;
+
   /* Header properties */
   --cux-card-header-bg: transparent;
   --cux-card-header-color: inherit;
@@ -58,6 +64,7 @@ function generateCardBase(): string {
   --cux-card-header-border-bottom: none;
 
   /* Base styles */
+  position: relative;
   background: var(--cux-card-bg);
   color: var(--cux-card-color);
   border: var(--cux-card-border);
@@ -66,7 +73,19 @@ function generateCardBase(): string {
   overflow: hidden;
 }
 
+/* Inset shadow overlay - covers entire card for uniform shadow effect */
+.cux-card-inset-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: var(--cux-card-radius);
+  box-shadow: var(--cux-card-inset-shadow);
+  pointer-events: none;
+}
+
 .cux-card-header {
+  position: relative;
+  z-index: 1;
   background: var(--cux-card-header-bg);
   color: var(--cux-card-header-color);
   padding: var(--cux-card-header-padding);
@@ -74,10 +93,14 @@ function generateCardBase(): string {
 }
 
 .cux-card-body {
+  position: relative;
+  z-index: 1;
   padding: var(--cux-card-padding);
 }
 
 .cux-card-footer {
+  position: relative;
+  z-index: 1;
   padding: var(--cux-card-padding);
   border-top: var(--cux-card-header-border-bottom);
 }`
@@ -111,11 +134,17 @@ function generateCardVariant(variant: CardVariant, variantName: string, globalCo
     lines.push(`  --cux-card-padding: ${buildPadding(variant.padding)};`)
   }
 
-  // Shadow
+  // Offset shadow (external) - applied to the card itself
   if (variant.shadows) {
-    const shadowValue = buildShadows(variant.shadows)
-    if (shadowValue) {
-      lines.push(`  --cux-card-shadow: ${shadowValue};`)
+    const offsetShadowValue = buildOffsetShadow(variant.shadows)
+    if (offsetShadowValue !== 'none') {
+      lines.push(`  --cux-card-shadow: ${offsetShadowValue};`)
+    }
+
+    // Inset shadows - applied to the overlay layer
+    const insetShadowValue = buildInsetShadows(variant.shadows)
+    if (insetShadowValue !== 'none') {
+      lines.push(`  --cux-card-inset-shadow: ${insetShadowValue};`)
     }
   }
 
@@ -213,6 +242,43 @@ function getEffectiveHeaderFontFamily(variant: CardVariant, globalConfig?: Typog
 }
 
 /**
+ * Build offset shadow with dark mode color override
+ */
+function buildOffsetShadowDark(shadows: ComponentShadows | undefined, shadowColor?: string): string {
+  if (!shadows?.offset?.enabled) return 'none'
+
+  const { offsetX, offsetY, blur, spread, color } = shadows.offset
+  return `${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowColor || color}`
+}
+
+/**
+ * Build inset shadows with dark mode color overrides
+ */
+function buildInsetShadowsDark(
+  shadows: ComponentShadows | undefined,
+  shadowInsetColor?: string,
+  shadowInsetHighlightColor?: string
+): string {
+  if (!shadows) return 'none'
+
+  const shadowParts: string[] = []
+
+  // Add inset (internal) shadow
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetColor || color}`)
+  }
+
+  // Add inset highlight shadow
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${shadowInsetHighlightColor || color}`)
+  }
+
+  return shadowParts.length > 0 ? shadowParts.join(', ') : 'none'
+}
+
+/**
  * Generate dark mode CSS for a card variant
  */
 function generateCardVariantDark(variant: CardVariant, variantName: string): string {
@@ -253,26 +319,18 @@ function generateCardVariantDark(variant: CardVariant, variantName: string): str
     )
   }
 
-  // Shadow for dark mode
+  // Shadows for dark mode
   if (variant.shadows) {
-    const shadowParts: string[] = []
-
     // Offset shadow with dark color
-    if (variant.shadows.offset?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.offset
-      const color = dark.shadowColor || variant.shadows.offset.color
-      shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+    const offsetShadow = buildOffsetShadowDark(variant.shadows, dark.shadowColor)
+    if (offsetShadow !== 'none') {
+      lines.push(`  --cux-card-shadow: ${offsetShadow};`)
     }
 
-    // Inset shadow with dark color
-    if (variant.shadows.inset?.enabled) {
-      const { offsetX, offsetY, blur, spread } = variant.shadows.inset
-      const color = dark.shadowInsetColor || variant.shadows.inset.color
-      shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
-    }
-
-    if (shadowParts.length > 0) {
-      lines.push(`  --cux-card-shadow: ${shadowParts.join(', ')};`)
+    // Inset shadows with dark colors
+    const insetShadow = buildInsetShadowsDark(variant.shadows, dark.shadowInsetColor, dark.shadowInsetHighlightColor)
+    if (insetShadow !== 'none') {
+      lines.push(`  --cux-card-inset-shadow: ${insetShadow};`)
     }
   }
 

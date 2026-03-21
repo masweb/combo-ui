@@ -47,6 +47,7 @@ export interface ShadowValue {
 export interface ComponentShadows {
   offset?: ShadowValue
   inset?: ShadowValue
+  insetHighlight?: ShadowValue
 }
 
 export type Position =
@@ -89,7 +90,11 @@ export interface ButtonVariant {
   disabledOpacity?: number
   showDisabled?: boolean
   shadows?: ComponentShadows
-  dark?: Partial<Omit<ButtonVariant, 'dark'>>
+  dark?: Partial<Omit<ButtonVariant, 'dark'>> & {
+    shadowColor?: string
+    shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
+  }
 }
 
 export interface ButtonComponentData {
@@ -240,6 +245,7 @@ export interface CardVariant {
     headerBorderBottomColor?: string
     shadowColor?: string
     shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
   }
 }
 
@@ -291,6 +297,7 @@ export interface AlertVariant {
     closeActiveColor?: string
     shadowColor?: string
     shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
   }
 }
 
@@ -318,11 +325,114 @@ export interface AvatarVariant {
     borderColor?: string
     shadowColor?: string
     shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
   }
 }
 
 export interface AvatarComponentData {
   variants: AvatarVariant[]
+  selectedVariantIndex: number
+}
+
+// ==================== Badge Types ====================
+
+export interface BadgeVariant {
+  name: string
+  background: string
+  color: string
+  border: BorderValue
+  borderRadius: BorderRadiusValue
+  padding: PaddingValue
+  fontFamily?: string | null
+  fontSize: UnitNumber
+  fontStyle: string
+  fontWeight: string
+  letterSpacing: UnitNumber
+  shadows?: ComponentShadows
+  dark?: Partial<Omit<BadgeVariant, 'dark'>> & {
+    borderColor?: string
+    shadowColor?: string
+    shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
+  }
+}
+
+export interface BadgeComponentData {
+  variants: BadgeVariant[]
+  selectedVariantIndex: number
+}
+
+// ==================== Chip Types ====================
+
+export interface ChipVariant {
+  name: string
+  background: string
+  color: string
+  border: BorderValue
+  borderRadius: BorderRadiusValue
+  padding: PaddingValue
+  fontFamily?: string | null
+  fontSize: UnitNumber
+  fontStyle: string
+  fontWeight: string
+  letterSpacing?: UnitNumber
+  closeSize: UnitNumber
+  closeColor: string
+  closeHoverColor: string
+  closeActiveColor: string
+  shadows?: ComponentShadows
+  dark?: Partial<Omit<ChipVariant, 'dark'>> & {
+    borderColor?: string
+    closeColor?: string
+    closeHoverColor?: string
+    closeActiveColor?: string
+    shadowColor?: string
+    shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
+  }
+}
+
+export interface ChipComponentData {
+  variants: ChipVariant[]
+  selectedVariantIndex: number
+}
+
+// ==================== Progress Types ====================
+
+export type ProgressType = 'default' | 'striped' | 'animated'
+
+export interface ProgressVariant {
+  name: string
+  background: string
+  border: BorderValue
+  type: ProgressType
+  trackColor: string
+  fillColor: string
+  stripeColor: string
+  height: UnitNumber
+  borderRadius: BorderRadiusValue
+  speed: number
+  showLabel: boolean
+  labelColor: string
+  fontFamily?: string | null
+  labelFontSize: UnitNumber
+  fontStyle: string
+  fontWeight: string
+  shadows?: ComponentShadows
+  dark?: Partial<Omit<ProgressVariant, 'dark'>> & {
+    borderColor?: string
+    trackColor?: string
+    fillColor?: string
+    stripeColor?: string
+    labelColor?: string
+    shadowColor?: string
+    shadowInsetColor?: string
+    shadowInsetHighlightColor?: string
+  }
+}
+
+export interface ProgressComponentData {
+  variants: ProgressVariant[]
   selectedVariantIndex: number
 }
 
@@ -337,6 +447,9 @@ export interface ThemeData {
   cards?: CardComponentData
   alerts?: AlertComponentData
   avatars?: AvatarComponentData
+  badges?: BadgeComponentData
+  chips?: ChipComponentData
+  progress?: ProgressComponentData
   // Future components will be added here
   // etc.
 }

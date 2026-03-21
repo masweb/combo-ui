@@ -99,6 +99,24 @@ function buildStyleguide() {
         <div id="avatars-container" class="flex flex-wrap gap2 items-center"></div>
       </section>
 
+      <!-- Progress Section -->
+      <section class="mb4">
+        <h2 class="cux-h3 mb3 pb2 border-bottom">Progress</h2>
+        <div id="progress-container" class="flex flex-column gap3"></div>
+      </section>
+
+      <!-- Badges Section -->
+      <section class="mb4">
+        <h2 class="cux-h3 mb3 pb2 border-bottom">Badges</h2>
+        <div id="badges-container" class="flex flex-wrap gap2 items-center"></div>
+      </section>
+
+      <!-- Chips Section -->
+      <section class="mb4">
+        <h2 class="cux-h3 mb3 pb2 border-bottom">Chips</h2>
+        <div id="chips-container" class="flex flex-wrap gap2 items-center"></div>
+      </section>
+
       <!-- Forms Section -->
       <section class="mb4">
         <h2 class="cux-h3 mb3 pb2 border-bottom">Forms</h2>
@@ -256,6 +274,7 @@ function buildStyleguide() {
           card.className = `cux-card --${variantClass} mr3`
           card.style.maxWidth = '320px'
           card.innerHTML = `
+            <div class="cux-card-inset-overlay"></div>
             <div class="cux-card-header">
               <strong>${variant.name}</strong>
             </div>
@@ -281,8 +300,15 @@ function buildStyleguide() {
           const alert = document.createElement('div')
           alert.className = `cux-alert --${variantClass} --${variant.position}`
           alert.innerHTML = `
+            <div class="cux-alert-inset-overlay"></div>
             <div class="cux-alert-header">
-              <strong>${variant.name}</strong>
+              <span>${variant.name}</span>
+              <button class="cux-alert-close" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             </div>
             <div class="cux-alert-body">
               <p class="m0">This is an alert with header and body content. Alerts can be positioned using the position property.</p>
@@ -307,6 +333,74 @@ function buildStyleguide() {
           avatar.className = `cux-avatar --${variantClass} --md`
           avatar.innerHTML = `<span class="cux-avatar-initials">JD</span>`
           avatarsContainer.appendChild(avatar)
+        })
+      }
+
+      // Generate progress variants
+      const progressContainer = document.getElementById('progress-container')
+
+      if (progressContainer && theme.progress?.variants) {
+        theme.progress.variants.forEach((variant: { name: string; type: string }) => {
+          const variantClass = variant.name
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '')
+
+          // Progress wrapper with label
+          const wrapper = document.createElement('div')
+          wrapper.innerHTML = `
+            <div class="mb1" style="color: var(--cux-text-muted, #6c757d)">${variant.name}</div>
+            <div class="cux-progress --${variantClass}">
+              <div class="cux-progress-inset-overlay"></div>
+              <div class="cux-progress-fill ${variant.type === 'striped' ? '--striped' : ''} ${variant.type === 'animated' ? '--animated' : ''}" style="width: 50%"></div>
+              <div class="cux-progress-label">50%</div>
+            </div>
+          `
+          progressContainer.appendChild(wrapper)
+        })
+      }
+
+      // Generate badge variants
+      const badgesContainer = document.getElementById('badges-container')
+
+      if (badgesContainer && theme.badges?.variants) {
+        theme.badges.variants.forEach((variant: { name: string }) => {
+          const variantClass = variant.name
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '')
+
+          // Badge element
+          const badge = document.createElement('span')
+          badge.className = `cux-badge --${variantClass}`
+          badge.textContent = variant.name
+          badgesContainer.appendChild(badge)
+        })
+      }
+
+      // Generate chip variants
+      const chipsContainer = document.getElementById('chips-container')
+
+      if (chipsContainer && theme.chips?.variants) {
+        theme.chips.variants.forEach((variant: { name: string }) => {
+          const variantClass = variant.name
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '')
+
+          // Chip element with close button
+          const chip = document.createElement('span')
+          chip.className = `cux-chip --${variantClass}`
+          chip.innerHTML = `
+            ${variant.name}
+            <button class="cux-chip-close" aria-label="Remove">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          `
+          chipsContainer.appendChild(chip)
         })
       }
     })

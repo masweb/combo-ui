@@ -12,6 +12,9 @@ import type {
   CardVariant,
   AlertVariant,
   AvatarVariant,
+  ProgressVariant,
+  BadgeVariant,
+  ChipVariant,
   ThemeButtonOptions,
   DarkToggleOptions
 } from './types'
@@ -27,6 +30,9 @@ export type {
   CardVariant,
   AlertVariant,
   AvatarVariant,
+  ProgressVariant,
+  BadgeVariant,
+  ChipVariant,
   ThemeButtonOptions,
   DarkToggleOptions
 }
@@ -180,6 +186,36 @@ export class ComboUX {
       loadFontsFromAvatarVariants(theme.avatars.variants)
       const avatarCSS = this.cssGenerator.generateAvatarCSS(theme.avatars.variants, theme.typography?.globalConfig)
       cssParts.push(avatarCSS)
+    }
+
+    // Generate progress CSS
+    if (theme.progress?.variants?.length) {
+      console.log(
+        '[ComboUX] Progress variants:',
+        theme.progress.variants.map(v => v.name)
+      )
+      const progressCSS = this.cssGenerator.generateProgressCSS(theme.progress.variants, theme.typography?.globalConfig)
+      cssParts.push(progressCSS)
+    }
+
+    // Generate badge CSS
+    if (theme.badges?.variants?.length) {
+      console.log(
+        '[ComboUX] Badge variants:',
+        theme.badges.variants.map(v => v.name)
+      )
+      const badgeCSS = this.cssGenerator.generateBadgeCSS(theme.badges.variants, theme.typography?.globalConfig)
+      cssParts.push(badgeCSS)
+    }
+
+    // Generate chip CSS
+    if (theme.chips?.variants?.length) {
+      console.log(
+        '[ComboUX] Chip variants:',
+        theme.chips.variants.map(v => v.name)
+      )
+      const chipCSS = this.cssGenerator.generateChipCSS(theme.chips.variants, theme.typography?.globalConfig)
+      cssParts.push(chipCSS)
     }
 
     // Inject combined CSS
