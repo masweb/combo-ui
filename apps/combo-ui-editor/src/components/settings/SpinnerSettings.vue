@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash } from '@tabler/icons-vue'
-import { useSpinnerStore } from '@/stores/spinner'
+import VariantHeader from './VariantHeader.vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
 import type { DarkSpinner } from '@/types/spinner'
 
@@ -33,25 +32,13 @@ const onSpeedInput = (e: Event) => {
 </script>
 
 <template>
-  <div class="d-flex align-items-center">
-    <input
-      type="text"
-      class="form-control form-control-lgborder-start-0 border-0 border-bottom"
-      :value="variant?.name"
-      @input="patch({ name: ($event.target as HTMLInputElement).value })"
-    />
-    <div
-      v-if="spinnerStore.variants.length > 1"
-      class="px-3 border-start border-bottom cursor-pointer"
-      style="height: 37px"
-      @click="spinnerStore.deleteVariant(spinnerStore.selectedVariantIndex)"
-    >
-      <IconTrash :size="16" class="mt-2" />
-    </div>
-    <div class="px-3 border-start border-bottom cursor-pointer" style="height: 37px" @click="spinnerStore.addVariant">
-      <IconPlus :size="16" class="mt-2" />
-    </div>
-  </div>
+  <VariantHeader
+    :variant-name="variant?.name"
+    :can-delete="spinnerStore.variants.length > 1"
+    @update:name="patch({ name: $event })"
+    @delete="spinnerStore.deleteVariant(spinnerStore.selectedVariantIndex)"
+    @add="spinnerStore.addVariant"
+  />
 
   <div v-if="variant">
     <template v-if="!isDark">

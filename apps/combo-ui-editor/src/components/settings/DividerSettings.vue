@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash } from '@tabler/icons-vue'
+import VariantHeader from './VariantHeader.vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
 import type { TreeUnit, FourUnit } from '@/types/generics'
 import type { DividerVariant, DarkDivider } from '@/types/divider'
@@ -42,25 +42,13 @@ const updateSpacingUnit = (unit: string) => {
 </script>
 
 <template>
-  <div class="d-flex align-items-center">
-    <input
-      type="text"
-      class="form-control form-control-lgborder-start-0 border-0 border-bottom"
-      :value="variant?.name"
-      @input="patch({ name: ($event.target as HTMLInputElement).value })"
-    />
-    <div
-      v-if="dividerStore.variants.length > 1"
-      class="px-3 border-start border-bottom cursor-pointer"
-      style="height: 37px"
-      @click="dividerStore.deleteVariant(dividerStore.selectedVariantIndex)"
-    >
-      <IconTrash :size="16" class="mt-2" />
-    </div>
-    <div class="px-3 border-start border-bottom cursor-pointer" style="height: 37px" @click="dividerStore.addVariant">
-      <IconPlus :size="16" class="mt-2" />
-    </div>
-  </div>
+  <VariantHeader
+    :variant-name="variant?.name"
+    :can-delete="dividerStore.variants.length > 1"
+    @update:name="patch({ name: $event })"
+    @delete="dividerStore.deleteVariant(dividerStore.selectedVariantIndex)"
+    @add="dividerStore.addVariant"
+  />
 
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->

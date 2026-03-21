@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash } from '@tabler/icons-vue'
-import { useProgressStore } from '@/stores/progress'
+import VariantHeader from './VariantHeader.vue'
+import DarkModeShadowsSettings from './DarkModeShadowsSettings.vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
 import type { ProgressType, TreeUnit, FontStyle } from '@/types/generics'
 import type { ProgressVariant, DarkProgress } from '@/types/progress'
@@ -31,25 +31,13 @@ const updateHeightUnit = (unit: string) => {
 </script>
 
 <template>
-  <div class="d-flex align-items-center">
-    <input
-      type="text"
-      class="form-control form-control-lgborder-start-0 border-0 border-bottom"
-      :value="variant?.name"
-      @input="patch({ name: ($event.target as HTMLInputElement).value })"
-    />
-    <div
-      v-if="progressStore.variants.length > 1"
-      class="px-3 border-start border-bottom cursor-pointer"
-      style="height: 37px"
-      @click="progressStore.deleteVariant(progressStore.selectedVariantIndex)"
-    >
-      <IconTrash :size="16" class="mt-2" />
-    </div>
-    <div class="px-3 border-start border-bottom cursor-pointer" style="height: 37px" @click="progressStore.addVariant">
-      <IconPlus :size="16" class="mt-2" />
-    </div>
-  </div>
+  <VariantHeader
+    :variant-name="variant?.name"
+    :can-delete="progressStore.variants.length > 1"
+    @update:name="patch({ name: $event })"
+    @delete="progressStore.deleteVariant(progressStore.selectedVariantIndex)"
+    @add="progressStore.addVariant"
+  />
 
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->
@@ -70,8 +58,8 @@ const updateHeightUnit = (unit: string) => {
           :model-value="variant.height.value"
           :unit="variant.height.unit"
           :units="['px', 'em', 'rem']"
-          @update:model-value="updateHeightValue($event)"
-          @update:unit="updateHeightUnit($event)"
+          @update:model-value="updateHeightValue"
+          @update:unit="updateHeightUnit"
         />
         <BorderRadiusField
           :label="t('common.borderRadius')"
@@ -222,23 +210,14 @@ const updateHeightUnit = (unit: string) => {
         />
       </SettingsSection>
 
-      <SettingsSection :title="t('common.shadow')" :initial-open="false">
-        <ColorField
-          :label="t('settings.shadowOffset')"
-          :model-value="variant.dark.shadowColor"
-          @update:model-value="patchDark({ shadowColor: $event })"
-        />
-        <ColorField
-          :label="t('settings.shadowInset')"
-          :model-value="variant.dark.shadowInsetColor"
-          @update:model-value="patchDark({ shadowInsetColor: $event })"
-        />
-        <ColorField
-          :label="t('settings.shadowInsetHighlight')"
-          :model-value="variant.dark.shadowInsetHighlightColor"
-          @update:model-value="patchDark({ shadowInsetHighlightColor: $event })"
-        />
-      </SettingsSection>
+      <DarkModeShadowsSettings
+        :shadow-color="variant.dark.shadowColor"
+        :shadow-inset-color="variant.dark.shadowInsetColor"
+        :shadow-inset-highlight-color="variant.dark.shadowInsetHighlightColor"
+        @update:shadow-color="patchDark({ shadowColor: $event })"
+        @update:shadow-inset-color="patchDark({ shadowInsetColor: $event })"
+        @update:shadow-inset-highlight-color="patchDark({ shadowInsetHighlightColor: $event })"
+      />
     </template>
   </div>
 </template>

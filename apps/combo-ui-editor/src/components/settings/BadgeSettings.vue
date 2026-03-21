@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash } from '@tabler/icons-vue'
 import { BaseFields, TypographyFields } from '@/components/shared'
+import VariantHeader from './VariantHeader.vue'
+import DarkModeShadowsSettings from './DarkModeShadowsSettings.vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
 import type { DarkBadge } from '@/types/badge'
 
@@ -19,25 +20,13 @@ const variant = computed(() => badgeStore.selectedVariant)
 </script>
 
 <template>
-  <div class="d-flex align-items-center">
-    <input
-      type="text"
-      class="form-control form-control-lgborder-start-0 border-0 border-bottom"
-      :value="variant?.name"
-      @input="patch({ name: ($event.target as HTMLInputElement).value })"
-    />
-    <div
-      v-if="badgeStore.variants.length > 1"
-      class="px-3 border-start border-bottom cursor-pointer"
-      style="height: 37px"
-      @click="badgeStore.deleteVariant(badgeStore.selectedVariantIndex)"
-    >
-      <IconTrash :size="16" class="mt-2" />
-    </div>
-    <div class="px-3 border-start border-bottom cursor-pointer" style="height: 37px" @click="badgeStore.addVariant">
-      <IconPlus :size="16" class="mt-2" />
-    </div>
-  </div>
+  <VariantHeader
+    :variant-name="variant?.name"
+    :can-delete="badgeStore.variants.length > 1"
+    @update:name="patch({ name: $event })"
+    @delete="badgeStore.deleteVariant(badgeStore.selectedVariantIndex)"
+    @add="badgeStore.addVariant"
+  />
 
   <div v-if="variant">
     <!-- LIGHT MODE SETTINGS -->
@@ -98,23 +87,14 @@ const variant = computed(() => badgeStore.selectedVariant)
         />
       </SettingsSection>
 
-      <SettingsSection :title="t('common.shadow')" :initial-open="false">
-        <ColorField
-          :label="t('settings.shadowOffset')"
-          :model-value="variant.dark.shadowColor"
-          @update:model-value="patchDark({ shadowColor: $event })"
-        />
-        <ColorField
-          :label="t('settings.shadowInset')"
-          :model-value="variant.dark.shadowInsetColor"
-          @update:model-value="patchDark({ shadowInsetColor: $event })"
-        />
-        <ColorField
-          :label="t('settings.shadowInsetHighlight')"
-          :model-value="variant.dark.shadowInsetHighlightColor"
-          @update:model-value="patchDark({ shadowInsetHighlightColor: $event })"
-        />
-      </SettingsSection>
+      <DarkModeShadowsSettings
+        :shadow-color="variant.dark.shadowColor"
+        :shadow-inset-color="variant.dark.shadowInsetColor"
+        :shadow-inset-highlight-color="variant.dark.shadowInsetHighlightColor"
+        @update:shadow-color="patchDark({ shadowColor: $event })"
+        @update:shadow-inset-color="patchDark({ shadowInsetColor: $event })"
+        @update:shadow-inset-highlight-color="patchDark({ shadowInsetHighlightColor: $event })"
+      />
     </template>
   </div>
 </template>

@@ -31,6 +31,7 @@ declare module 'vue' {
     ColorField: typeof import('./src/components/settings/fields/ColorField.vue')['default']
     ConfirmModal: typeof import('./src/components/shared/ConfirmModal.vue')['default']
     CoverView: typeof import('./src/components/layout/CoverView.vue')['default']
+    DarkModeShadowsSettings: typeof import('./src/components/settings/DarkModeShadowsSettings.vue')['default']
     Divider: typeof import('./src/components/previews/Divider.vue')['default']
     DividerSettings: typeof import('./src/components/settings/DividerSettings.vue')['default']
     FontFamilyField: typeof import('./src/components/settings/fields/FontFamilyField.vue')['default']
@@ -59,5 +60,6 @@ declare module 'vue' {
     Typography: typeof import('./src/components/previews/Typography.vue')['default']
     TypographyFields: typeof import('./src/components/shared/TypographyFields.vue')['default']
     TypographySettings: typeof import('./src/components/settings/TypographySettings.vue')['default']
+    VariantHeader: typeof import('./src/components/settings/VariantHeader.vue')['default']
   }
 }
