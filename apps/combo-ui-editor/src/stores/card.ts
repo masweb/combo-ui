@@ -1,64 +1,20 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import {
+  createBorder,
+  createBorderRadius,
+  createPadding,
+  createFontSize,
+  DEFAULT_LETTER_SPACING
+} from '@/utils/defaultValues'
 import type { CardVariant } from '@/types/card'
-import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'solid',
-  width: 1,
-  unit: 'px',
-  color: '#dee2e6'
-}
-
-const defaultBorderRadius: BorderRadiusValue = {
-  linked: true,
-  unit: 'px',
-  tl: 8,
-  tr: 8,
-  br: 8,
-  bl: 8
-}
-
-const defaultPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 16,
-  right: 16,
-  bottom: 16,
-  left: 16
-}
-
-const defaultHeaderPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 12,
-  right: 16,
-  bottom: 12,
-  left: 16
-}
-
-const defaultHeaderBorderBottom: BorderValue = {
-  style: 'solid',
-  width: 1,
-  unit: 'px',
-  color: '#dee2e6'
-}
-
-const defaultFontSize: UnitNumber = {
-  value: 14,
-  unit: 'px'
-}
-
-const defaultHeaderFontSize: UnitNumber = {
-  value: 16,
-  unit: 'px'
-}
-
-const defaultLetterSpacing: LetterSpacingValue = {
-  value: 0,
-  unit: 'px'
-}
+const defaultBorder = createBorder('solid', 1, '#dee2e6')
+const defaultBorderRadius = createBorderRadius(true, 'px', 8)
+const defaultPadding = createPadding(true, true, 'px', 16, 16, 16, 16)
+const defaultHeaderPadding = createPadding(true, true, 'px', 12, 16, 12, 16)
+const defaultHeaderBorderBottom = createBorder('solid', 1, '#dee2e6')
+const defaultFontSize = createFontSize(14)
+const defaultHeaderFontSize = createFontSize(16)
 
 const createDefaultVariant = (name: string): CardVariant => ({
   name,
@@ -71,7 +27,7 @@ const createDefaultVariant = (name: string): CardVariant => ({
   fontSize: { ...defaultFontSize },
   fontStyle: 'normal',
   fontWeight: '400',
-  letterSpacing: { ...defaultLetterSpacing },
+  letterSpacing: { ...DEFAULT_LETTER_SPACING },
   textAlign: 'left',
   headerBackground: '#f8f9fa',
   headerColor: '#212529',
@@ -81,7 +37,7 @@ const createDefaultVariant = (name: string): CardVariant => ({
   headerFontStyle: 'normal',
   headerFontWeight: '600',
   headerFontSize: { ...defaultHeaderFontSize },
-  headerLetterSpacing: { ...defaultLetterSpacing },
+  headerLetterSpacing: { ...DEFAULT_LETTER_SPACING },
   headerTextAlign: 'left',
   shadows: undefined,
   dark: {

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import { useSpinnerStore } from '@/stores/spinner'
 
 const spinnerStore = useSpinnerStore()
-const { isDark } = useComponentTheme()
-const { cardClass, contrastClass } = usePreviewContrast()
+const { cardClass, contrastClass, isDark } = usePreviewGrid()
 
 const getVars = (variant: SpinnerVariant) => {
   const color = isDark.value ? variant.dark.color : variant.color

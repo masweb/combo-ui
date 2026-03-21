@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
-import { useStyleBuilder } from '@/composables/useStyleBuilder'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const avatarStore = useAvatarStore()
-const { isDark } = useComponentTheme()
-const typographyStore = useTypographyStore()
-const { cardClass, contrastClass } = usePreviewContrast()
-const { buildBorderRadius, buildShadow, buildBorderCSS, resolveColor } = useStyleBuilder(isDark)
+const { cardClass, contrastClass, typographyStore, buildBorderRadius, buildShadow, buildBorderCSS, resolveColor } =
+  usePreviewGrid()
 
 const getAvatarStyles = (variant: AvatarVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily

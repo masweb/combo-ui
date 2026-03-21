@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
-import { useStyleBuilder } from '@/composables/useStyleBuilder'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const { t } = useI18n()
 
 const buttonStore = useButtonStore()
-const { isDark } = useComponentTheme()
-const typographyStore = useTypographyStore()
-const { cardClass, contrastClass } = usePreviewContrast()
-const { buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = useStyleBuilder(isDark)
+const {
+  cardClass,
+  contrastClass,
+  typographyStore,
+  buildBorderRadius,
+  buildPadding,
+  buildShadow,
+  buildBorderCSS,
+  resolveColor
+} = usePreviewGrid()
 
 const getButtonStyles = (variant: ButtonVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily

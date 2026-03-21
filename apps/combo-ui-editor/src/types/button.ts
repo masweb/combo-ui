@@ -32,7 +32,7 @@ export interface ButtonVariant {
   dark: DarkButton
 }
 
-export interface DarkButton {
+export interface DarkButton extends DarkModeShadows {
   background: string
   color: string
   borderColor: string
@@ -46,7 +46,4 @@ export interface DarkButton {
   disabledBackground: string
   disabledColor: string
   disabledBorderColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

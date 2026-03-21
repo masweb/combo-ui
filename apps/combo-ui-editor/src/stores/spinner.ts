@@ -1,18 +1,9 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import { createBorder, createUnitNumber } from '@/utils/defaultValues'
 import type { SpinnerVariant } from '@/types/spinner'
-import type { BorderValue, UnitNumber } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'solid',
-  width: 4,
-  unit: 'px',
-  color: '#0d6efd'
-}
-
-const defaultSize: UnitNumber = {
-  value: 40,
-  unit: 'px'
-}
+const defaultBorder = createBorder('solid', 4, '#0d6efd')
+const defaultSize = createUnitNumber(40)
 
 const createDefaultVariant = (name: string): SpinnerVariant => ({
   name,

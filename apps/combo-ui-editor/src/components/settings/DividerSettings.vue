@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VariantHeader from './VariantHeader.vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
-import type { TreeUnit, FourUnit } from '@/types/generics'
+import { useUnitNumberUpdates } from '@/composables/useUnitNumberUpdates'
 import type { DividerVariant, DarkDivider } from '@/types/divider'
 
 const { t } = useI18n()
@@ -16,29 +16,8 @@ const { patch, patchDark } = useDualModePatch<DividerVariant, DarkDivider>({
 
 const variant = computed(() => dividerStore.selectedVariant)
 
-const updateWidthValue = (value: number) => {
-  if (variant.value) {
-    patch({ width: { ...variant.value.width, value } })
-  }
-}
-
-const updateWidthUnit = (unit: string) => {
-  if (variant.value) {
-    patch({ width: { ...variant.value.width, unit: unit as FourUnit } })
-  }
-}
-
-const updateSpacingValue = (value: number) => {
-  if (variant.value) {
-    patch({ spacing: { ...variant.value.spacing, value } })
-  }
-}
-
-const updateSpacingUnit = (unit: string) => {
-  if (variant.value) {
-    patch({ spacing: { ...variant.value.spacing, unit: unit as TreeUnit } })
-  }
-}
+const widthUpdates = useUnitNumberUpdates(patch, variant, 'width')
+const spacingUpdates = useUnitNumberUpdates(patch, variant, 'spacing')
 </script>
 
 <template>
@@ -64,16 +43,16 @@ const updateSpacingUnit = (unit: string) => {
           :model-value="variant.width.value"
           :unit="variant.width.unit"
           :units="['px', '%', 'em', 'rem']"
-          @update:model-value="updateWidthValue"
-          @update:unit="updateWidthUnit"
+          @update:model-value="widthUpdates.updateValue"
+          @update:unit="widthUpdates.updateUnit"
         />
         <NumberUnitField
           :label="t('common.spacing')"
           :model-value="variant.spacing.value"
           :unit="variant.spacing.unit"
           :units="['px', 'em', 'rem']"
-          @update:model-value="updateSpacingValue"
-          @update:unit="updateSpacingUnit"
+          @update:model-value="spacingUpdates.updateValue"
+          @update:unit="spacingUpdates.updateUnit"
         />
       </SettingsSection>
     </template>

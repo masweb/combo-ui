@@ -22,14 +22,11 @@ export interface ChipVariant {
   dark: DarkChip
 }
 
-export interface DarkChip {
+export interface DarkChip extends DarkModeShadows {
   background: string
   color: string
   borderColor: string
   closeColor: string
   closeHoverColor: string
   closeActiveColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

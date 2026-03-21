@@ -1,47 +1,19 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import {
+  createBorder,
+  createBorderRadius,
+  createPadding,
+  createFontSize,
+  createUnitNumber,
+  DEFAULT_LETTER_SPACING
+} from '@/utils/defaultValues'
 import type { ChipVariant } from '@/types/chip'
-import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'none',
-  width: 1,
-  unit: 'px',
-  color: '#dee2e6'
-}
-
-const defaultBorderRadius: BorderRadiusValue = {
-  linked: true,
-  unit: 'px',
-  tl: 20,
-  tr: 20,
-  br: 20,
-  bl: 20
-}
-
-const defaultPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 6,
-  right: 12,
-  bottom: 6,
-  left: 12
-}
-
-const defaultFontSize: UnitNumber = {
-  value: 14,
-  unit: 'px'
-}
-
-const defaultLetterSpacing: LetterSpacingValue = {
-  value: 0,
-  unit: 'px'
-}
-
-const defaultCloseSize: UnitNumber = {
-  value: 16,
-  unit: 'px'
-}
+const defaultBorder = createBorder('none', 1, '#dee2e6')
+const defaultBorderRadius = createBorderRadius(true, 'px', 20)
+const defaultPadding = createPadding(true, true, 'px', 6, 12, 6, 12)
+const defaultFontSize = createFontSize(14)
+const defaultCloseSize = createUnitNumber(16)
 
 const createDefaultVariant = (name: string): ChipVariant => ({
   name,
@@ -54,7 +26,7 @@ const createDefaultVariant = (name: string): ChipVariant => ({
   fontSize: { ...defaultFontSize },
   fontStyle: 'normal',
   fontWeight: '400',
-  letterSpacing: { ...defaultLetterSpacing },
+  letterSpacing: { ...DEFAULT_LETTER_SPACING },
   closeSize: { ...defaultCloseSize },
   closeColor: '#6c757d',
   closeHoverColor: '#495057',

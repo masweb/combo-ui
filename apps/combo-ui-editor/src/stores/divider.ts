@@ -1,23 +1,10 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
-import type { BorderValue, UnitNumber } from '@/types/generics'
+import { createBorder, createUnitNumber } from '@/utils/defaultValues'
 import type { DividerVariant, DividerWidthValue } from '@/types/divider'
 
-const defaultBorder: BorderValue = {
-  style: 'solid',
-  width: 1,
-  unit: 'px',
-  color: '#333333'
-}
-
-const defaultWidth: DividerWidthValue = {
-  value: 100,
-  unit: '%'
-}
-
-const defaultSpacing: UnitNumber = {
-  value: 16,
-  unit: 'px'
-}
+const defaultBorder = createBorder('solid', 1, '#333333')
+const defaultWidth: DividerWidthValue = { value: 100, unit: '%' }
+const defaultSpacing = createUnitNumber(16)
 
 const createDefaultVariant = (name: string): DividerVariant => ({
   name,

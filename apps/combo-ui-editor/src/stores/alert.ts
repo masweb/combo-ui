@@ -1,79 +1,24 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import {
+  createBorder,
+  createBorderRadius,
+  createPadding,
+  createFontSize,
+  createUnitNumber,
+  DEFAULT_LETTER_SPACING
+} from '@/utils/defaultValues'
 import type { AlertVariant } from '@/types/alert'
-import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'solid',
-  width: 1,
-  unit: 'px',
-  color: '#bee5eb'
-}
-
-const defaultBorderRadius: BorderRadiusValue = {
-  linked: true,
-  unit: 'px',
-  tl: 4,
-  tr: 4,
-  br: 4,
-  bl: 4
-}
-
-const defaultPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 12,
-  right: 16,
-  bottom: 12,
-  left: 16
-}
-
-const defaultHeaderPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 8,
-  right: 16,
-  bottom: 8,
-  left: 16
-}
-
-const defaultHeaderBorderBottom: BorderValue = {
-  style: 'solid',
-  width: 1,
-  unit: 'px',
-  color: '#bee5eb'
-}
-
-const defaultFontSize: UnitNumber = {
-  value: 14,
-  unit: 'px'
-}
-
-const defaultHeaderFontSize: UnitNumber = {
-  value: 16,
-  unit: 'px'
-}
-
-const defaultCloseSize: UnitNumber = {
-  value: 20,
-  unit: 'px'
-}
-
-const defaultMaxWidth: UnitNumber = {
-  value: 500,
-  unit: 'px'
-}
-
-const defaultOffset: UnitNumber = {
-  value: 16,
-  unit: 'px'
-}
-
-const defaultLetterSpacing: LetterSpacingValue = {
-  value: 0,
-  unit: 'px'
-}
+const defaultBorder = createBorder('solid', 1, '#bee5eb')
+const defaultBorderRadius = createBorderRadius(true, 'px', 4)
+const defaultPadding = createPadding(true, true, 'px', 12, 16, 12, 16)
+const defaultHeaderPadding = createPadding(true, true, 'px', 8, 16, 8, 16)
+const defaultHeaderBorderBottom = createBorder('solid', 1, '#bee5eb')
+const defaultFontSize = createFontSize(14)
+const defaultHeaderFontSize = createFontSize(16)
+const defaultCloseSize = createUnitNumber(20)
+const defaultMaxWidth = createUnitNumber(500)
+const defaultOffset = createUnitNumber(16)
 
 const createDefaultVariant = (name: string): AlertVariant => ({
   name,
@@ -86,7 +31,7 @@ const createDefaultVariant = (name: string): AlertVariant => ({
   fontSize: { ...defaultFontSize },
   fontStyle: 'normal',
   fontWeight: '400',
-  letterSpacing: { ...defaultLetterSpacing },
+  letterSpacing: { ...DEFAULT_LETTER_SPACING },
   textAlign: 'left',
   headerBackground: '#bee5eb',
   headerColor: '#0c5460',
@@ -96,7 +41,7 @@ const createDefaultVariant = (name: string): AlertVariant => ({
   headerFontStyle: 'normal',
   headerFontWeight: '600',
   headerFontSize: { ...defaultHeaderFontSize },
-  headerLetterSpacing: { ...defaultLetterSpacing },
+  headerLetterSpacing: { ...DEFAULT_LETTER_SPACING },
   headerTextAlign: 'left',
   showClose: false,
   autoDismiss: 0,

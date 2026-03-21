@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { useFormsStore } from '@/stores/forms'
-import { useComponentTheme } from '@/composables/useComponentTheme'
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
-import { useTypographyStore } from '@/stores/typography'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import type { FormState } from '@/types/forms'
 
 const formsStore = useFormsStore()
-const typographyStore = useTypographyStore()
-const { isDark } = useComponentTheme()
-const { cardClass, contrastClass } = usePreviewContrast()
+const { cardClass, contrastClass, typographyStore, isDark } = usePreviewGrid()
 
 const states: { value: FormState; label: string }[] = [
   { value: 'normal', label: 'Normal' },

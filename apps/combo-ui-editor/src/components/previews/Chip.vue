@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { IconX } from '@tabler/icons-vue'
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
-import { useStyleBuilder } from '@/composables/useStyleBuilder'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const chipStore = useChipStore()
-const { isDark } = useComponentTheme()
-const typographyStore = useTypographyStore()
-const { cardClass, contrastClass } = usePreviewContrast()
-const { buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = useStyleBuilder(isDark)
+const {
+  cardClass,
+  contrastClass,
+  typographyStore,
+  buildBorderRadius,
+  buildPadding,
+  buildShadow,
+  buildBorderCSS,
+  resolveColor
+} = usePreviewGrid()
 
 const getChipStyles = (variant: ChipVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily

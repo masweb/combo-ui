@@ -2,7 +2,8 @@
 import VariantHeader from './VariantHeader.vue'
 import DarkModeShadowsSettings from './DarkModeShadowsSettings.vue'
 import { useDualModePatch } from '@/composables/useDualModePatch'
-import type { ProgressType, TreeUnit, FontStyle } from '@/types/generics'
+import { useUnitNumberUpdates } from '@/composables/useUnitNumberUpdates'
+import type { ProgressType, FontStyle } from '@/types/generics'
 import type { ProgressVariant, DarkProgress } from '@/types/progress'
 
 const { t } = useI18n()
@@ -17,17 +18,7 @@ const { patch, patchDark } = useDualModePatch<ProgressVariant, DarkProgress>({
 
 const variant = computed(() => progressStore.selectedVariant)
 
-const updateHeightValue = (value: number) => {
-  if (variant.value) {
-    patch({ height: { ...variant.value.height, value } })
-  }
-}
-
-const updateHeightUnit = (unit: string) => {
-  if (variant.value) {
-    patch({ height: { ...variant.value.height, unit: unit as TreeUnit } })
-  }
-}
+const heightUpdates = useUnitNumberUpdates(patch, variant, 'height')
 </script>
 
 <template>
@@ -58,8 +49,8 @@ const updateHeightUnit = (unit: string) => {
           :model-value="variant.height.value"
           :unit="variant.height.unit"
           :units="['px', 'em', 'rem']"
-          @update:model-value="updateHeightValue"
-          @update:unit="updateHeightUnit"
+          @update:model-value="heightUpdates.updateValue"
+          @update:unit="heightUpdates.updateUnit"
         />
         <BorderRadiusField
           :label="t('common.borderRadius')"

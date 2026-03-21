@@ -2,7 +2,7 @@
 import { BaseFields, TypographyFields } from '@/components/shared'
 import VariantHeader from './VariantHeader.vue'
 import DarkModeShadowsSettings from './DarkModeShadowsSettings.vue'
-import type { TreeUnit } from '@/types/generics'
+import { useUnitNumberUpdates } from '@/composables/useUnitNumberUpdates'
 
 const { t } = useI18n()
 const alertStore = useAlertStore()
@@ -21,29 +21,8 @@ const patchDark = (updates: Partial<DarkAlert>) => {
   patch({ dark: { ...variant.value.dark, ...updates } })
 }
 
-const updateMaxWidthValue = (value: number) => {
-  if (variant.value) {
-    patch({ maxWidth: { ...variant.value.maxWidth, value } })
-  }
-}
-
-const updateMaxWidthUnit = (unit: string) => {
-  if (variant.value) {
-    patch({ maxWidth: { ...variant.value.maxWidth, unit: unit as TreeUnit } })
-  }
-}
-
-const updateOffsetValue = (value: number) => {
-  if (variant.value) {
-    patch({ offset: { ...variant.value.offset, value } })
-  }
-}
-
-const updateOffsetUnit = (unit: string) => {
-  if (variant.value) {
-    patch({ offset: { ...variant.value.offset, unit: unit as TreeUnit } })
-  }
-}
+const maxWidthUpdates = useUnitNumberUpdates(patch, variant, 'maxWidth')
+const offsetUpdates = useUnitNumberUpdates(patch, variant, 'offset')
 </script>
 
 <template>
@@ -181,16 +160,16 @@ const updateOffsetUnit = (unit: string) => {
           :model-value="variant.maxWidth.value"
           :unit="variant.maxWidth.unit"
           :units="['px', 'em', 'rem']"
-          @update:model-value="updateMaxWidthValue"
-          @update:unit="updateMaxWidthUnit"
+          @update:model-value="maxWidthUpdates.updateValue"
+          @update:unit="maxWidthUpdates.updateUnit"
         />
         <NumberUnitField
           :label="t('common.offset')"
           :model-value="variant.offset.value"
           :unit="variant.offset.unit"
           :units="['px', 'em', 'rem']"
-          @update:model-value="updateOffsetValue"
-          @update:unit="updateOffsetUnit"
+          @update:model-value="offsetUpdates.updateValue"
+          @update:unit="offsetUpdates.updateUnit"
         />
         <AlertPositionField
           :label="t('common.position')"

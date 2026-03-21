@@ -38,7 +38,7 @@ export interface AlertVariant {
   dark: DarkAlert
 }
 
-export interface DarkAlert {
+export interface DarkAlert extends DarkModeShadows {
   background: string
   color: string
   borderColor: string
@@ -48,7 +48,4 @@ export interface DarkAlert {
   closeColor: string
   closeHoverColor: string
   closeActiveColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

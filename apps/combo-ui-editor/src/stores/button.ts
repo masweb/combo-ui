@@ -1,39 +1,18 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import {
+  createBorder,
+  createBorderRadius,
+  createPadding,
+  createFontSize,
+  DEFAULT_LETTER_SPACING
+} from '@/utils/defaultValues'
 import type { ButtonVariant } from '@/types/button'
-import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'solid',
-  width: 1,
-  unit: 'px',
-  color: '#0d6efd'
-}
+const defaultBorder = createBorder('solid', 1, '#0d6efd')
+const defaultBorderRadius = createBorderRadius(true, 'px', 6)
+const defaultPadding = createPadding(true, true, 'px', 10, 20, 10, 20)
+const defaultFontSize = createFontSize(14)
 
-const defaultBorderRadius: BorderRadiusValue = {
-  linked: true,
-  unit: 'px',
-  tl: 6,
-  tr: 6,
-  br: 6,
-  bl: 6
-}
-const defaultPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 10,
-  right: 20,
-  bottom: 10,
-  left: 20
-}
-const defaultFontSize: UnitNumber = {
-  value: 14,
-  unit: 'px'
-}
-const defaultLetterSpacing: LetterSpacingValue = {
-  value: 0,
-  unit: 'px'
-}
 const createDefaultVariant = (name: string): ButtonVariant => ({
   name,
   background: '#0d6efd',
@@ -45,7 +24,7 @@ const createDefaultVariant = (name: string): ButtonVariant => ({
   fontSize: { ...defaultFontSize },
   fontStyle: 'normal',
   fontWeight: '400',
-  letterSpacing: { ...defaultLetterSpacing },
+  letterSpacing: { ...DEFAULT_LETTER_SPACING },
   hoverBackground: '#0b5ed7',
   hoverColor: '#ffffff',
   hoverBorder: { ...defaultBorder, color: '#0b5ed7' },

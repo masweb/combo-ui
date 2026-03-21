@@ -18,11 +18,8 @@ export interface AvatarVariant {
   dark: DarkAvatar
 }
 
-export interface DarkAvatar {
+export interface DarkAvatar extends DarkModeShadows {
   background: string
   color: string
   borderColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

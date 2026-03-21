@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { IconX } from '@tabler/icons-vue'
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
-import { useStyleBuilder } from '@/composables/useStyleBuilder'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const alertStore = useAlertStore()
-const { isDark } = useComponentTheme()
-const typographyStore = useTypographyStore()
-const { cardClass, contrastClass } = usePreviewContrast()
-const { buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = useStyleBuilder(isDark)
+const {
+  cardClass,
+  contrastClass,
+  typographyStore,
+  buildBorderRadius,
+  buildPadding,
+  buildShadow,
+  buildBorderCSS,
+  resolveColor,
+  isDark
+} = usePreviewGrid()
 
 const getAlertStyles = (variant: AlertVariant) => {
   return {

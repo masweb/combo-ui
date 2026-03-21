@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import { useProgressStore } from '@/stores/progress'
 
 const progressStore = useProgressStore()
-const { isDark } = useComponentTheme()
-const typographyStore = useTypographyStore()
-const { cardClass, contrastClass } = usePreviewContrast()
+const { cardClass, contrastClass, typographyStore, isDark } = usePreviewGrid()
 
 const buildOffsetShadow = (variant: ProgressVariant): string => {
   if (!variant.shadows?.offset?.enabled) return 'none'

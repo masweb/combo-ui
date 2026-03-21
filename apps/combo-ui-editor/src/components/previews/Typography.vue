@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useTypographyStore } from '@/stores/typography'
-import { useComponentTheme } from '@/composables/useComponentTheme'
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const typographyStore = useTypographyStore()
-const { isDark } = useComponentTheme()
-const { contrastClass } = usePreviewContrast()
+const { contrastClass, isDark } = usePreviewGrid()
 
 const getStyles = (variant: (typeof typographyStore.variants)[0]) => {
   const baseStyles: Record<string, string | number> = {

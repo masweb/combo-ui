@@ -1,5 +1,5 @@
-import { usePersistence } from './usePersistence'
-import type { BaseVariant } from './useVariantManager'
+import { usePersistence } from '@/composables/usePersistence'
+import type { BaseVariant } from '@/composables/useVariantManager'
 
 /**
  * Configuration for creating a component store

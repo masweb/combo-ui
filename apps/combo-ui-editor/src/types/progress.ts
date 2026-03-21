@@ -23,14 +23,11 @@ export interface ProgressVariant {
   dark: DarkProgress
 }
 
-export interface DarkProgress {
+export interface DarkProgress extends DarkModeShadows {
   background: string
   borderColor: string
   trackColor: string
   fillColor: string
   stripeColor: string
   labelColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

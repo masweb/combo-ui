@@ -85,7 +85,6 @@ declare global {
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
   const shallowRef: typeof import('vue').shallowRef
-  const stLayout: typeof import('./src/stores/stLayout').stLayout
   const storeManager: typeof import('./src/composables/useStoreManager').storeManager
   const storeToRefs: typeof import('pinia').storeToRefs
   const toRaw: typeof import('vue').toRaw
@@ -131,6 +130,7 @@ declare global {
   const useNavigationStore: typeof import('./src/stores/navigation').useNavigationStore
   const usePersistence: typeof import('./src/composables/usePersistence').usePersistence
   const usePreviewContrast: typeof import('./src/composables/usePreviewContrast').usePreviewContrast
+  const usePreviewGrid: typeof import('./src/composables/usePreviewGrid').usePreviewGrid
   const useProgressStore: typeof import('./src/stores/progress').useProgressStore
   const useResetForm: typeof import('vee-validate').useResetForm
   const useSlots: typeof import('vue').useSlots
@@ -145,6 +145,7 @@ declare global {
   const useThemeStore: typeof import('./src/stores/theme').useThemeStore
   const useTypographyPersistence: typeof import('./src/composables/useTypographyPersistence').useTypographyPersistence
   const useTypographyStore: typeof import('./src/stores/typography').useTypographyStore
+  const useUnitNumberUpdates: typeof import('./src/composables/useUnitNumberUpdates').useUnitNumberUpdates
   const useValidateField: typeof import('vee-validate').useValidateField
   const useValidateForm: typeof import('vee-validate').useValidateForm
   const useVariantManager: typeof import('./src/composables/useVariantManager').useVariantManager
@@ -258,7 +259,8 @@ declare global {
     UnitNumber,
     LetterSpacingValue,
     ShadowValue,
-    ComponentShadows
+    ComponentShadows,
+    DarkModeShadows
   } from './src/types/generics'
   import('./src/types/generics')
   // @ts-ignore

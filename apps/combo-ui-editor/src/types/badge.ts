@@ -18,11 +18,8 @@ export interface BadgeVariant {
   dark: DarkBadge
 }
 
-export interface DarkBadge {
+export interface DarkBadge extends DarkModeShadows {
   background: string
   color: string
   borderColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

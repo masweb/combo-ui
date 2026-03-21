@@ -29,14 +29,11 @@ export interface CardVariant {
   dark: DarkCard
 }
 
-export interface DarkCard {
+export interface DarkCard extends DarkModeShadows {
   background: string
   color: string
   borderColor: string
   headerBackground: string
   headerColor: string
   headerBorderBottomColor: string
-  shadowColor: string
-  shadowInsetColor: string
-  shadowInsetHighlightColor: string
 }

@@ -1,32 +1,11 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import { createBorder, createBorderRadius, createUnitNumber } from '@/utils/defaultValues'
 import type { ProgressVariant } from '@/types/progress'
-import type { BorderValue, BorderRadiusValue, UnitNumber } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'none',
-  width: 1,
-  unit: 'px',
-  color: '#dee2e6'
-}
-
-const defaultBorderRadius: BorderRadiusValue = {
-  linked: true,
-  unit: 'px',
-  tl: 10,
-  tr: 10,
-  br: 10,
-  bl: 10
-}
-
-const defaultHeight: UnitNumber = {
-  value: 20,
-  unit: 'px'
-}
-
-const defaultLabelFontSize: UnitNumber = {
-  value: 12,
-  unit: 'px'
-}
+const defaultBorder = createBorder('none', 1, '#dee2e6')
+const defaultBorderRadius = createBorderRadius(true, 'px', 10)
+const defaultHeight = createUnitNumber(20)
+const defaultLabelFontSize = createUnitNumber(12)
 
 const createDefaultVariant = (name: string): ProgressVariant => ({
   name,

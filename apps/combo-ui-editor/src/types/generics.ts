@@ -71,3 +71,13 @@ export interface ComponentShadows {
   inset?: ShadowValue
   insetHighlight?: ShadowValue
 }
+
+/**
+ * Dark mode shadow color properties
+ * Used in DarkX interfaces that need shadow customization
+ */
+export interface DarkModeShadows {
+  shadowColor: string
+  shadowInsetColor: string
+  shadowInsetHighlightColor: string
+}

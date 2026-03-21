@@ -1,42 +1,17 @@
 import { createComponentStore } from '@/composables/useComponentStoreFactory'
+import {
+  createBorder,
+  createBorderRadius,
+  createPadding,
+  createFontSize,
+  DEFAULT_LETTER_SPACING
+} from '@/utils/defaultValues'
 import type { AvatarVariant } from '@/types/avatar'
-import type { BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue } from '@/types/generics'
 
-const defaultBorder: BorderValue = {
-  style: 'solid',
-  width: 2,
-  unit: 'px',
-  color: '#dee2e6'
-}
-
-const defaultBorderRadius: BorderRadiusValue = {
-  linked: true,
-  unit: '%',
-  tl: 50,
-  tr: 50,
-  br: 50,
-  bl: 50
-}
-
-const defaultPadding: PaddingValue = {
-  linkedV: true,
-  linkedH: true,
-  unit: 'px',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0
-}
-
-const defaultFontSize: UnitNumber = {
-  value: 24,
-  unit: 'px'
-}
-
-const defaultLetterSpacing: LetterSpacingValue = {
-  value: 0,
-  unit: 'px'
-}
+const defaultBorder = createBorder('solid', 2, '#dee2e6')
+const defaultBorderRadius = createBorderRadius(true, '%', 50)
+const defaultPadding = createPadding(true, true, 'px', 0, 0, 0, 0)
+const defaultFontSize = createFontSize(24)
 
 const createDefaultVariant = (name: string): AvatarVariant => ({
   name,
@@ -49,7 +24,7 @@ const createDefaultVariant = (name: string): AvatarVariant => ({
   fontSize: { ...defaultFontSize },
   fontStyle: 'normal',
   fontWeight: '500',
-  letterSpacing: { ...defaultLetterSpacing },
+  letterSpacing: { ...DEFAULT_LETTER_SPACING },
   shadows: undefined,
   dark: {
     background: '#3d3d3d',

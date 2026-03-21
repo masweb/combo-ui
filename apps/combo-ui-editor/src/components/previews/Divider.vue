@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
+import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import type { DividerVariant } from '@/types/divider'
 
 const dividerStore = useDividerStore()
-const { isDark } = useComponentTheme()
-const { cardClass, contrastClass } = usePreviewContrast()
+const { cardClass, contrastClass, isDark } = usePreviewGrid()
 
 const getDividerStyles = (variant: DividerVariant) => {
   const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
