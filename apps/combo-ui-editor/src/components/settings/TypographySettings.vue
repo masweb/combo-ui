@@ -22,7 +22,7 @@ const patchGlobal = (updates: Partial<typeof typographyStore.globalConfig>) => {
   Object.assign(typographyStore.globalConfig, updates)
 }
 
-const patchGlobalDark = (updates: { color?: string }) => {
+const patchGlobalDark = (updates: { color?: string; backgroundColor?: string }) => {
   typographyStore.globalConfig.dark = { ...typographyStore.globalConfig.dark, ...updates }
 }
 
@@ -65,12 +65,22 @@ const textDecorationOptions = [
         :model-value="typographyStore.globalConfig.color"
         @update:model-value="patchGlobal({ color: $event })"
       />
+      <ColorField
+        :label="t('common.backgroundColor')"
+        :model-value="typographyStore.globalConfig.backgroundColor"
+        @update:model-value="patchGlobal({ backgroundColor: $event })"
+      />
     </template>
     <template v-else>
       <ColorField
         :label="t('common.textColor')"
         :model-value="typographyStore.globalConfig.dark.color"
         @update:model-value="patchGlobalDark({ color: $event })"
+      />
+      <ColorField
+        :label="t('common.backgroundColor')"
+        :model-value="typographyStore.globalConfig.dark.backgroundColor"
+        @update:model-value="patchGlobalDark({ backgroundColor: $event })"
       />
     </template>
   </SettingsSection>

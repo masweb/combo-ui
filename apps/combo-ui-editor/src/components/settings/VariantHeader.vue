@@ -31,13 +31,13 @@ function updateName(event: Event) {
     <div
       v-if="canDelete"
       class="px-3 border-start border-bottom cursor-pointer"
-      style="height: 37px"
+      style="height: 48px"
       @click="emit('delete')"
     >
-      <IconTrash :size="16" class="mt-2" />
+      <IconTrash :size="18" class="mt-3" />
     </div>
-    <div class="px-3 border-start border-bottom cursor-pointer" style="height: 37px" @click="emit('add')">
-      <IconPlus :size="16" class="mt-2" />
+    <div class="px-3 border-start border-bottom cursor-pointer" style="height: 48px" @click="emit('add')">
+      <IconPlus :size="18" class="mt-3" />
     </div>
   </div>
 </template>

@@ -1,8 +1,8 @@
 import type { EntityTable } from 'dexie'
 import { db, COMPONENT_STORE_MAP, type ComponentData } from '@/db'
-import type { BaseVariant } from './useVariantManager'
-import { useVariantManager, deepClone } from './useVariantManager'
-import { storeManager } from './useStoreManager'
+import type { BaseVariant } from './useVariantManager.js'
+import { useVariantManager, deepClone } from './useVariantManager.js'
+import { storeManager } from './useStoreManager.js'
 
 interface PersistenceOptions<T extends BaseVariant> {
   componentId: string

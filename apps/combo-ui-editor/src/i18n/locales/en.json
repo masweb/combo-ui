@@ -36,6 +36,7 @@
     "base": "Base",
     "background": "Background",
     "textColor": "Text Color",
+    "backgroundColor": "Background Color",
     "border": "Border",
     "borderColor": "Border Color",
     "borderRadius": "Border Radius",

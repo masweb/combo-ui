@@ -4,16 +4,12 @@ import { usePreviewGrid } from '@/composables/usePreviewGrid'
 const { t } = useI18n()
 
 const buttonStore = useButtonStore()
-const {
-  cardClass,
-  contrastClass,
-  typographyStore,
-  buildBorderRadius,
-  buildPadding,
-  buildShadow,
-  buildBorderCSS,
-  resolveColor
-} = usePreviewGrid()
+const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
+  usePreviewGrid()
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 
 const getButtonStyles = (variant: ButtonVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily
@@ -94,7 +90,7 @@ const getActiveStyles = (variant: ButtonVariant) => {
     <div v-for="(variant, index) in buttonStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
       <div
         class="card mb-4"
-        :class="[cardClass, { 'border-primary': buttonStore.selectedVariantIndex === index }]"
+        :class="{ 'border-primary': buttonStore.selectedVariantIndex === index }"
         style="cursor: pointer"
         @click="buttonStore.selectVariant(index)"
       >
@@ -111,7 +107,7 @@ const getActiveStyles = (variant: ButtonVariant) => {
           </button>
         </div>
         <div class="card-footer text-center">
-          <small :class="contrastClass">{{ variant.name }}</small>
+          <small :style="{ color: labelColor }">{{ variant.name }}</small>
         </div>
       </div>
     </div>

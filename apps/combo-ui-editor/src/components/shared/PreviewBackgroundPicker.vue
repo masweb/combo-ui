@@ -2,15 +2,19 @@
 import { IconColorPicker } from '@tabler/icons-vue'
 
 const { t } = useI18n()
-const { isDark, lightBackground, darkBackground, setLightBackground, setDarkBackground } = useComponentTheme()
+const { isDark } = useComponentTheme()
+const typographyStore = useTypographyStore()
 
 const currentBackground = computed({
-  get: () => (isDark.value ? darkBackground.value : lightBackground.value),
+  get: () =>
+    isDark.value ? typographyStore.globalConfig.dark.backgroundColor : typographyStore.globalConfig.backgroundColor,
   set: (value: string) => {
     if (isDark.value) {
-      setDarkBackground(value)
+      typographyStore.updateGlobalConfig({
+        dark: { ...typographyStore.globalConfig.dark, backgroundColor: value }
+      })
     } else {
-      setLightBackground(value)
+      typographyStore.updateGlobalConfig({ backgroundColor: value })
     }
   }
 })
@@ -20,9 +24,11 @@ const pickerRef = ref<HTMLElement | null>(null)
 
 const handleColorChange = (color: string) => {
   if (isDark.value) {
-    setDarkBackground(color)
+    typographyStore.updateGlobalConfig({
+      dark: { ...typographyStore.globalConfig.dark, backgroundColor: color }
+    })
   } else {
-    setLightBackground(color)
+    typographyStore.updateGlobalConfig({ backgroundColor: color })
   }
 }
 

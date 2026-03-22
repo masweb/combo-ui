@@ -3,7 +3,11 @@ import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import type { DividerVariant } from '@/types/divider'
 
 const dividerStore = useDividerStore()
-const { cardClass, contrastClass, isDark } = usePreviewGrid()
+const { typographyStore, isDark } = usePreviewGrid()
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 
 const getDividerStyles = (variant: DividerVariant) => {
   const borderColor = isDark.value ? variant.dark.borderColor : variant.border.color
@@ -24,19 +28,19 @@ const getDividerStyles = (variant: DividerVariant) => {
       <div v-for="(variant, index) in dividerStore.variants" :key="index" class="col-12">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': dividerStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': dividerStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="dividerStore.selectVariant(index)"
         >
           <div class="card-body">
             <div class="d-flex flex-column gap-2">
-              <p class="mb-0" :class="contrastClass">Content above divider</p>
+              <p class="mb-0" :style="{ color: labelColor, opacity: 0.8 }">Content above divider</p>
               <hr class="preview-divider" :style="getDividerStyles(variant)" />
-              <p class="mb-0" :class="contrastClass">Content below divider</p>
+              <p class="mb-0" :style="{ color: labelColor, opacity: 0.8 }">Content below divider</p>
             </div>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

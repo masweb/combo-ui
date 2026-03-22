@@ -2,16 +2,12 @@
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const badgeStore = useBadgeStore()
-const {
-  cardClass,
-  contrastClass,
-  typographyStore,
-  buildBorderRadius,
-  buildPadding,
-  buildShadow,
-  buildBorderCSS,
-  resolveColor
-} = usePreviewGrid()
+const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
+  usePreviewGrid()
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 
 const getBadgeStyles = (variant: BadgeVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily
@@ -40,7 +36,7 @@ const getBadgeStyles = (variant: BadgeVariant) => {
       <div v-for="(variant, index) in badgeStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': badgeStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': badgeStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="badgeStore.selectVariant(index)"
         >
@@ -48,7 +44,7 @@ const getBadgeStyles = (variant: BadgeVariant) => {
             <span class="preview-badge" :style="getBadgeStyles(variant)"> Badge </span>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

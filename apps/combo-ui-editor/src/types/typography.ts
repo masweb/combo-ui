@@ -35,7 +35,8 @@ export interface DarkTypographyValue {
 export interface TypographyGlobalConfig {
   fontFamily: string
   color: string
-  dark: { color: string }
+  backgroundColor: string
+  dark: { color: string; backgroundColor: string }
 }
 
 export interface TypographyVariant extends TypographyValue {

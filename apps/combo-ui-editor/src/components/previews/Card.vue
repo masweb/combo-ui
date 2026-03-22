@@ -2,17 +2,8 @@
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const cardStore = useCardStore()
-const {
-  cardClass,
-  contrastClass,
-  typographyStore,
-  buildBorderRadius,
-  buildPadding,
-  buildShadow,
-  buildBorderCSS,
-  resolveColor,
-  isDark
-} = usePreviewGrid()
+const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
+  usePreviewGrid()
 
 const getCardStyles = (variant: CardVariant) => {
   return {
@@ -84,6 +75,10 @@ const getBodyStyles = (variant: CardVariant) => {
     padding: buildPadding(variant.padding)
   }
 }
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 </script>
 
 <template>
@@ -92,7 +87,7 @@ const getBodyStyles = (variant: CardVariant) => {
       <div v-for="(variant, index) in cardStore.variants" :key="index" class="col-12 col-xl-6">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': cardStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': cardStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="cardStore.selectVariant(index)"
         >
@@ -106,7 +101,7 @@ const getBodyStyles = (variant: CardVariant) => {
             </div>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

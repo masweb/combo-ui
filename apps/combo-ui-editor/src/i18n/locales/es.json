@@ -36,6 +36,7 @@
     "base": "Base",
     "background": "Fondo",
     "textColor": "Color de texto",
+    "backgroundColor": "Color de fondo",
     "border": "Borde",
     "borderColor": "Color de borde",
     "borderRadius": "Radio de borde",

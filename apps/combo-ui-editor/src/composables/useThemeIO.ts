@@ -1,6 +1,6 @@
 import { db, COMPONENT_STORE_MAP } from '@/db'
-import { storeManager } from './useStoreManager'
-import { loadGoogleFont } from './useGoogleFonts'
+import { storeManager } from './useStoreManager.js'
+import { loadGoogleFont } from './useGoogleFonts.js'
 import { useTypographyStore, getTypographyDefaults } from '@/stores/typography'
 import { useFormsStore, getFormsDefaults } from '@/stores/forms'
 

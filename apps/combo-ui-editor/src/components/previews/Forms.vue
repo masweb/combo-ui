@@ -4,7 +4,7 @@ import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import type { FormState } from '@/types/forms'
 
 const formsStore = useFormsStore()
-const { cardClass, contrastClass, typographyStore, isDark } = usePreviewGrid()
+const { typographyStore, isDark } = usePreviewGrid()
 
 const states: { value: FormState; label: string }[] = [
   { value: 'normal', label: 'Normal' },
@@ -287,6 +287,10 @@ const getSliderStyles = () => {
     '--slider-thumb-size': `${config.checkRadioSize + 4}px`
   }
 }
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 </script>
 
 <template>
@@ -308,8 +312,8 @@ const getSliderStyles = () => {
 
     <div class="row">
       <div v-for="(variant, index) in formsStore.variants" :key="variant.id" class="col-md-12 col-lg-12 col-xl-6 mb-4">
-        <div class="card" :class="cardClass">
-          <div class="card-header" :class="contrastClass">
+        <div class="card">
+          <div class="card-header" :style="{ color: labelColor }">
             {{ variant.name.charAt(0).toUpperCase() + variant.name.slice(1) }}
           </div>
           <div class="card-body">

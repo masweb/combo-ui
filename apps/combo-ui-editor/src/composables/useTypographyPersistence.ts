@@ -1,8 +1,8 @@
 import { db, type TypographyData } from '@/db'
 import type { TypographyGlobalConfig, TypographyVariant } from '@/types/typography'
-import { loadGoogleFont } from './useGoogleFonts'
-import { storeManager } from './useStoreManager'
-import { deepClone } from './useVariantManager'
+import { loadGoogleFont } from './useGoogleFonts.js'
+import { storeManager } from './useStoreManager.js'
+import { deepClone } from './useVariantManager.js'
 
 interface TypographyPersistenceInstance {
   globalConfig: Ref<TypographyGlobalConfig>

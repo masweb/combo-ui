@@ -3,7 +3,11 @@ import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import { useSpinnerStore } from '@/stores/spinner'
 
 const spinnerStore = useSpinnerStore()
-const { cardClass, contrastClass, isDark } = usePreviewGrid()
+const { typographyStore, isDark } = usePreviewGrid()
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 
 const getVars = (variant: SpinnerVariant) => {
   const color = isDark.value ? variant.dark.color : variant.color
@@ -34,7 +38,7 @@ const getVars = (variant: SpinnerVariant) => {
       <div v-for="(variant, index) in spinnerStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': spinnerStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': spinnerStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="spinnerStore.selectVariant(index)"
         >
@@ -116,7 +120,7 @@ const getVars = (variant: SpinnerVariant) => {
             </div>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

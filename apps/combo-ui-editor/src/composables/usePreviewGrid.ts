@@ -1,4 +1,4 @@
-import { usePreviewContrast } from '@/composables/usePreviewContrast'
+import type { Ref, ComputedRef } from 'vue'
 import { useStyleBuilder } from '@/composables/useStyleBuilder'
 import { useComponentTheme } from '@/composables/useComponentTheme'
 import { useTypographyStore } from '@/stores/typography'
@@ -9,18 +9,15 @@ import { useTypographyStore } from '@/stores/typography'
  *
  * @example
  * ```ts
- * const { cardClass, contrastClass, isDark, typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = usePreviewGrid()
+ * const { isDark, typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = usePreviewGrid()
  * ```
  */
 export function usePreviewGrid() {
   const { isDark } = useComponentTheme()
-  const { cardClass, contrastClass } = usePreviewContrast()
   const typographyStore = useTypographyStore()
   const styleBuilder = useStyleBuilder(isDark)
 
   return {
-    cardClass,
-    contrastClass,
     isDark,
     typographyStore,
     ...styleBuilder

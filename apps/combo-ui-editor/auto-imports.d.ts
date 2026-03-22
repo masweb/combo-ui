@@ -160,25 +160,7 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type {
-    Component,
-    Slot,
-    Slots,
-    ComponentPublicInstance,
-    ComputedRef,
-    DirectiveBinding,
-    ExtractDefaultPropTypes,
-    ExtractPropTypes,
-    ExtractPublicPropTypes,
-    InjectionKey,
-    PropType,
-    Ref,
-    ShallowRef,
-    MaybeRef,
-    MaybeRefOrGetter,
-    VNode,
-    WritableComputedRef
-  } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
   export type { ComponentThemeOptions } from './src/composables/useComponentTheme'
@@ -192,9 +174,6 @@ declare global {
   // @ts-ignore
   export type { GoogleFont } from './src/composables/useGoogleFonts'
   import('./src/composables/useGoogleFonts')
-  // @ts-ignore
-  export type { PreviewContrastOptions } from './src/composables/usePreviewContrast'
-  import('./src/composables/usePreviewContrast')
   // @ts-ignore
   export type { Theme } from './src/composables/useTheme'
   import('./src/composables/useTheme')
@@ -229,39 +208,10 @@ declare global {
   export type { DividerWidthValue, DividerVariant, DarkDivider } from './src/types/divider'
   import('./src/types/divider')
   // @ts-ignore
-  export type {
-    FormsVariantName,
-    OptionOrientation,
-    FormState,
-    FormsGlobalConfig,
-    DarkFormsGlobalConfig,
-    FormsVariant,
-    FormsVariants
-  } from './src/types/forms'
+  export type { FormsVariantName, OptionOrientation, FormState, FormsGlobalConfig, DarkFormsGlobalConfig, FormsVariant, FormsVariants } from './src/types/forms'
   import('./src/types/forms')
   // @ts-ignore
-  export type {
-    BorderStyle,
-    TreeUnit,
-    FourUnit,
-    LineHeightUnit,
-    FontStyle,
-    TextTransform,
-    TextDecoration,
-    TextAlign,
-    ProgressType,
-    SkeletonAnimation,
-    SpinnerType,
-    Position,
-    BorderValue,
-    BorderRadiusValue,
-    PaddingValue,
-    UnitNumber,
-    LetterSpacingValue,
-    ShadowValue,
-    ComponentShadows,
-    DarkModeShadows
-  } from './src/types/generics'
+  export type { BorderStyle, TreeUnit, FourUnit, LineHeightUnit, FontStyle, TextTransform, TextDecoration, TextAlign, ProgressType, SkeletonAnimation, SpinnerType, Position, BorderValue, BorderRadiusValue, PaddingValue, UnitNumber, LetterSpacingValue, ShadowValue, ComponentShadows, DarkModeShadows } from './src/types/generics'
   import('./src/types/generics')
   // @ts-ignore
   export type { ProgressVariant, DarkProgress } from './src/types/progress'
@@ -276,14 +226,7 @@ declare global {
   export type { ThemeComponentData, ThemeTypographyData, ThemeFormsData, ThemeData } from './src/types/theme'
   import('./src/types/theme')
   // @ts-ignore
-  export type {
-    TypographyVariantName,
-    TypographyValue,
-    DarkTypographyValue,
-    TypographyGlobalConfig,
-    TypographyVariant,
-    TypographyVariants
-  } from './src/types/typography'
+  export type { TypographyVariantName, TypographyValue, DarkTypographyValue, TypographyGlobalConfig, TypographyVariant, TypographyVariants } from './src/types/typography'
   import('./src/types/typography')
   // @ts-ignore
   export type { ComboUXDatabase, ComponentData, TypographyData, FormsData, ThemeMetaData } from './src/db/index'

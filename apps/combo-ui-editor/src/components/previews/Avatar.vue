@@ -2,8 +2,11 @@
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const avatarStore = useAvatarStore()
-const { cardClass, contrastClass, typographyStore, buildBorderRadius, buildShadow, buildBorderCSS, resolveColor } =
-  usePreviewGrid()
+const { typographyStore, buildBorderRadius, buildShadow, buildBorderCSS, resolveColor, isDark } = usePreviewGrid()
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 
 const getAvatarStyles = (variant: AvatarVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily
@@ -34,7 +37,7 @@ const getAvatarStyles = (variant: AvatarVariant) => {
       <div v-for="(variant, index) in avatarStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': avatarStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': avatarStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="avatarStore.selectVariant(index)"
         >
@@ -42,7 +45,7 @@ const getAvatarStyles = (variant: AvatarVariant) => {
             <div class="preview-avatar" :style="getAvatarStyles(variant)">AB</div>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

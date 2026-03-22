@@ -3,7 +3,7 @@ import { useTypographyStore } from '@/stores/typography'
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const typographyStore = useTypographyStore()
-const { contrastClass, isDark } = usePreviewGrid()
+const { isDark } = usePreviewGrid()
 
 const getStyles = (variant: (typeof typographyStore.variants)[0]) => {
   const baseStyles: Record<string, string | number> = {
@@ -29,6 +29,10 @@ const getTag = (name: string): string => {
   if (name === 'link') return 'a'
   return 'div'
 }
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 </script>
 
 <template>
@@ -45,7 +49,7 @@ const getTag = (name: string): string => {
         @click="typographyStore.selectVariant(typographyStore.variants.findIndex(v => v.id === variant.id))"
         style="cursor: pointer"
       >
-        <div class="variant-label small" :class="contrastClass" style="min-width: 80px">
+        <div class="variant-label small" :style="{ minWidth: '80px', color: labelColor }">
           {{ variant.name }}
         </div>
         <component

@@ -30,7 +30,8 @@ const FIXED_VARIANT_NAMES: TypographyVariantName[] = [
 const DEFAULT_GLOBAL_CONFIG: TypographyGlobalConfig = {
   fontFamily: 'Inter',
   color: '#212529',
-  dark: { color: '#f8f9fa' }
+  backgroundColor: '#ffffff',
+  dark: { color: '#f8f9fa', backgroundColor: '#222222' }
 }
 
 const DEFAULT_FONT_STYLE: FontStyle = 'normal'

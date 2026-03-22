@@ -1,8 +1,8 @@
 import { db } from '@/db'
 import type { FormsGlobalConfig, FormsVariant } from '@/types/forms'
-import { deepClone } from './useVariantManager'
-import { storeManager } from './useStoreManager'
-import { loadGoogleFont } from './useGoogleFonts'
+import { deepClone } from './useVariantManager.js'
+import { storeManager } from './useStoreManager.js'
+import { loadGoogleFont } from './useGoogleFonts.js'
 import { watch } from 'vue'
 
 interface FormsData {

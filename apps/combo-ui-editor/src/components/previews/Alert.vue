@@ -3,17 +3,8 @@ import { IconX } from '@tabler/icons-vue'
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const alertStore = useAlertStore()
-const {
-  cardClass,
-  contrastClass,
-  typographyStore,
-  buildBorderRadius,
-  buildPadding,
-  buildShadow,
-  buildBorderCSS,
-  resolveColor,
-  isDark
-} = usePreviewGrid()
+const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
+  usePreviewGrid()
 
 const getAlertStyles = (variant: AlertVariant) => {
   return {
@@ -85,6 +76,10 @@ const getBodyStyles = (variant: AlertVariant) => {
 const getCloseColor = (variant: AlertVariant) => resolveColor(variant.closeColor, variant.dark.closeColor)
 const getCloseHoverColor = (variant: AlertVariant) =>
   resolveColor(variant.closeHoverColor, variant.dark.closeHoverColor)
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 </script>
 
 <template>
@@ -93,7 +88,7 @@ const getCloseHoverColor = (variant: AlertVariant) =>
       <div v-for="(variant, index) in alertStore.variants" :key="index" class="col-12 col-xl-6">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': alertStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': alertStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="alertStore.selectVariant(index)"
         >
@@ -121,7 +116,7 @@ const getCloseHoverColor = (variant: AlertVariant) =>
             </div>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

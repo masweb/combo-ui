@@ -3,7 +3,7 @@ import { usePreviewGrid } from '@/composables/usePreviewGrid'
 import { useProgressStore } from '@/stores/progress'
 
 const progressStore = useProgressStore()
-const { cardClass, contrastClass, typographyStore, isDark } = usePreviewGrid()
+const { typographyStore, isDark } = usePreviewGrid()
 
 const buildOffsetShadow = (variant: ProgressVariant): string => {
   if (!variant.shadows?.offset?.enabled) return 'none'
@@ -113,6 +113,10 @@ const getLabelStyles = (variant: ProgressVariant) => {
     display: variant.showLabel ? 'block' : 'none'
   }
 }
+
+const labelColor = computed(() =>
+  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
+)
 </script>
 
 <template>
@@ -121,7 +125,7 @@ const getLabelStyles = (variant: ProgressVariant) => {
       <div v-for="(variant, index) in progressStore.variants" :key="index" class="col-12 col-xl-6">
         <div
           class="card"
-          :class="[cardClass, { 'border-primary': progressStore.selectedVariantIndex === index }]"
+          :class="{ 'border-primary': progressStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="progressStore.selectVariant(index)"
         >
@@ -142,7 +146,7 @@ const getLabelStyles = (variant: ProgressVariant) => {
             </div>
           </div>
           <div class="card-footer text-center">
-            <small :class="contrastClass">{{ variant.name }}</small>
+            <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
       </div>

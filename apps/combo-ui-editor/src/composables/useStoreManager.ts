@@ -1,6 +1,6 @@
 import { useNavigationStore } from '@/stores/navigation'
 import { COMPONENT_STORE_MAP } from '@/db'
-import { loadFontsFromVariants } from './useGoogleFonts'
+import { loadFontsFromVariants } from './useGoogleFonts.js'
 import type { Ref } from 'vue'
 
 interface StoreInstance {
