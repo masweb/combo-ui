@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
+import { useThemeCompensation } from '@/composables/useThemeCompensation'
 import { useProgressStore } from '@/stores/progress'
 
 const progressStore = useProgressStore()
 const { typographyStore, isDark } = usePreviewGrid()
+
+const componentTheme = useComponentTheme()
+const { theme } = useTheme()
+const { getCompensation, getFooterCompensation } = useThemeCompensation(componentTheme.theme, theme)
 
 const buildOffsetShadow = (variant: ProgressVariant): string => {
   if (!variant.shadows?.offset?.enabled) return 'none'
@@ -125,6 +130,7 @@ const labelColor = computed(() =>
       <div v-for="(variant, index) in progressStore.variants" :key="index" class="col-12 col-xl-6">
         <div
           class="card"
+          :style="getCompensation()"
           :class="{ 'border-primary': progressStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="progressStore.selectVariant(index)"
@@ -145,7 +151,7 @@ const labelColor = computed(() =>
               </div>
             </div>
           </div>
-          <div class="card-footer text-center">
+          <div class="card-footer text-center" :style="[getCompensation(), getFooterCompensation()]">
             <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>

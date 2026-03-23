@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
+import { useThemeCompensation } from '@/composables/useThemeCompensation'
 import type { DividerVariant } from '@/types/divider'
 
 const dividerStore = useDividerStore()
 const { typographyStore, isDark } = usePreviewGrid()
+
+const componentTheme = useComponentTheme()
+const { theme } = useTheme()
+const { getCompensation, getFooterCompensation } = useThemeCompensation(componentTheme.theme, theme)
 
 const labelColor = computed(() =>
   isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
@@ -28,6 +33,7 @@ const getDividerStyles = (variant: DividerVariant) => {
       <div v-for="(variant, index) in dividerStore.variants" :key="index" class="col-12">
         <div
           class="card"
+          :style="getCompensation()"
           :class="{ 'border-primary': dividerStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="dividerStore.selectVariant(index)"
@@ -39,7 +45,7 @@ const getDividerStyles = (variant: DividerVariant) => {
               <p class="mb-0" :style="{ color: labelColor, opacity: 0.8 }">Content below divider</p>
             </div>
           </div>
-          <div class="card-footer text-center">
+          <div class="card-footer text-center" :style="[getCompensation(), getFooterCompensation()]">
             <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>

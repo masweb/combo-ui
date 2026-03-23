@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { useFormsStore } from '@/stores/forms'
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
+import { useThemeCompensation } from '@/composables/useThemeCompensation'
 import type { FormState } from '@/types/forms'
 
 const formsStore = useFormsStore()
 const { typographyStore, isDark } = usePreviewGrid()
+
+const componentTheme = useComponentTheme()
+const { theme } = useTheme()
+const { getCompensation, getFooterCompensation } = useThemeCompensation(componentTheme.theme, theme)
 
 const states: { value: FormState; label: string }[] = [
   { value: 'normal', label: 'Normal' },
@@ -311,9 +316,9 @@ const labelColor = computed(() =>
     </div>
 
     <div class="row">
-      <div v-for="(variant, index) in formsStore.variants" :key="variant.id" class="col-md-12 col-lg-12 col-xl-6 mb-4">
-        <div class="card">
-          <div class="card-header" :style="{ color: labelColor }">
+      <div v-for="variant in formsStore.variants" :key="variant.id" class="col-md-12 col-lg-12 col-xl-6 mb-4">
+        <div class="card" :style="getCompensation()">
+          <div class="card-header" :style="[getCompensation(), getFooterCompensation()]">
             {{ variant.name.charAt(0).toUpperCase() + variant.name.slice(1) }}
           </div>
           <div class="card-body">

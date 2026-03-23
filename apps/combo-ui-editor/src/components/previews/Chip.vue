@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { IconX } from '@tabler/icons-vue'
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
+import { useThemeCompensation } from '@/composables/useThemeCompensation'
 
 const chipStore = useChipStore()
 const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
   usePreviewGrid()
+
+const componentTheme = useComponentTheme()
+const { theme } = useTheme()
+const { getCompensation, getFooterCompensation } = useThemeCompensation(componentTheme.theme, theme)
 
 const labelColor = computed(() =>
   isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
@@ -57,6 +62,7 @@ const getCloseButtonStyles = (variant: ChipVariant, state: 'default' | 'hover' |
       <div v-for="(variant, index) in chipStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
         <div
           class="card"
+          :style="getCompensation()"
           :class="{ 'border-primary': chipStore.selectedVariantIndex === index }"
           style="cursor: pointer"
           @click="chipStore.selectVariant(index)"
@@ -83,7 +89,7 @@ const getCloseButtonStyles = (variant: ChipVariant, state: 'default' | 'hover' |
               </span>
             </span>
           </div>
-          <div class="card-footer text-center">
+          <div class="card-footer text-center" :style="[getCompensation(), getFooterCompensation()]">
             <small :style="{ color: labelColor }">{{ variant.name }}</small>
           </div>
         </div>
