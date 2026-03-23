@@ -5,10 +5,7 @@
   $card-bg: transparent
 );
 
-@use 'main-bar';
-@use 'cover-view';
-@use 'side-panel';
-@use 'preview-view';
+@use 'layout';
 @use 'editor';
 @use 'previews';
 
@@ -80,11 +77,22 @@ body {
   }
 }
 
-/* [data-coreui-theme='dark'] {
-  --cui-body-color: #bbb;
-  --cui-body-color-rgb: #{to-rgb(188, 188, 188)};
-  --cui-body-bg: #222;
-  --cui-body-bg-rgb: #{to-rgb(29, 29, 29)};
-  --cui-tertiary-bg: #{to-rgb(48, 48, 48)};
-  --cui-border-color: #444;
-} */
+[data-coreui-theme='dark'] {
+  --cui-body-bg: #222222;
+  --cui-body-bg-rgb: 34, 34, 34;
+  --cui-secondary-bg: #2a2a2a;
+  --cui-secondary-bg-rgb: 42, 42, 42;
+  --cui-tertiary-bg: #333333;
+  --cui-tertiary-bg-rgb: 51, 51, 51;
+  --cui-dark: #222222;
+  --cui-dark-rgb: 34, 34, 34;
+  --cui-gray-600: #4a4a4a;
+  --cui-gray-700: #3a3a3a;
+  --cui-gray-800: #2d2d2d;
+  --cui-gray-900: #222222;
+  --cui-light-bg-subtle: #2d2d2d;
+  --cui-dark-bg-subtle: #1a1a1a;
+  --cui-light-border-subtle: #3a3a3a;
+  --cui-dark-border-subtle: #2a2a2a;
+  --cui-border-color: #3a3a3a;
+}

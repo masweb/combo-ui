@@ -107,8 +107,10 @@ export interface ButtonComponentData {
 export interface TypographyGlobalConfig {
   fontFamily?: string
   color?: string
+  backgroundColor?: string
   dark?: {
     color?: string
+    backgroundColor?: string
   }
 }
 

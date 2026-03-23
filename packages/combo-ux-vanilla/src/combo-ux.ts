@@ -47,7 +47,7 @@ import {
   loadFontsFromAvatarVariants
 } from './core/google-fonts'
 import { injectBasscss } from './basscss'
-import { injectBaseStyles } from './core/base-styles'
+import { injectBaseStyles, updateBaseStyles } from './core/base-styles'
 import { generateTypographyCSS } from './core/typography-generator'
 import { generateFormsCSS } from './core/forms-generator'
 import { generateButtonCSS } from './core/button-generator'
@@ -90,9 +90,6 @@ export class ComboUX {
    * Initialize the library
    */
   private async init(): Promise<void> {
-    // Inject base styles
-    injectBaseStyles()
-
     // Inject Basscss utilities
     injectBasscss()
 
@@ -104,6 +101,27 @@ export class ComboUX {
       await this.loadTheme(this.options.theme)
     } catch (error) {
       console.error('Failed to load theme:', error)
+    }
+  }
+
+  /**
+   * Inject base styles with theme colors
+   */
+  private injectBaseStylesFromTheme(theme: ThemeData): void {
+    const backgroundColor = theme.typography?.globalConfig?.backgroundColor
+    const darkBackgroundColor = theme.typography?.globalConfig?.dark?.backgroundColor
+    const textColor = theme.typography?.globalConfig?.color
+    const darkTextColor = theme.typography?.globalConfig?.dark?.color
+
+    if (backgroundColor || darkBackgroundColor || textColor || darkTextColor) {
+      updateBaseStyles({
+        backgroundColor,
+        darkBackgroundColor,
+        textColor,
+        darkTextColor
+      })
+    } else {
+      injectBaseStyles()
     }
   }
 
@@ -120,6 +138,9 @@ export class ComboUX {
    * Apply theme by generating and injecting CSS
    */
   private applyTheme(theme: ThemeData): void {
+    // Inject base styles with theme colors first
+    this.injectBaseStylesFromTheme(theme)
+
     const cssParts: string[] = []
 
     // Load Google Fonts from typography

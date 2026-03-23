@@ -120,7 +120,7 @@ const textDecorationOptions = [
     </div>
   </SettingsSection>
 
-  <div v-if="variant" class="mx-2">
+  <div v-if="variant">
     <template v-if="!isDark">
       <SettingsSection :title="t('common.typography')" :initial-open="false">
         <FontFamilyField

@@ -91,7 +91,7 @@ const DEFAULT_GLOBAL_CONFIG: FormsGlobalConfig = {
 
   dark: {
     color: '#f8f9fa',
-    background: '#212631',
+    background: '#222222',
     borderColor: '#495057',
     labelColor: '#f8f9fa',
     placeholderColor: '#adb5bd',
@@ -99,14 +99,14 @@ const DEFAULT_GLOBAL_CONFIG: FormsGlobalConfig = {
     errorBorderColor: '#ea868f',
     errorColor: '#ea868f',
     disabledColor: '#6c757d',
-    disabledBackground: '#212631',
+    disabledBackground: '#222222',
     disabledBorderColor: '#495057',
     checkRadioColor: '#6ea8fe',
     checkRadioSize: 18,
     optionColor: '#f8f9fa',
     optionSpacingHorizontal: { value: 24, unit: 'px' as FontSizeUnit },
     optionSpacingVertical: { value: 12, unit: 'px' as FontSizeUnit },
-    dropzoneBackground: '#212631',
+    dropzoneBackground: '#222222',
     dropzoneColor: '#adb5bd',
     dropzoneBorderColor: '#495057'
   }

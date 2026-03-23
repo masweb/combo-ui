@@ -78,7 +78,7 @@ export function generateFormsCSS(forms: FormsData, typography?: TypographyData):
   // Dark mode input
   css.push(`.dark .cux-input {`)
   css.push(`  color: ${config.dark?.color || '#f8f9fa'};`)
-  css.push(`  background: ${config.dark?.background || '#212631'};`)
+  css.push(`  background: ${config.dark?.background || '#222222'};`)
   css.push(`  border-color: ${config.dark?.borderColor || '#495057'};`)
   css.push(`}`)
 
@@ -146,7 +146,7 @@ export function generateFormsCSS(forms: FormsData, typography?: TypographyData):
 
   css.push(`.dark .cux-input:disabled {`)
   css.push(`  color: ${config.dark?.disabledColor || '#6c757d'};`)
-  css.push(`  background: ${config.dark?.disabledBackground || '#212631'};`)
+  css.push(`  background: ${config.dark?.disabledBackground || '#222222'};`)
   css.push(`  border-color: ${config.dark?.disabledBorderColor || '#495057'};`)
   css.push(`}`)
 
@@ -236,7 +236,7 @@ export function generateFormsCSS(forms: FormsData, typography?: TypographyData):
 
   css.push(`.dark .cux-select {`)
   css.push(`  color: ${config.dark?.color || '#f8f9fa'};`)
-  css.push(`  background: ${config.dark?.background || '#212631'};`)
+  css.push(`  background: ${config.dark?.background || '#222222'};`)
   css.push(`  border-color: ${config.dark?.borderColor || '#495057'};`)
   css.push(`}`)
 
@@ -259,7 +259,7 @@ export function generateFormsCSS(forms: FormsData, typography?: TypographyData):
 
   css.push(`.dark .cux-textarea {`)
   css.push(`  color: ${config.dark?.color || '#f8f9fa'};`)
-  css.push(`  background: ${config.dark?.background || '#212631'};`)
+  css.push(`  background: ${config.dark?.background || '#222222'};`)
   css.push(`  border-color: ${config.dark?.borderColor || '#495057'};`)
   css.push(`}`)
 
@@ -288,7 +288,7 @@ export function generateFormsCSS(forms: FormsData, typography?: TypographyData):
   css.push(`}`)
 
   css.push(`.dark .cux-dropzone {`)
-  css.push(`  background: ${config.dark?.dropzoneBackground || '#212631'};`)
+  css.push(`  background: ${config.dark?.dropzoneBackground || '#222222'};`)
   css.push(`  color: ${config.dark?.dropzoneColor || '#adb5bd'};`)
   css.push(`  border-color: ${config.dark?.dropzoneBorderColor || '#495057'};`)
   css.push(`}`)

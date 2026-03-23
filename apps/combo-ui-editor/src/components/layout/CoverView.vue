@@ -10,7 +10,9 @@ import {
   IconLineDashed,
   IconEqualDouble,
   IconInputX,
-  IconInnerShadowTopRight
+  IconInnerShadowTopRight,
+  IconTypography,
+  IconForms
 } from '@tabler/icons-vue'
 const icons: Record<string, Component> = {
   IconXboxB,
@@ -43,7 +45,10 @@ const textColor = computed(() =>
       <div class="col-12 col-xl-6 mb-5">
         <div class="card" @click="() => (nav.currentComponent = COMPONENT_TYPOGRAPHY_META)">
           <div class="card-header" :style="{ color: textColor }">{{ t('components.typography') }}</div>
-          <div class="card-body" :style="{ color: textColor, opacity: 0.8 }">{{ t('typography.description') }}</div>
+          <div class="card-body" :style="{ color: textColor, opacity: 0.8 }">
+            <IconTypography :size="120" stroke-width=".5" />
+            {{ t('typography.description') }}
+          </div>
           <div class="card-footer" :style="{ color: textColor, opacity: 0.8 }">{{ t('typography.footer') }}</div>
         </div>
       </div>
@@ -51,7 +56,10 @@ const textColor = computed(() =>
       <div class="col-12 col-xl-6 mb-4">
         <div class="card" @click="() => (nav.currentComponent = COMPONENT_FORM_META)">
           <div class="card-header" :style="{ color: textColor }">{{ t('components.forms') }}</div>
-          <div class="card-body" :style="{ color: textColor, opacity: 0.8 }">{{ t('forms.description') }}</div>
+          <div class="card-body" :style="{ color: textColor, opacity: 0.8 }">
+            <IconForms :size="120" stroke-width=".5" />
+            {{ t('forms.description') }}
+          </div>
           <div class="card-footer" :style="{ color: textColor, opacity: 0.8 }">{{ t('forms.footer') }}</div>
         </div>
       </div>
