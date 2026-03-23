@@ -4,17 +4,17 @@
  */
 
 import type { AvatarVariant, TypographyGlobalConfig } from '../types'
+import { toKebabCase } from './utils'
 import {
-  toKebabCase,
-  buildBorder,
-  buildBorderRadius,
-  buildPadding,
-  buildShadows,
-  buildFontSize,
-  buildLetterSpacing,
-  buildShadowsDark,
-  getEffectiveFontFamily
-} from './utils'
+  generateBaseProperties,
+  generateDarkBaseProperties,
+  generateDarkBorderOverride,
+  generateShadowVar,
+  generateDarkShadowVar,
+  generateTypographyLines
+} from './css-generator-base'
+
+const COMPONENT = 'avatar'
 
 /**
  * Generate complete CSS for avatar component
@@ -22,15 +22,12 @@ import {
 export function generateAvatarCSS(variants: AvatarVariant[], globalConfig?: TypographyGlobalConfig): string {
   const css: string[] = []
 
-  // Base avatar styles (shared by all variants)
   css.push(generateAvatarBase())
 
-  // Generate CSS for each variant
   variants.forEach(variant => {
     const variantName = toKebabCase(variant.name)
     css.push(generateAvatarVariant(variant, variantName, globalConfig))
 
-    // Generate dark mode override if exists
     if (variant.dark) {
       css.push(generateAvatarVariantDark(variant, variantName))
     }
@@ -44,22 +41,20 @@ export function generateAvatarCSS(variants: AvatarVariant[], globalConfig?: Typo
  */
 function generateAvatarBase(): string {
   return `/* Avatar Base Styles */
-.cux-avatar {
-  /* CSS Custom Properties (set by variants) */
-  --cux-avatar-bg: transparent;
-  --cux-avatar-color: inherit;
-  --cux-avatar-border: none;
-  --cux-avatar-radius: 50%;
-  --cux-avatar-padding: 0;
-  --cux-avatar-shadow: none;
+.cux-${COMPONENT} {
+  --cux-${COMPONENT}-bg: transparent;
+  --cux-${COMPONENT}-color: inherit;
+  --cux-${COMPONENT}-border: none;
+  --cux-${COMPONENT}-radius: 50%;
+  --cux-${COMPONENT}-padding: 0;
+  --cux-${COMPONENT}-shadow: none;
 
-  /* Base styles */
-  background: var(--cux-avatar-bg);
-  color: var(--cux-avatar-color);
-  border: var(--cux-avatar-border);
-  border-radius: var(--cux-avatar-radius);
-  padding: var(--cux-avatar-padding);
-  box-shadow: var(--cux-avatar-shadow);
+  background: var(--cux-${COMPONENT}-bg);
+  color: var(--cux-${COMPONENT}-color);
+  border: var(--cux-${COMPONENT}-border);
+  border-radius: var(--cux-${COMPONENT}-radius);
+  padding: var(--cux-${COMPONENT}-padding);
+  box-shadow: var(--cux-${COMPONENT}-shadow);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -68,29 +63,27 @@ function generateAvatarBase(): string {
   position: relative;
 }
 
-/* Image inside avatar */
-.cux-avatar img {
+.cux-${COMPONENT} img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Initials text */
-.cux-avatar-initials {
+.cux-${COMPONENT}-initials {
   text-transform: uppercase;
   user-select: none;
 }
 
 /* Size modifiers */
-.cux-avatar.--xs { width: 24px; height: 24px; }
-.cux-avatar.--sm { width: 32px; height: 32px; }
-.cux-avatar.--md { width: 40px; height: 40px; }
-.cux-avatar.--lg { width: 48px; height: 48px; }
-.cux-avatar.--xl { width: 64px; height: 64px; }
-.cux-avatar.--xxl { width: 96px; height: 96px; }
+.cux-${COMPONENT}.--xs { width: 24px; height: 24px; }
+.cux-${COMPONENT}.--sm { width: 32px; height: 32px; }
+.cux-${COMPONENT}.--md { width: 40px; height: 40px; }
+.cux-${COMPONENT}.--lg { width: 48px; height: 48px; }
+.cux-${COMPONENT}.--xl { width: 64px; height: 64px; }
+.cux-${COMPONENT}.--xxl { width: 96px; height: 96px; }
 
 /* Status indicator */
-.cux-avatar-status {
+.cux-${COMPONENT}-status {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -103,10 +96,10 @@ function generateAvatarBase(): string {
   background: #6c757d;
 }
 
-.cux-avatar-status.--online { background: #28a745; }
-.cux-avatar-status.--offline { background: #6c757d; }
-.cux-avatar-status.--busy { background: #dc3545; }
-.cux-avatar-status.--away { background: #ffc107; }`
+.cux-${COMPONENT}-status.--online { background: #28a745; }
+.cux-${COMPONENT}-status.--offline { background: #6c757d; }
+.cux-${COMPONENT}-status.--busy { background: #dc3545; }
+.cux-${COMPONENT}-status.--away { background: #ffc107; }`
 }
 
 /**
@@ -119,51 +112,35 @@ function generateAvatarVariant(
 ): string {
   const lines: string[] = []
   lines.push(`/* Variant: ${variant.name} */`)
-  lines.push(`.cux-avatar.--${variantName} {`)
+  lines.push(`.cux-${COMPONENT}.--${variantName} {`)
 
-  // Get effective font family (fallback to global)
-  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
-
-  // Basic properties
-  lines.push(`  --cux-avatar-bg: ${variant.background};`)
-  lines.push(`  --cux-avatar-color: ${variant.color};`)
-
-  if (variant.border) {
-    lines.push(`  --cux-avatar-border: ${buildBorder(variant.border)};`)
-  }
-
-  if (variant.borderRadius) {
-    lines.push(`  --cux-avatar-radius: ${buildBorderRadius(variant.borderRadius)};`)
-  }
-
-  if (variant.padding) {
-    lines.push(`  --cux-avatar-padding: ${buildPadding(variant.padding)};`)
-  }
+  // Base properties
+  lines.push(...generateBaseProperties(COMPONENT, variant))
 
   // Shadow
-  if (variant.shadows) {
-    const shadowValue = buildShadows(variant.shadows)
-    if (shadowValue) {
-      lines.push(`  --cux-avatar-shadow: ${shadowValue};`)
-    }
-  }
+  const shadowVar = generateShadowVar(COMPONENT, variant.shadows)
+  if (shadowVar) lines.push(shadowVar)
 
   lines.push('}')
 
   // Typography for initials
-  const typographyStyles: string[] = []
-  if (effectiveFontFamily) {
-    typographyStyles.push(`  font-family: '${effectiveFontFamily}', sans-serif;`)
-  }
-  typographyStyles.push(`  font-size: ${buildFontSize(variant.fontSize)};`)
-  typographyStyles.push(`  font-weight: ${variant.fontWeight};`)
-  typographyStyles.push(`  font-style: ${variant.fontStyle};`)
-  typographyStyles.push(`  letter-spacing: ${buildLetterSpacing(variant.letterSpacing)};`)
+  const typographyLines = generateTypographyLines(
+    {
+      fontFamily: variant.fontFamily,
+      fontSize: variant.fontSize,
+      fontWeight: variant.fontWeight,
+      fontStyle: variant.fontStyle,
+      letterSpacing: variant.letterSpacing
+    },
+    globalConfig
+  )
 
-  lines.push('')
-  lines.push(`.cux-avatar.--${variantName} .cux-avatar-initials {`)
-  lines.push(typographyStyles.join('\n'))
-  lines.push('}')
+  if (typographyLines.length > 0) {
+    lines.push('')
+    lines.push(`.cux-${COMPONENT}.--${variantName} .cux-${COMPONENT}-initials {`)
+    lines.push(...typographyLines)
+    lines.push('}')
+  }
 
   return lines.join('\n')
 }
@@ -177,30 +154,18 @@ function generateAvatarVariantDark(variant: AvatarVariant, variantName: string):
 
   const lines: string[] = []
   lines.push(`/* Dark Mode Variant: ${variant.name} */`)
-  lines.push(`.dark .cux-avatar.--${variantName} {`)
+  lines.push(`.dark .cux-${COMPONENT}.--${variantName} {`)
 
-  // Basic properties
-  if (dark.background) {
-    lines.push(`  --cux-avatar-bg: ${dark.background};`)
-  }
-  if (dark.color) {
-    lines.push(`  --cux-avatar-color: ${dark.color};`)
-  }
+  // Base dark properties
+  lines.push(...generateDarkBaseProperties(COMPONENT, dark))
 
-  // Override border color for dark mode
-  if (dark.borderColor && variant.border) {
-    lines.push(
-      `  --cux-avatar-border: ${variant.border.width}${variant.border.unit} ${variant.border.style} ${dark.borderColor};`
-    )
-  }
+  // Border override
+  const borderOverride = generateDarkBorderOverride(COMPONENT, variant.border, dark.borderColor)
+  if (borderOverride) lines.push(borderOverride)
 
-  // Shadow for dark mode
-  if (variant.shadows) {
-    const shadowValue = buildShadowsDark(variant.shadows, dark)
-    if (shadowValue) {
-      lines.push(`  --cux-avatar-shadow: ${shadowValue};`)
-    }
-  }
+  // Shadow
+  const shadowVar = generateDarkShadowVar(COMPONENT, variant.shadows, dark)
+  if (shadowVar) lines.push(shadowVar)
 
   lines.push('}')
   return lines.join('\n')

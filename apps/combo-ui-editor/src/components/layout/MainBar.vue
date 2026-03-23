@@ -4,7 +4,6 @@ const { exportTheme, importTheme, newTheme, saveThemeName, themeName, isExportin
   useThemeIO()
 
 const { t } = useI18n()
-import { useTheme } from '@/composables/useTheme'
 const { theme, setTheme } = useTheme()
 const { locale, availableLocales } = useI18n()
 const isEditingThemeName = ref(false)

@@ -1,24 +1,22 @@
 /**
  * Card CSS Generator
  * Generates CSS for card variants with custom properties
- * Supports 3 shadow layers: offset, inset, and insetHighlight
- * Inset shadows are applied via an overlay layer for uniform coverage
+ * Uses overlay pattern for inset shadows
  */
 
 import type { CardVariant, TypographyGlobalConfig } from '../types'
+import { toKebabCase, buildBorder, buildPadding } from './utils'
 import {
-  toKebabCase,
-  buildBorder,
-  buildBorderRadius,
-  buildPadding,
-  buildFontSize,
-  buildLetterSpacing,
-  buildOffsetShadow,
-  buildInsetShadows,
-  getEffectiveFontFamily,
-  buildOffsetShadowDark,
-  buildInsetShadowsDark
-} from './utils'
+  generateDarkBaseProperties,
+  generateDarkBorderOverride,
+  generateOffsetShadowVar,
+  generateInsetShadowVar,
+  generateDarkOffsetShadowVar,
+  generateDarkInsetShadowVar,
+  generateTypographyLines
+} from './css-generator-base'
+
+const COMPONENT = 'card'
 
 /**
  * Generate complete CSS for card component
@@ -26,15 +24,12 @@ import {
 export function generateCardCSS(variants: CardVariant[], globalConfig?: TypographyGlobalConfig): string {
   const css: string[] = []
 
-  // Base card styles (shared by all variants)
   css.push(generateCardBase())
 
-  // Generate CSS for each variant
   variants.forEach(variant => {
     const variantName = toKebabCase(variant.name)
     css.push(generateCardVariant(variant, variantName, globalConfig))
 
-    // Generate dark mode override if exists
     if (variant.dark) {
       css.push(generateCardVariantDark(variant, variantName))
     }
@@ -48,64 +43,59 @@ export function generateCardCSS(variants: CardVariant[], globalConfig?: Typograp
  */
 function generateCardBase(): string {
   return `/* Card Base Styles */
-.cux-card {
-  /* CSS Custom Properties (set by variants) */
-  --cux-card-bg: #ffffff;
-  --cux-card-color: inherit;
-  --cux-card-border: none;
-  --cux-card-radius: 0;
-  --cux-card-padding: 0;
-  --cux-card-shadow: none;
-
-  /* Inset shadow overlay properties */
-  --cux-card-inset-shadow: none;
+.cux-${COMPONENT} {
+  --cux-${COMPONENT}-bg: #ffffff;
+  --cux-${COMPONENT}-color: inherit;
+  --cux-${COMPONENT}-border: none;
+  --cux-${COMPONENT}-radius: 0;
+  --cux-${COMPONENT}-padding: 0;
+  --cux-${COMPONENT}-shadow: none;
+  --cux-${COMPONENT}-inset-shadow: none;
 
   /* Header properties */
-  --cux-card-header-bg: transparent;
-  --cux-card-header-color: inherit;
-  --cux-card-header-padding: 0;
-  --cux-card-header-border-bottom: none;
+  --cux-${COMPONENT}-header-bg: transparent;
+  --cux-${COMPONENT}-header-color: inherit;
+  --cux-${COMPONENT}-header-padding: 0;
+  --cux-${COMPONENT}-header-border-bottom: none;
 
-  /* Base styles */
   position: relative;
-  background: var(--cux-card-bg);
-  color: var(--cux-card-color);
-  border: var(--cux-card-border);
-  border-radius: var(--cux-card-radius);
-  box-shadow: var(--cux-card-shadow);
+  background: var(--cux-${COMPONENT}-bg);
+  color: var(--cux-${COMPONENT}-color);
+  border: var(--cux-${COMPONENT}-border);
+  border-radius: var(--cux-${COMPONENT}-radius);
+  box-shadow: var(--cux-${COMPONENT}-shadow);
   overflow: hidden;
 }
 
-/* Inset shadow overlay - covers entire card for uniform shadow effect */
-.cux-card-inset-overlay {
+.cux-${COMPONENT}-inset-overlay {
   position: absolute;
   inset: 0;
   z-index: 2;
-  border-radius: var(--cux-card-radius);
-  box-shadow: var(--cux-card-inset-shadow);
+  border-radius: var(--cux-${COMPONENT}-radius);
+  box-shadow: var(--cux-${COMPONENT}-inset-shadow);
   pointer-events: none;
 }
 
-.cux-card-header {
+.cux-${COMPONENT}-header {
   position: relative;
   z-index: 1;
-  background: var(--cux-card-header-bg);
-  color: var(--cux-card-header-color);
-  padding: var(--cux-card-header-padding);
-  border-bottom: var(--cux-card-header-border-bottom);
+  background: var(--cux-${COMPONENT}-header-bg);
+  color: var(--cux-${COMPONENT}-header-color);
+  padding: var(--cux-${COMPONENT}-header-padding);
+  border-bottom: var(--cux-${COMPONENT}-header-border-bottom);
 }
 
-.cux-card-body {
+.cux-${COMPONENT}-body {
   position: relative;
   z-index: 1;
-  padding: var(--cux-card-padding);
+  padding: var(--cux-${COMPONENT}-padding);
 }
 
-.cux-card-footer {
+.cux-${COMPONENT}-footer {
   position: relative;
   z-index: 1;
-  padding: var(--cux-card-padding);
-  border-top: var(--cux-card-header-border-bottom);
+  padding: var(--cux-${COMPONENT}-padding);
+  border-top: var(--cux-${COMPONENT}-header-border-bottom);
 }`
 }
 
@@ -115,109 +105,63 @@ function generateCardBase(): string {
 function generateCardVariant(variant: CardVariant, variantName: string, globalConfig?: TypographyGlobalConfig): string {
   const lines: string[] = []
   lines.push(`/* Variant: ${variant.name} */`)
-  lines.push(`.cux-card.--${variantName} {`)
+  lines.push(`.cux-${COMPONENT}.--${variantName} {`)
 
-  // Get effective font family (fallback to global)
-  const effectiveFontFamily = getEffectiveFontFamily(variant.fontFamily, globalConfig?.fontFamily)
-  const effectiveHeaderFontFamily = getEffectiveFontFamily(variant.headerFontFamily, globalConfig?.fontFamily)
+  // Base properties
+  lines.push(`  --cux-${COMPONENT}-bg: ${variant.background};`)
+  lines.push(`  --cux-${COMPONENT}-color: ${variant.color};`)
 
-  // Basic properties
-  lines.push(`  --cux-card-bg: ${variant.background};`)
-  lines.push(`  --cux-card-color: ${variant.color};`)
+  if (variant.border) lines.push(`  --cux-${COMPONENT}-border: ${buildBorder(variant.border)};`)
+  if (variant.borderRadius) lines.push(`  --cux-${COMPONENT}-radius: ${variant.borderRadius.tl}${variant.borderRadius.unit};`)
+  if (variant.padding) lines.push(`  --cux-${COMPONENT}-padding: ${buildPadding(variant.padding)};`)
 
-  if (variant.border) {
-    lines.push(`  --cux-card-border: ${buildBorder(variant.border)};`)
-  }
+  // Shadows (offset + inset overlay pattern)
+  const offsetShadow = generateOffsetShadowVar(COMPONENT, variant.shadows)
+  if (offsetShadow) lines.push(offsetShadow)
 
-  if (variant.borderRadius) {
-    lines.push(`  --cux-card-radius: ${buildBorderRadius(variant.borderRadius)};`)
-  }
-
-  if (variant.padding) {
-    lines.push(`  --cux-card-padding: ${buildPadding(variant.padding)};`)
-  }
-
-  // Offset shadow (external) - applied to the card itself
-  if (variant.shadows) {
-    const offsetShadowValue = buildOffsetShadow(variant.shadows)
-    if (offsetShadowValue !== 'none') {
-      lines.push(`  --cux-card-shadow: ${offsetShadowValue};`)
-    }
-
-    // Inset shadows - applied to the overlay layer
-    const insetShadowValue = buildInsetShadows(variant.shadows)
-    if (insetShadowValue !== 'none') {
-      lines.push(`  --cux-card-inset-shadow: ${insetShadowValue};`)
-    }
-  }
+  const insetShadow = generateInsetShadowVar(COMPONENT, variant.shadows)
+  if (insetShadow) lines.push(insetShadow)
 
   // Header properties
-  lines.push(`  --cux-card-header-bg: ${variant.headerBackground};`)
-  lines.push(`  --cux-card-header-color: ${variant.headerColor};`)
+  lines.push(`  --cux-${COMPONENT}-header-bg: ${variant.headerBackground};`)
+  lines.push(`  --cux-${COMPONENT}-header-color: ${variant.headerColor};`)
 
-  if (variant.headerPadding) {
-    lines.push(`  --cux-card-header-padding: ${buildPadding(variant.headerPadding)};`)
-  }
-
-  if (variant.headerBorderBottom) {
-    lines.push(`  --cux-card-header-border-bottom: ${buildBorder(variant.headerBorderBottom)};`)
-  }
+  if (variant.headerPadding) lines.push(`  --cux-${COMPONENT}-header-padding: ${buildPadding(variant.headerPadding)};`)
+  if (variant.headerBorderBottom) lines.push(`  --cux-${COMPONENT}-header-border-bottom: ${buildBorder(variant.headerBorderBottom)};`)
 
   lines.push('}')
 
-  // Card body typography
-  const bodyStyles = []
-  if (effectiveFontFamily) {
-    bodyStyles.push(`  font-family: '${effectiveFontFamily}', sans-serif;`)
-  }
-  if (variant.fontSize) {
-    bodyStyles.push(`  font-size: ${buildFontSize(variant.fontSize)};`)
-  }
-  if (variant.fontWeight) {
-    bodyStyles.push(`  font-weight: ${variant.fontWeight};`)
-  }
-  if (variant.fontStyle) {
-    bodyStyles.push(`  font-style: ${variant.fontStyle};`)
-  }
-  if (variant.letterSpacing) {
-    bodyStyles.push(`  letter-spacing: ${buildLetterSpacing(variant.letterSpacing)};`)
-  }
-  if (variant.textAlign) {
-    bodyStyles.push(`  text-align: ${variant.textAlign};`)
-  }
+  // Body typography
+  const bodyTypography = generateTypographyLines({
+    fontFamily: variant.fontFamily,
+    fontSize: variant.fontSize,
+    fontWeight: variant.fontWeight,
+    fontStyle: variant.fontStyle,
+    letterSpacing: variant.letterSpacing,
+    textAlign: variant.textAlign
+  }, globalConfig)
 
-  if (bodyStyles.length > 0) {
+  if (bodyTypography.length > 0) {
     lines.push('')
-    lines.push(`.cux-card.--${variantName} .cux-card-body {`)
-    lines.push(bodyStyles.join('\n'))
+    lines.push(`.cux-${COMPONENT}.--${variantName} .cux-${COMPONENT}-body {`)
+    lines.push(...bodyTypography)
     lines.push('}')
   }
 
-  // Card header typography
-  const headerStyles = []
-  if (effectiveHeaderFontFamily) {
-    headerStyles.push(`  font-family: '${effectiveHeaderFontFamily}', sans-serif;`)
-  }
-  if (variant.headerFontSize) {
-    headerStyles.push(`  font-size: ${buildFontSize(variant.headerFontSize)};`)
-  }
-  if (variant.headerFontWeight) {
-    headerStyles.push(`  font-weight: ${variant.headerFontWeight};`)
-  }
-  if (variant.headerFontStyle) {
-    headerStyles.push(`  font-style: ${variant.headerFontStyle};`)
-  }
-  if (variant.headerLetterSpacing) {
-    headerStyles.push(`  letter-spacing: ${buildLetterSpacing(variant.headerLetterSpacing)};`)
-  }
-  if (variant.headerTextAlign) {
-    headerStyles.push(`  text-align: ${variant.headerTextAlign};`)
-  }
+  // Header typography
+  const headerTypography = generateTypographyLines({
+    fontFamily: variant.headerFontFamily,
+    fontSize: variant.headerFontSize,
+    fontWeight: variant.headerFontWeight,
+    fontStyle: variant.headerFontStyle,
+    letterSpacing: variant.headerLetterSpacing,
+    textAlign: variant.headerTextAlign
+  }, globalConfig)
 
-  if (headerStyles.length > 0) {
+  if (headerTypography.length > 0) {
     lines.push('')
-    lines.push(`.cux-card.--${variantName} .cux-card-header {`)
-    lines.push(headerStyles.join('\n'))
+    lines.push(`.cux-${COMPONENT}.--${variantName} .cux-${COMPONENT}-header {`)
+    lines.push(...headerTypography)
     lines.push('}')
   }
 
@@ -233,52 +177,30 @@ function generateCardVariantDark(variant: CardVariant, variantName: string): str
 
   const lines: string[] = []
   lines.push(`/* Dark Mode Variant: ${variant.name} */`)
-  lines.push(`.dark .cux-card.--${variantName} {`)
+  lines.push(`.dark .cux-${COMPONENT}.--${variantName} {`)
 
-  // Basic properties
-  if (dark.background) {
-    lines.push(`  --cux-card-bg: ${dark.background};`)
-  }
-  if (dark.color) {
-    lines.push(`  --cux-card-color: ${dark.color};`)
-  }
+  // Base dark properties
+  lines.push(...generateDarkBaseProperties(COMPONENT, dark))
 
-  // Override border color for dark mode
-  if (dark.borderColor && variant.border) {
-    lines.push(
-      `  --cux-card-border: ${variant.border.width}${variant.border.unit} ${variant.border.style} ${dark.borderColor};`
-    )
-  }
+  // Border override
+  const borderOverride = generateDarkBorderOverride(COMPONENT, variant.border, dark.borderColor)
+  if (borderOverride) lines.push(borderOverride)
 
   // Header properties
-  if (dark.headerBackground) {
-    lines.push(`  --cux-card-header-bg: ${dark.headerBackground};`)
-  }
-  if (dark.headerColor) {
-    lines.push(`  --cux-card-header-color: ${dark.headerColor};`)
-  }
+  if (dark.headerBackground) lines.push(`  --cux-${COMPONENT}-header-bg: ${dark.headerBackground};`)
+  if (dark.headerColor) lines.push(`  --cux-${COMPONENT}-header-color: ${dark.headerColor};`)
 
-  // Override header border bottom color for dark mode
+  // Header border override
   if (dark.headerBorderBottomColor && variant.headerBorderBottom) {
-    lines.push(
-      `  --cux-card-header-border-bottom: ${variant.headerBorderBottom.width}${variant.headerBorderBottom.unit} ${variant.headerBorderBottom.style} ${dark.headerBorderBottomColor};`
-    )
+    lines.push(`  --cux-${COMPONENT}-header-border-bottom: ${variant.headerBorderBottom.width}${variant.headerBorderBottom.unit} ${variant.headerBorderBottom.style} ${dark.headerBorderBottomColor};`)
   }
 
   // Shadows for dark mode
-  if (variant.shadows) {
-    // Offset shadow with dark color
-    const offsetShadow = buildOffsetShadowDark(variant.shadows, dark.shadowColor)
-    if (offsetShadow !== 'none') {
-      lines.push(`  --cux-card-shadow: ${offsetShadow};`)
-    }
+  const offsetShadow = generateDarkOffsetShadowVar(COMPONENT, variant.shadows, dark.shadowColor)
+  if (offsetShadow) lines.push(offsetShadow)
 
-    // Inset shadows with dark colors
-    const insetShadow = buildInsetShadowsDark(variant.shadows, dark.shadowInsetColor, dark.shadowInsetHighlightColor)
-    if (insetShadow !== 'none') {
-      lines.push(`  --cux-card-inset-shadow: ${insetShadow};`)
-    }
-  }
+  const insetShadow = generateDarkInsetShadowVar(COMPONENT, variant.shadows, dark.shadowInsetColor, dark.shadowInsetHighlightColor)
+  if (insetShadow) lines.push(insetShadow)
 
   lines.push('}')
   return lines.join('\n')

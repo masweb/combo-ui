@@ -3,6 +3,9 @@ import { usePreviewGrid } from '@/composables/usePreviewGrid'
 
 const { t } = useI18n()
 
+const componentTheme = useComponentTheme()
+const { theme, setTheme } = useTheme()
+
 const buttonStore = useButtonStore()
 const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
   usePreviewGrid()
@@ -87,14 +90,17 @@ const getActiveStyles = (variant: ButtonVariant) => {
 
 <template>
   <div class="row">
+      {{labelColor}} -  {{componentTheme.theme}}  - {{theme}}
     <div v-for="(variant, index) in buttonStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
       <div
-        class="card mb-4"
-        :class="{ 'border-primary': buttonStore.selectedVariantIndex === index }"
+        class="card text-white  "
+        :class=" { 'border-primary': buttonStore.selectedVariantIndex === index } "
         style="cursor: pointer"
         @click="buttonStore.selectVariant(index)"
       >
-        <div class="card-body d-flex align-items-center justify-content-center">
+        <div class="card-body d-flex align-items-center justify-content-center"
+
+>
           <button
             class="preview-button"
             :style="getButtonStyles(variant)"
@@ -106,8 +112,8 @@ const getActiveStyles = (variant: ButtonVariant) => {
             {{ t('components.button') }}
           </button>
         </div>
-        <div class="card-footer text-center">
-          <small :style="{ color: labelColor }">{{ variant.name }}</small>
+        <div class="card-footer text-center"  >
+          <small  ">{{ variant.name }}</small>
         </div>
       </div>
     </div>

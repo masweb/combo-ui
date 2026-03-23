@@ -1,23 +1,10 @@
 /**
  * Button CSS Generator
  * Generates CSS for button variants with custom properties
- * Supports 3 shadow layers: offset, inset, and insetHighlight (no overlay)
  */
 
 import type { ButtonVariant } from '../types'
-import {
-  toKebabCase,
-  buildBorder,
-  buildBorderRadius,
-  buildPadding,
-  buildShadows,
-  buildFontSize,
-  buildLetterSpacing,
-  buildBorderOptional,
-  buildOffset,
-  deepMerge,
-  buildShadowsDark
-} from './utils'
+import { toKebabCase, buildBorder, buildBorderRadius, buildPadding, buildBorderOptional, buildOffset, deepMerge, buildFontSize, buildLetterSpacing } from './utils'
 
 /**
  * Generate complete CSS for button component
@@ -25,18 +12,15 @@ import {
 export function generateButtonCSS(variants: ButtonVariant[]): string {
   const css: string[] = []
 
-  // Base button styles (shared by all variants)
   css.push(generateButtonBase())
 
-  // Generate CSS for each variant
   variants.forEach(variant => {
     const variantName = toKebabCase(variant.name)
     css.push(generateButtonVariant(variant, variantName))
 
-    // Generate dark mode override if exists
     if (variant.dark) {
       const mergedVariant = deepMerge({ ...variant }, variant.dark)
-      css.push(generateButtonVariantDark(mergedVariant, variantName))
+      css.push(generateButtonVariantDark(mergedVariant as ButtonVariant, variantName))
     }
   })
 
@@ -284,4 +268,60 @@ function generateButtonVariantDark(variant: ButtonVariant, variantName: string):
 
   lines.push('}')
   return lines.join('\n')
+}
+
+/**
+ * Build a CSS box-shadow string from ComponentShadows (handles offset, inset, and insetHighlight)
+ */
+function buildShadows(shadows: { offset?: { enabled: boolean; offsetX: number; offsetY: number; blur: number; spread: number; color: string }; inset?: { enabled: boolean; offsetX: number; offsetY: number; blur: number; spread: number; color: string }; insetHighlight?: { enabled: boolean; offsetX: number; offsetY: number; blur: number; spread: number; color: string } } | undefined): string {
+  if (!shadows) return ''
+
+  const shadowParts: string[] = []
+
+  if (shadows.offset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.offset
+    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+  }
+
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+  }
+
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${color}`)
+  }
+
+  return shadowParts.join(', ')
+}
+
+/**
+ * Build shadows with dark mode color overrides
+ */
+function buildShadowsDark(
+  shadows: { offset?: { enabled: boolean; offsetX: number; offsetY: number; blur: number; spread: number; color: string }; inset?: { enabled: boolean; offsetX: number; offsetY: number; blur: number; spread: number; color: string }; insetHighlight?: { enabled: boolean; offsetX: number; offsetY: number; blur: number; spread: number; color: string } },
+  dark?: { shadowColor?: string; shadowInsetColor?: string; shadowInsetHighlightColor?: string }
+): string {
+  const shadowParts: string[] = []
+
+  if (shadows.offset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.offset
+    const darkColor = dark?.shadowColor || color
+    shadowParts.push(`${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  if (shadows.inset?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.inset
+    const darkColor = dark?.shadowInsetColor || color
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  if (shadows.insetHighlight?.enabled) {
+    const { offsetX, offsetY, blur, spread, color } = shadows.insetHighlight
+    const darkColor = dark?.shadowInsetHighlightColor || color
+    shadowParts.push(`inset ${offsetX}px ${offsetY}px ${blur}px ${spread}px ${darkColor}`)
+  }
+
+  return shadowParts.join(', ')
 }
