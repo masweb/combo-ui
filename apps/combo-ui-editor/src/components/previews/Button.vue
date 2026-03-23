@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { usePreviewGrid } from '@/composables/usePreviewGrid'
+import { useThemeCompensation } from '@/composables/useThemeCompensation'
 
 const { t } = useI18n()
 
 const componentTheme = useComponentTheme()
-const { theme, setTheme } = useTheme()
+const { theme } = useTheme()
+const { getCompensation, getFooterCompensation } = useThemeCompensation(componentTheme.theme, theme)
 
 const buttonStore = useButtonStore()
-const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor, isDark } =
-  usePreviewGrid()
-
-const labelColor = computed(() =>
-  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
-)
+const { typographyStore, buildBorderRadius, buildPadding, buildShadow, buildBorderCSS, resolveColor } = usePreviewGrid()
 
 const getButtonStyles = (variant: ButtonVariant) => {
   const fontFamily = variant.fontFamily ?? typographyStore.effectiveFontFamily
@@ -90,17 +87,15 @@ const getActiveStyles = (variant: ButtonVariant) => {
 
 <template>
   <div class="row">
-      {{labelColor}} -  {{componentTheme.theme}}  - {{theme}}
     <div v-for="(variant, index) in buttonStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
       <div
-        class="card text-white  "
-        :class=" { 'border-primary': buttonStore.selectedVariantIndex === index } "
+        class="card text-white"
+        :style="getCompensation()"
+        :class="{ 'border-primary': buttonStore.selectedVariantIndex === index }"
         style="cursor: pointer"
         @click="buttonStore.selectVariant(index)"
       >
-        <div class="card-body d-flex align-items-center justify-content-center"
-
->
+        <div class="card-body d-flex align-items-center justify-content-center">
           <button
             class="preview-button"
             :style="getButtonStyles(variant)"
@@ -112,8 +107,8 @@ const getActiveStyles = (variant: ButtonVariant) => {
             {{ t('components.button') }}
           </button>
         </div>
-        <div class="card-footer text-center"  >
-          <small  ">{{ variant.name }}</small>
+        <div class="card-footer text-center" :style="[getCompensation(), getFooterCompensation()]">
+          <small>{{ variant.name }}</small>
         </div>
       </div>
     </div>
