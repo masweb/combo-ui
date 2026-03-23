@@ -37,7 +37,7 @@ export type {
   DarkToggleOptions
 }
 import { DarkMode } from './core/dark-mode'
-import { CSSGenerator } from './core/css-generator'
+import { CSSInjector } from './core/css-generator'
 import { ThemeLoader } from './core/theme-loader'
 import { Controls } from './ui/controls'
 import {
@@ -50,11 +50,18 @@ import { injectBasscss } from './basscss'
 import { injectBaseStyles } from './core/base-styles'
 import { generateTypographyCSS } from './core/typography-generator'
 import { generateFormsCSS } from './core/forms-generator'
+import { generateButtonCSS } from './core/button-generator'
+import { generateCardCSS } from './core/card-generator'
+import { generateAlertCSS } from './core/alert-generator'
+import { generateAvatarCSS } from './core/avatar-generator'
+import { generateProgressCSS } from './core/progress-generator'
+import { generateBadgeCSS } from './core/badge-generator'
+import { generateChipCSS } from './core/chip-generator'
 
 export class ComboUX {
   private options: Required<Omit<ComboUXOptions, 'theme'>> & { theme: ThemeData | string }
   private darkMode: DarkMode
-  private cssGenerator: CSSGenerator
+  private cssInjector: CSSInjector
   private themeLoader: ThemeLoader
   private controls: Controls | null = null
   private currentTheme: ThemeData | null = null
@@ -72,7 +79,7 @@ export class ComboUX {
       storageKey: this.options.darkModeStorageKey
     })
 
-    this.cssGenerator = new CSSGenerator()
+    this.cssInjector = new CSSInjector()
     this.themeLoader = new ThemeLoader()
 
     // Initialize
@@ -115,115 +122,60 @@ export class ComboUX {
   private applyTheme(theme: ThemeData): void {
     const cssParts: string[] = []
 
-    console.log('[ComboUX] Applying theme:', theme.name)
-    console.log('[ComboUX] Theme keys:', Object.keys(theme))
-    console.log('[ComboUX] Typography:', theme.typography ? 'exists' : 'missing')
-    console.log('[ComboUX] Forms:', theme.forms ? 'exists' : 'missing')
-    console.log('[ComboUX] Buttons:', theme.buttons ? 'exists' : 'missing')
-
     // Load Google Fonts from typography
     if (theme.typography) {
-      console.log('[ComboUX] Typography variants:', theme.typography.variants?.length || 0)
       loadFontsFromTypography(theme.typography)
       const typographyCSS = generateTypographyCSS(theme.typography)
-      if (typographyCSS) {
-        console.log('[ComboUX] Typography CSS generated:', typographyCSS.length, 'chars')
-        cssParts.push(typographyCSS)
-      }
+      if (typographyCSS) cssParts.push(typographyCSS)
     }
 
     // Generate forms CSS
     if (theme.forms?.globalConfig) {
-      console.log('[ComboUX] Forms config exists')
-      // Load Google Fonts from forms
       loadFontsFromForms(theme.forms)
       const formsCSS = generateFormsCSS(theme.forms, theme.typography)
-      if (formsCSS) {
-        console.log('[ComboUX] Forms CSS generated:', formsCSS.length, 'chars')
-        cssParts.push(formsCSS)
-      }
+      if (formsCSS) cssParts.push(formsCSS)
     }
 
     // Generate button CSS
     if (theme.buttons?.variants?.length) {
-      console.log(
-        '[ComboUX] Button variants:',
-        theme.buttons.variants.map(v => v.name)
-      )
-      // Load Google Fonts from button variants
       loadFontsFromButtonVariants(theme.buttons.variants)
-      const buttonCSS = this.cssGenerator.generateButtonCSS(theme.buttons.variants)
-      cssParts.push(buttonCSS)
+      cssParts.push(generateButtonCSS(theme.buttons.variants))
     }
 
     // Generate card CSS
     if (theme.cards?.variants?.length) {
-      console.log(
-        '[ComboUX] Card variants:',
-        theme.cards.variants.map(v => v.name)
-      )
-      const cardCSS = this.cssGenerator.generateCardCSS(theme.cards.variants, theme.typography?.globalConfig)
-      cssParts.push(cardCSS)
+      cssParts.push(generateCardCSS(theme.cards.variants, theme.typography?.globalConfig))
     }
 
     // Generate alert CSS
     if (theme.alerts?.variants?.length) {
-      console.log(
-        '[ComboUX] Alert variants:',
-        theme.alerts.variants.map(v => v.name)
-      )
-      const alertCSS = this.cssGenerator.generateAlertCSS(theme.alerts.variants, theme.typography?.globalConfig)
-      cssParts.push(alertCSS)
+      cssParts.push(generateAlertCSS(theme.alerts.variants, theme.typography?.globalConfig))
     }
 
     // Generate avatar CSS
     if (theme.avatars?.variants?.length) {
-      console.log(
-        '[ComboUX] Avatar variants:',
-        theme.avatars.variants.map(v => v.name)
-      )
-      // Load Google Fonts from avatar variants
       loadFontsFromAvatarVariants(theme.avatars.variants)
-      const avatarCSS = this.cssGenerator.generateAvatarCSS(theme.avatars.variants, theme.typography?.globalConfig)
-      cssParts.push(avatarCSS)
+      cssParts.push(generateAvatarCSS(theme.avatars.variants, theme.typography?.globalConfig))
     }
 
     // Generate progress CSS
     if (theme.progress?.variants?.length) {
-      console.log(
-        '[ComboUX] Progress variants:',
-        theme.progress.variants.map(v => v.name)
-      )
-      const progressCSS = this.cssGenerator.generateProgressCSS(theme.progress.variants, theme.typography?.globalConfig)
-      cssParts.push(progressCSS)
+      cssParts.push(generateProgressCSS(theme.progress.variants, theme.typography?.globalConfig))
     }
 
     // Generate badge CSS
     if (theme.badges?.variants?.length) {
-      console.log(
-        '[ComboUX] Badge variants:',
-        theme.badges.variants.map(v => v.name)
-      )
-      const badgeCSS = this.cssGenerator.generateBadgeCSS(theme.badges.variants, theme.typography?.globalConfig)
-      cssParts.push(badgeCSS)
+      cssParts.push(generateBadgeCSS(theme.badges.variants, theme.typography?.globalConfig))
     }
 
     // Generate chip CSS
     if (theme.chips?.variants?.length) {
-      console.log(
-        '[ComboUX] Chip variants:',
-        theme.chips.variants.map(v => v.name)
-      )
-      const chipCSS = this.cssGenerator.generateChipCSS(theme.chips.variants, theme.typography?.globalConfig)
-      cssParts.push(chipCSS)
+      cssParts.push(generateChipCSS(theme.chips.variants, theme.typography?.globalConfig))
     }
 
     // Inject combined CSS
     if (cssParts.length > 0) {
-      const finalCSS = cssParts.join('\n\n')
-      console.log('[ComboUX] Total CSS parts:', cssParts.length)
-      console.log('[ComboUX] Injecting CSS...')
-      this.cssGenerator.inject(finalCSS)
+      this.cssInjector.inject(cssParts.join('\n\n'))
     }
   }
 
@@ -320,7 +272,7 @@ export class ComboUX {
   /** Destroy instance and clean up */
   destroy(): void {
     this.darkMode.destroy()
-    this.cssGenerator.destroy()
+    this.cssInjector.destroy()
     this.themeLoader.destroy()
 
     if (this.controls) {
