@@ -43,7 +43,7 @@ export function createComponentStore<T extends BaseVariant>(config: ComponentSto
 
   const persistence = usePersistence<T>({
     componentId,
-    initialVariants: initialVariants ?? [createDefault('variante-1')],
+    initialVariants: initialVariants ?? [],
     createDefault
   })
 

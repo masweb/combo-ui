@@ -39,12 +39,12 @@ class StoreManager {
     watch(
       () => navigationStore.currentComponent,
       async (newComponent, oldComponent) => {
-        if (oldComponent && !PERMANENT_STORES.includes(oldComponent)) {
-          await this.unloadComponent(oldComponent)
+        if (oldComponent?.id && !PERMANENT_STORES.includes(oldComponent.id)) {
+          await this.unloadComponent(oldComponent.id)
         }
 
-        if (newComponent) {
-          await this.loadComponent(newComponent)
+        if (newComponent?.id) {
+          await this.loadComponent(newComponent.id)
         }
       },
       { immediate: true }

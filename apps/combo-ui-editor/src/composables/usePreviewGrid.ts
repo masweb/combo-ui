@@ -1,4 +1,3 @@
-import type { Ref, ComputedRef } from 'vue'
 import { useStyleBuilder } from '@/composables/useStyleBuilder'
 import { useComponentTheme } from '@/composables/useComponentTheme'
 import { useTypographyStore } from '@/stores/typography'

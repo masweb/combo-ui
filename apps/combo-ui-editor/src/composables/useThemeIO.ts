@@ -302,12 +302,12 @@ export const useThemeIO = () => {
     }
 
     // Reload other component stores via storeManager
-    storeManager.reloadAllStores()
+    void storeManager.reloadAllStores()
   }
 
   // Load theme name on first use
   if (!isLoaded.value) {
-    loadThemeName()
+    void loadThemeName()
   }
 
   return {

@@ -292,10 +292,6 @@ const getSliderStyles = () => {
     '--slider-thumb-size': `${config.checkRadioSize + 4}px`
   }
 }
-
-const labelColor = computed(() =>
-  isDark.value ? typographyStore.globalConfig.dark.color : typographyStore.globalConfig.color
-)
 </script>
 
 <template>

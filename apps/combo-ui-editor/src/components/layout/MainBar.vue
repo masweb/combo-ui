@@ -59,20 +59,20 @@ const handleSave = async () => {
     <div class="d-flex align-items-center">
       <div class="ms-3 fw-light text-">COMBO-UI</div>
     </div>
-    <div>
+    <div class="d-flex align-items-center">
       <input
         v-if="isEditingThemeName"
         v-model="themeName"
-        class="form-control form-control-sm"
+        class="form-control form-control-sm border-end-0"
         style="width: 150px"
         @blur="handleThemeNameBlur"
         @keyup="handleThemeNameKeyup"
       />
-      <span v-else class="fw-bold text-primary" style="cursor: pointer" @click="isEditingThemeName = true">
+      <span v-else class="fw-bold text-primary me-3" style="cursor: pointer" @click="isEditingThemeName = true">
         {{ themeName }}
       </span>
       <button
-        class="btn btn-sm btn-outline-secondary"
+        class="btn btn-sm btn-outline-secondary border-end-0"
         :title="t('theme.new')"
         :disabled="isCreatingNew"
         @click="handleNewClick"
@@ -80,7 +80,7 @@ const handleSave = async () => {
         <IconFileSpark :size="16" :stroke-width="1.8" />
       </button>
       <button
-        class="btn btn-sm btn-outline-secondary"
+        class="btn btn-sm btn-outline-secondary border-end-0"
         :title="t('theme.open')"
         :disabled="isImporting"
         @click="handleOpenClick"
@@ -96,7 +96,6 @@ const handleSave = async () => {
         <IconDeviceFloppy :size="16" :stroke-width="1.8" />
       </button>
     </div>
-
     <div class="d-flex align-items-center">
       <select v-model="locale" class="form-select form-select-sm">
         <option v-for="lang in availableLocales" :key="lang" :value="lang">{{ lang }}</option>
