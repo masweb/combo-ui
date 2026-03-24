@@ -151,5 +151,11 @@
     "closeHoverColor": "Color hover botón cerrar",
     "closeActiveColor": "Color activo botón cerrar",
     "closeSize": "Tamaño botón cerrar"
+  },
+  "sync": {
+    "activate": "Activar sincronización en tiempo real",
+    "deactivate": "Desactivar sincronización en tiempo real",
+    "error": "Error de conexión",
+    "portInUse": "El puerto 3001 está en uso. Cierra la aplicación que lo usa e inténtalo de nuevo."
   }
 }

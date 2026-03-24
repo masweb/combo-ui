@@ -485,6 +485,25 @@ export interface ThemeData {
 
 export type DarkModeSetting = 'auto' | 'light' | 'dark'
 
+export interface ThemeSyncOptions {
+  /** WebSocket server URL */
+  url: string
+  /** Auto-reconnect on disconnect (default: true) */
+  reconnect?: boolean
+  /** Reconnection interval in ms (default: 3000) */
+  reconnectInterval?: number
+  /** Max reconnection attempts (default: 10) */
+  maxReconnectAttempts?: number
+  /** Callback when connected */
+  onConnect?: () => void
+  /** Callback when disconnected */
+  onDisconnect?: () => void
+  /** Callback on error */
+  onError?: (error: Error) => void
+  /** Callback when theme is updated */
+  onThemeUpdate?: (theme: ThemeData) => void
+}
+
 export interface ComboUXOptions {
   /** Theme data object or URL to JSON file */
   theme: ThemeData | string
@@ -494,6 +513,8 @@ export interface ComboUXOptions {
   persistDarkMode?: boolean
   /** Key for localStorage persistence */
   darkModeStorageKey?: string
+  /** WebSocket options for real-time theme sync, or URL string, or false to disable */
+  ws?: string | ThemeSyncOptions | false
 }
 
 export interface ThemeButtonOptions {

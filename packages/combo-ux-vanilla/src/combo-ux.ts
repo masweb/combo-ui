@@ -17,7 +17,8 @@ import type {
   ChipVariant,
   SpinnerVariant,
   ThemeButtonOptions,
-  DarkToggleOptions
+  DarkToggleOptions,
+  ThemeSyncOptions
 } from './types'
 
 // Re-export types for consumers
@@ -36,11 +37,13 @@ export type {
   ChipVariant,
   SpinnerVariant,
   ThemeButtonOptions,
-  DarkToggleOptions
+  DarkToggleOptions,
+  ThemeSyncOptions
 }
 import { DarkMode } from './core/dark-mode'
 import { CSSInjector } from './core/css-generator'
 import { ThemeLoader } from './core/theme-loader'
+import { ThemeSync } from './core/theme-sync'
 import { Controls } from './ui/controls'
 import {
   loadFontsFromButtonVariants,
@@ -62,10 +65,11 @@ import { generateBadgeCSS } from './core/badge-generator'
 import { generateChipCSS } from './core/chip-generator'
 
 export class ComboUX {
-  private options: Required<Omit<ComboUXOptions, 'theme'>> & { theme: ThemeData | string }
+  private options: Required<Omit<ComboUXOptions, 'theme' | 'ws'>> & { theme: ThemeData | string }
   private darkMode: DarkMode
   private cssInjector: CSSInjector
   private themeLoader: ThemeLoader
+  private themeSync: ThemeSync | null = null
   private controls: Controls | null = null
   private currentTheme: ThemeData | null = null
 
@@ -84,6 +88,19 @@ export class ComboUX {
 
     this.cssInjector = new CSSInjector()
     this.themeLoader = new ThemeLoader()
+
+    // Initialize WebSocket sync if configured
+    if (options.ws && options.ws !== false) {
+      const wsOptions: ThemeSyncOptions =
+        typeof options.ws === 'string'
+          ? { url: options.ws }
+          : options.ws
+
+      this.themeSync = new ThemeSync(
+        (theme) => this.updateTheme(theme),
+        wsOptions
+      )
+    }
 
     // Initialize
     void this.init()
@@ -104,6 +121,11 @@ export class ComboUX {
       await this.loadTheme(this.options.theme)
     } catch (error) {
       console.error('Failed to load theme:', error)
+    }
+
+    // Connect WebSocket if configured
+    if (this.themeSync) {
+      this.themeSync.connect()
     }
   }
 
@@ -141,6 +163,7 @@ export class ComboUX {
    * Apply theme by generating and injecting CSS
    */
   private applyTheme(theme: ThemeData): void {
+    console.log('[ComboUX] Applying theme, typography:', theme.typography?.globalConfig)
     // Inject base styles with theme colors first
     this.injectBaseStylesFromTheme(theme)
 
@@ -252,6 +275,47 @@ export class ComboUX {
     return this.darkMode.onChange(callback)
   }
 
+  // ==================== Theme Sync API ====================
+
+  /** Check if WebSocket is connected */
+  get isSyncConnected(): boolean {
+    return this.themeSync?.isConnected ?? false
+  }
+
+  /** Connect to WebSocket server */
+  connectSync(): void {
+    this.themeSync?.connect()
+  }
+
+  /** Disconnect from WebSocket server */
+  disconnectSync(): void {
+    this.themeSync?.disconnect()
+  }
+
+  /** Register callback for sync connection */
+  onSyncConnect(callback: () => void): () => void {
+    if (!this.themeSync) return () => {}
+    return this.themeSync.onConnect(callback)
+  }
+
+  /** Register callback for sync disconnection */
+  onSyncDisconnect(callback: () => void): () => void {
+    if (!this.themeSync) return () => {}
+    return this.themeSync.onDisconnect(callback)
+  }
+
+  /** Register callback for sync errors */
+  onSyncError(callback: (error: Error) => void): () => void {
+    if (!this.themeSync) return () => {}
+    return this.themeSync.onError(callback)
+  }
+
+  /** Register callback for theme updates from sync */
+  onSyncThemeUpdate(callback: (theme: ThemeData) => void): () => void {
+    if (!this.themeSync) return () => {}
+    return this.themeSync.onThemeUpdate(callback)
+  }
+
   // ==================== Theme Events ====================
 
   /** Register callback for theme load events */
@@ -303,6 +367,11 @@ export class ComboUX {
     this.darkMode.destroy()
     this.cssInjector.destroy()
     this.themeLoader.destroy()
+
+    if (this.themeSync) {
+      this.themeSync.destroy()
+      this.themeSync = null
+    }
 
     if (this.controls) {
       this.controls.destroy()

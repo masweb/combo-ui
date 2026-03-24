@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { IconDeviceFloppy, IconFolderOpen, IconFileSpark, IconSunFilled, IconMoonFilled } from '@tabler/icons-vue'
+import ThemeSyncToggle from './ThemeSyncToggle.vue'
 const { exportTheme, importTheme, newTheme, saveThemeName, themeName, isExporting, isImporting, isCreatingNew } =
   useThemeIO()
 
@@ -58,6 +59,9 @@ const handleSave = async () => {
   <div class="main-bar d-flex">
     <div class="d-flex align-items-center">
       <div class="ms-3 fw-light text-">COMBO-UI</div>
+    </div>
+    <div class="d-flex align-items-center ms-3">
+      <ThemeSyncToggle />
     </div>
     <div class="d-flex align-items-center">
       <input

@@ -144,6 +144,7 @@ declare global {
   const useThemeCompensation: typeof import('./src/composables/useThemeCompensation').useThemeCompensation
   const useThemeIO: typeof import('./src/composables/useThemeIO').useThemeIO
   const useThemeStore: typeof import('./src/stores/theme').useThemeStore
+  const useThemeSync: typeof import('./src/composables/useThemeSync').useThemeSync
   const useTypographyPersistence: typeof import('./src/composables/useTypographyPersistence').useTypographyPersistence
   const useTypographyStore: typeof import('./src/stores/typography').useTypographyStore
   const useUnitNumberUpdates: typeof import('./src/composables/useUnitNumberUpdates').useUnitNumberUpdates

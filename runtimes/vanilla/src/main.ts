@@ -1,9 +1,28 @@
 import { ComboUX } from '@combo-ux/vanilla'
 
-// Initialize ComboUX
+// Initialize ComboUX with WebSocket for realtime theme sync
 const cux = new ComboUX({
   theme: './theme.json',
-  darkMode: 'auto'
+  darkMode: 'auto',
+  ws: 'ws://localhost:3001'  // Enable realtime sync
+})
+
+// Log WebSocket connection status
+cux.onSyncConnect(() => {
+  console.log('%c✦ Realtime sync connected', 'color: #22c55e; font-weight: bold;')
+})
+
+cux.onSyncDisconnect(() => {
+  console.log('%c✦ Realtime sync disconnected', 'color: #ef4444; font-weight: bold;')
+})
+
+cux.onSyncThemeUpdate((theme) => {
+  console.log('%c✦ Theme updated:', 'color: #3b82f6; font-weight: bold;', theme.name)
+  // Update theme name display
+  const themeNameEl = document.getElementById('theme-name')
+  if (themeNameEl) {
+    themeNameEl.textContent = theme.name || 'Unknown'
+  }
 })
 
 // Show controls

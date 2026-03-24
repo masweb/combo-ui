@@ -151,5 +151,11 @@
     "closeHoverColor": "Close button hover color",
     "closeActiveColor": "Close button active color",
     "closeSize": "Close button size"
+  },
+  "sync": {
+    "activate": "Activate realtime sync",
+    "deactivate": "Deactivate realtime sync",
+    "error": "Connection Error",
+    "portInUse": "Port 3001 is in use. Please close the application using it and try again."
   }
 }

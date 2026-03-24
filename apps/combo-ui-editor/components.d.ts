@@ -56,6 +56,7 @@ declare module 'vue' {
     SpinnerSettings: typeof import('./src/components/settings/SpinnerSettings.vue')['default']
     SwitchField: typeof import('./src/components/settings/fields/SwitchField.vue')['default']
     TextAlignField: typeof import('./src/components/settings/fields/TextAlignField.vue')['default']
+    ThemeSyncToggle: typeof import('./src/components/layout/ThemeSyncToggle.vue')['default']
     ThemeToggle: typeof import('./src/components/shared/ThemeToggle.vue')['default']
     Typography: typeof import('./src/components/previews/Typography.vue')['default']
     TypographyFields: typeof import('./src/components/shared/TypographyFields.vue')['default']
