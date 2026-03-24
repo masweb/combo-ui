@@ -15,6 +15,7 @@ import type {
   ProgressVariant,
   BadgeVariant,
   ChipVariant,
+  SpinnerVariant,
   ThemeButtonOptions,
   DarkToggleOptions
 } from './types'
@@ -33,6 +34,7 @@ export type {
   ProgressVariant,
   BadgeVariant,
   ChipVariant,
+  SpinnerVariant,
   ThemeButtonOptions,
   DarkToggleOptions
 }
@@ -55,6 +57,7 @@ import { generateCardCSS } from './core/card-generator'
 import { generateAlertCSS } from './core/alert-generator'
 import { generateAvatarCSS } from './core/avatar-generator'
 import { generateProgressCSS } from './core/progress-generator'
+import { generateSpinnerCSS } from './core/spinner-generator'
 import { generateBadgeCSS } from './core/badge-generator'
 import { generateChipCSS } from './core/chip-generator'
 
@@ -182,6 +185,11 @@ export class ComboUX {
     // Generate progress CSS
     if (theme.progress?.variants?.length) {
       cssParts.push(generateProgressCSS(theme.progress.variants, theme.typography?.globalConfig))
+    }
+
+    // Generate spinner CSS
+    if (theme.spinners?.variants?.length) {
+      cssParts.push(generateSpinnerCSS(theme.spinners.variants))
     }
 
     // Generate badge CSS

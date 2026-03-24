@@ -399,6 +399,30 @@ export interface ChipComponentData {
   selectedVariantIndex: number
 }
 
+// ==================== Spinner Types ====================
+
+export type SpinnerType = 'ring' | 'pulse' | 'dots' | 'bars' | 'dual'
+
+export interface SpinnerVariant {
+  name: string
+  type: SpinnerType
+  color: string
+  trackColor: string
+  border: BorderValue
+  size: UnitNumber
+  speed: number
+  dark: {
+    color: string
+    trackColor: string
+    borderColor: string
+  }
+}
+
+export interface SpinnerComponentData {
+  variants: SpinnerVariant[]
+  selectedVariantIndex: number
+}
+
 // ==================== Progress Types ====================
 
 export type ProgressType = 'default' | 'striped' | 'animated'
@@ -452,6 +476,7 @@ export interface ThemeData {
   badges?: BadgeComponentData
   chips?: ChipComponentData
   progress?: ProgressComponentData
+  spinners?: SpinnerComponentData
   // Future components will be added here
   // etc.
 }

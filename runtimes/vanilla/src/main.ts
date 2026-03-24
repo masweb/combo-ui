@@ -474,10 +474,19 @@ function buildStyleguide() {
           <div id="progress-container" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
         </section>
 
-        <!-- Badges Section -->
+        <!-- Spinners Section -->
         <section class="sg-section">
           <div class="sg-section-header">
             <span class="sg-section-number">07</span>
+            <h2 class="sg-section-title">Spinners</h2>
+          </div>
+          <div id="spinners-container" class="sg-showcase-area"></div>
+        </section>
+
+        <!-- Badges Section -->
+        <section class="sg-section">
+          <div class="sg-section-header">
+            <span class="sg-section-number">08</span>
             <h2 class="sg-section-title">Badges</h2>
           </div>
           <div id="badges-container" class="sg-showcase-area"></div>
@@ -486,7 +495,7 @@ function buildStyleguide() {
         <!-- Chips Section -->
         <section class="sg-section">
           <div class="sg-section-header">
-            <span class="sg-section-number">08</span>
+            <span class="sg-section-number">09</span>
             <h2 class="sg-section-title">Chips</h2>
           </div>
           <div id="chips-container" class="sg-showcase-area"></div>
@@ -495,7 +504,7 @@ function buildStyleguide() {
         <!-- Forms Section -->
         <section class="sg-section">
           <div class="sg-section-header">
-            <span class="sg-section-number">09</span>
+            <span class="sg-section-number">10</span>
             <h2 class="sg-section-title">Forms</h2>
           </div>
 
@@ -736,6 +745,80 @@ function buildStyleguide() {
             </div>
           `
           progressContainer.appendChild(wrapper)
+        })
+      }
+
+      // Generate spinner variants (use defaults if not in theme)
+      const spinnersContainer = document.getElementById('spinners-container')
+      const spinnerVariants = theme.spinners?.variants || [
+        { name: 'Ring', type: 'ring' },
+        { name: 'Pulse', type: 'pulse' },
+        { name: 'Dots', type: 'dots' },
+        { name: 'Bars', type: 'bars' },
+        { name: 'Dual', type: 'dual' }
+      ]
+
+      // Helper function to generate spinner HTML based on type
+      const getSpinnerHTML = (type: string) => {
+        switch (type) {
+          case 'ring':
+            return `<svg class="cux-spinner-ring" viewBox="0 0 24 24" fill="none">
+              <circle class="cux-spinner-ring-track" cx="12" cy="12" r="10" stroke-width="2.5" />
+              <circle class="cux-spinner-ring-arc" cx="12" cy="12" r="10" stroke-width="2.5" stroke-dasharray="43.98" stroke-dashoffset="32.99" />
+            </svg>`
+          case 'pulse':
+            return `<svg class="cux-spinner-pulse" viewBox="0 0 24 24">
+              <circle class="cux-spinner-pulse-bg" cx="12" cy="12" r="10" />
+              <circle class="cux-spinner-pulse-fg" cx="12" cy="12" r="10" />
+            </svg>`
+          case 'dots':
+            return `<div class="cux-spinner-dots">
+              <div class="cux-spinner-dot"></div>
+              <div class="cux-spinner-dot"></div>
+              <div class="cux-spinner-dot"></div>
+            </div>`
+          case 'bars':
+            return `<div class="cux-spinner-bars">
+              <div class="cux-spinner-bar"></div>
+              <div class="cux-spinner-bar"></div>
+              <div class="cux-spinner-bar"></div>
+              <div class="cux-spinner-bar"></div>
+              <div class="cux-spinner-bar"></div>
+            </div>`
+          case 'dual':
+            return `<svg class="cux-spinner-dual" viewBox="0 0 24 24" fill="none">
+              <g class="cux-spinner-dual-outer">
+                <circle cx="12" cy="12" r="10" stroke-width="2.5" stroke-dasharray="40.84 62.83" stroke-dashoffset="10.99" />
+              </g>
+              <g class="cux-spinner-dual-inner">
+                <circle cx="12" cy="12" r="5.5" stroke-width="2.5" stroke-dasharray="22.46 34.56" stroke-dashoffset="6.05" />
+              </g>
+            </svg>`
+          default:
+            return ''
+        }
+      }
+
+      if (spinnersContainer) {
+        spinnerVariants.forEach((variant: { name: string; type: string }) => {
+          const variantClass = variant.name
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '')
+
+          // Spinner wrapper with label
+          const wrapper = document.createElement('div')
+          wrapper.style.display = 'flex'
+          wrapper.style.flexDirection = 'column'
+          wrapper.style.alignItems = 'center'
+          wrapper.style.gap = '0.5rem'
+          wrapper.innerHTML = `
+            <div class="cux-spinner --${variantClass}">
+              ${getSpinnerHTML(variant.type)}
+            </div>
+            <small style="opacity: 0.6; font-size: 0.75rem;">${variant.name}</small>
+          `
+          spinnersContainer.appendChild(wrapper)
         })
       }
 
