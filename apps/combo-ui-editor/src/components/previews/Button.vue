@@ -89,7 +89,7 @@ const getActiveStyles = (variant: ButtonVariant) => {
   <div class="row">
     <div v-for="(variant, index) in buttonStore.variants" :key="index" class="col-md-6 col-lg-4 col-xl-3">
       <div
-        class="card text-white"
+        class="card text-white mb-4"
         :style="getCompensation()"
         :class="{ 'border-primary': buttonStore.selectedVariantIndex === index }"
         style="cursor: pointer"
