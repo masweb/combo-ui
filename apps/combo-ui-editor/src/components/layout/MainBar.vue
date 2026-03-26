@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import { IconDeviceFloppy, IconFolderOpen, IconFileSpark, IconSunFilled, IconMoonFilled } from '@tabler/icons-vue'
 import ThemeSyncToggle from './ThemeSyncToggle.vue'
+import { useThemeSyncLog } from '@/composables/useThemeSyncLog'
+
 const { exportTheme, importTheme, newTheme, saveThemeName, themeName, isExporting, isImporting, isCreatingNew } =
   useThemeIO()
+
+const { logs } = useThemeSyncLog()
+
+const formatTime = (date: Date) => {
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  const seconds = date.getSeconds().toString().padStart(2, '0')
+  return `${hours}:${minutes}:${seconds}`
+}
 
 const { t } = useI18n()
 const { theme, setTheme } = useTheme()
@@ -62,6 +73,15 @@ const handleSave = async () => {
     </div>
     <div class="d-flex align-items-center ms-3">
       <ThemeSyncToggle />
+      <div class="ms-2 theme-sync-log" v-if="logs.length > 0">
+        <div
+          v-for="(entry, index) in logs.slice(-5)"
+          :key="index"
+          class="log-entry"
+        >
+          {{ formatTime(entry.timestamp) }} {{ entry.message }}
+        </div>
+      </div>
     </div>
     <div class="d-flex align-items-center">
       <input
@@ -124,3 +144,28 @@ const handleSave = async () => {
     @cancel="handleCancel"
   />
 </template>
+
+<style scoped>
+.theme-sync-log {
+  width: 280px;
+  max-height: 32px;
+  overflow-y: auto;
+  background: var(--cui-tertiary-bg, #f8f9fa);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 9px;
+  line-height: 1.3;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  opacity: 0.8;
+}
+
+.log-entry {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-entry:not(:last-child) {
+  margin-bottom: 2px;
+}
+</style>

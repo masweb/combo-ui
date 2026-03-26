@@ -7,6 +7,9 @@
 import { db, COMPONENT_STORE_MAP } from '@/db'
 import { useThemeIO } from './useThemeIO.js'
 import { storeManager } from './useStoreManager.js'
+import { useThemeSyncLog } from './useThemeSyncLog'
+
+const { log } = useThemeSyncLog()
 
 const THEME_VERSION = '1.0'
 const WS_URL = 'ws://localhost:3001'
@@ -63,7 +66,7 @@ function createThemeSyncInstance() {
         ws.onclose = () => {
           isConnected.value = false
           if (!isIntentionallyClosed) {
-            console.log('[ThemeSync] Disconnected from server')
+            log('[ThemeSync] Disconnected from server')
           }
         }
 
@@ -78,7 +81,7 @@ function createThemeSyncInstance() {
           try {
             const message = JSON.parse(event.data)
             // Currently we only send, but could receive theme requests
-            // console.log('[ThemeSync] Received:', message.type)
+            log(`[ThemeSync] Received: ${message.type}`)
           } catch (e) {
             // Ignore parse errors
           }
@@ -223,7 +226,7 @@ function createThemeSyncInstance() {
       }
 
       ws.send(JSON.stringify(message))
-      // console.log('[ThemeSync] Sent theme update with keys:', Object.keys(themeData))
+      console.log('[ThemeSync] Sent theme update with keys:', Object.keys(themeData))
     } catch (e) {
       console.error('[ThemeSync] Error broadcasting theme:', e)
     }
@@ -314,7 +317,7 @@ function createThemeSyncInstance() {
       }
 
       ws.send(JSON.stringify(message))
-      // console.log('[ThemeSync] Sent immediate theme update')
+      console.log('[ThemeSync] Sent immediate theme update')
     } catch (e) {
       console.error('[ThemeSync] Error broadcasting theme:', e)
     }
