@@ -6,6 +6,7 @@ packages:
 
 catalog:
   '@types/node': ^24
+  '@vitejs/plugin-vue': ^5.2.4
   typescript: ^5
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vite-plus: ^0.1.14

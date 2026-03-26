@@ -82,11 +82,11 @@ function createThemeSyncInstance() {
             const message = JSON.parse(event.data)
             // Currently we only send, but could receive theme requests
             log(`[ThemeSync] Received: ${message.type}`)
-          } catch (e) {
+          } catch (_e) {
             // Ignore parse errors
           }
         }
-      } catch (e) {
+      } catch (_e) {
         error.value = 'Error al crear conexión WebSocket'
         resolve(false)
       }
@@ -256,7 +256,7 @@ function createThemeSyncInstance() {
     const relevantTables = ['typography', 'forms', ...Object.values(COMPONENT_STORE_MAP)]
 
     relevantTables.forEach(tableName => {
-      const table = db[tableName]
+      const table = db[tableName as keyof ComboUXDatabase]
       if (table && table.hook) {
         // Hook into create/update/delete events
         table.hook('creating', () => debouncedBroadcast())
@@ -268,7 +268,7 @@ function createThemeSyncInstance() {
     // Store unsubscribe function
     dbUnsubscribe = () => {
       relevantTables.forEach(tableName => {
-        const table = db[tableName]
+        const table = db[tableName as keyof ComboUXDatabase]
         if (table && table.hook) {
           table.hook('creating').unsubscribe()
           table.hook('updating').unsubscribe()
