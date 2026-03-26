@@ -186,7 +186,7 @@ export class ComboUX {
     // Generate button CSS
     if (theme.buttons?.variants?.length) {
       loadFontsFromButtonVariants(theme.buttons.variants)
-      cssParts.push(generateButtonCSS(theme.buttons.variants))
+      cssParts.push(generateButtonCSS(theme.buttons.variants, theme.typography?.globalConfig))
     }
 
     // Generate card CSS

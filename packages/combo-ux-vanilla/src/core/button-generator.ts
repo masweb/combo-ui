@@ -9,18 +9,18 @@ import { toKebabCase, buildBorder, buildBorderRadius, buildPadding, buildBorderO
 /**
  * Generate complete CSS for button component
  */
-export function generateButtonCSS(variants: ButtonVariant[]): string {
+export function generateButtonCSS(variants: ButtonVariant[], globalTypography?: { fontFamily?: string }): string {
   const css: string[] = []
 
-  css.push(generateButtonBase())
+  css.push(generateButtonBase(globalTypography))
 
   variants.forEach(variant => {
     const variantName = toKebabCase(variant.name)
-    css.push(generateButtonVariant(variant, variantName))
+    css.push(generateButtonVariant(variant, variantName, globalTypography))
 
     if (variant.dark) {
       const mergedVariant = deepMerge({ ...variant }, variant.dark)
-      css.push(generateButtonVariantDark(mergedVariant as ButtonVariant, variantName))
+      css.push(generateButtonVariantDark(mergedVariant as ButtonVariant, variantName, globalTypography))
     }
   })
 
@@ -30,7 +30,7 @@ export function generateButtonCSS(variants: ButtonVariant[]): string {
 /**
  * Generate base button styles
  */
-function generateButtonBase(): string {
+function generateButtonBase(_globalTypography?: { fontFamily?: string }): string {
   return `/* Button Base Styles */
 .cux-button {
   /* CSS Custom Properties (set by variants) */
@@ -121,7 +121,7 @@ function generateButtonBase(): string {
 /**
  * Generate CSS for a specific button variant
  */
-function generateButtonVariant(variant: ButtonVariant, variantName: string): string {
+function generateButtonVariant(variant: ButtonVariant, variantName: string, globalTypography?: { fontFamily?: string }): string {
   const lines: string[] = []
   lines.push(`/* Variant: ${variant.name} */`)
   lines.push(`.cux-button.--${variantName} {`)
@@ -143,8 +143,9 @@ function generateButtonVariant(variant: ButtonVariant, variantName: string): str
   }
 
   // Typography
-  if (variant.fontFamily) {
-    lines.push(`  --cux-btn-font: '${variant.fontFamily}', sans-serif;`)
+  const fontFamily = variant.fontFamily ?? globalTypography?.fontFamily
+  if (fontFamily) {
+    lines.push(`  --cux-btn-font: '${fontFamily}', sans-serif;`)
   }
   if (variant.fontSize) {
     lines.push(`  --cux-btn-font-size: ${buildFontSize(variant.fontSize)};`)
@@ -218,7 +219,7 @@ function generateButtonVariant(variant: ButtonVariant, variantName: string): str
 /**
  * Generate dark mode CSS for a button variant
  */
-function generateButtonVariantDark(variant: ButtonVariant, variantName: string): string {
+function generateButtonVariantDark(variant: ButtonVariant, variantName: string, globalTypography?: { fontFamily?: string }): string {
   const lines: string[] = []
   lines.push(`/* Dark Mode Variant: ${variant.name} */`)
   lines.push(`.dark .cux-button.--${variantName} {`)
@@ -235,8 +236,9 @@ function generateButtonVariantDark(variant: ButtonVariant, variantName: string):
   }
 
   // Typography (dark mode may have different font)
-  if (variant.fontFamily) {
-    lines.push(`  --cux-btn-font: '${variant.fontFamily}', sans-serif;`)
+  const fontFamily = variant.fontFamily ?? globalTypography?.fontFamily
+  if (fontFamily) {
+    lines.push(`  --cux-btn-font: '${fontFamily}', sans-serif;`)
   }
 
   // Shadow for dark mode - use dark shadow colors

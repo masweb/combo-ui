@@ -5,7 +5,7 @@ export interface ButtonVariant {
   border: BorderValue
   borderRadius: BorderRadiusValue
   padding: PaddingValue
-  fontFamily: string | null
+  fontFamily?: string | null
   fontSize: UnitNumber
   fontStyle: FontStyle
   fontWeight: string

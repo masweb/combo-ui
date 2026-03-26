@@ -20,7 +20,7 @@ const createDefaultVariant = (name: string): ButtonVariant => ({
   border: { ...defaultBorder },
   borderRadius: { ...defaultBorderRadius },
   padding: { ...defaultPadding },
-  fontFamily: null,
+  fontFamily: undefined,
   fontSize: { ...defaultFontSize },
   fontStyle: 'normal',
   fontWeight: '400',
