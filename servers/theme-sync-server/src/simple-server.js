@@ -13,7 +13,7 @@ const wss = new WebSocketServer({ port: PORT }, () => {
   console.log(`[theme-sync] Server running on ws://localhost:${PORT}`)
 })
 
-wss.on('connection', (ws) => {
+wss.on('connection', ws => {
   console.log('[theme-sync] Client connected')
   clients.add(ws)
 
@@ -22,7 +22,7 @@ wss.on('connection', (ws) => {
     ws.send(JSON.stringify(currentTheme))
   }
 
-  ws.on('message', (data) => {
+  ws.on('message', data => {
     try {
       const message = JSON.parse(data.toString())
 

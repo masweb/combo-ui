@@ -19,11 +19,13 @@ const patchDark = (updates: { color?: string | null }) => {
 }
 
 const patchGlobal = (updates: Partial<typeof typographyStore.globalConfig>) => {
-  Object.assign(typographyStore.globalConfig, updates)
+  typographyStore.updateGlobalConfig(updates)
 }
 
 const patchGlobalDark = (updates: { color?: string; backgroundColor?: string }) => {
-  typographyStore.globalConfig.dark = { ...typographyStore.globalConfig.dark, ...updates }
+  typographyStore.updateGlobalConfig({
+    dark: { ...typographyStore.globalConfig.dark, ...updates }
+  })
 }
 
 const newVariantName = ref('')

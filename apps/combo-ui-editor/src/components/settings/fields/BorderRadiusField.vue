@@ -33,8 +33,29 @@ const setCorner = (corner: 'tl' | 'tr' | 'br' | 'bl', raw: number) => {
 
 const setUnit = (unit: FourUnit) => patch({ unit })
 
-const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
-  setCorner(corner, Number((e.target as HTMLInputElement).value))
+// Simple debounce implementation to avoid rapid updates during wheel/input
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
+const DEBOUNCE_MS = 50
+
+const debouncedSetCorner = (corner: 'tl' | 'tr' | 'br' | 'bl', raw: number) => {
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => setCorner(corner, raw), DEBOUNCE_MS)
+}
+
+// Stable function reference - no recreation on each render
+const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl', e: Event) => {
+  debouncedSetCorner(corner, Number((e.target as HTMLInputElement).value))
+}
+
+// Stable function reference for unit change
+const onUnitChange = (e: Event) => {
+  setUnit((e.target as HTMLSelectElement).value as FourUnit)
+}
+
+// Clean up pending debounce on unmount
+onUnmounted(() => {
+  if (debounceTimer) clearTimeout(debounceTimer)
+})
 </script>
 
 <template>
@@ -45,7 +66,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
         <select
           class="form-select form-select-sm radius-unit-select"
           :value="modelValue.unit"
-          @change="setUnit(($event.target as HTMLSelectElement).value as FourUnit)"
+          @change="onUnitChange"
         >
           <option v-for="u in RADIUS_UNITS" :key="u" :value="u">{{ u }}</option>
         </select>
@@ -70,7 +91,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
           min="0"
           :step="step"
           :value="modelValue.tl"
-          @input="onCornerInput('tl')($event)"
+          @input="(e) => onCornerInput('tl', e)"
         />
         <span class="radius-corner-label">TL</span>
       </div>
@@ -82,7 +103,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
           min="0"
           :step="step"
           :value="modelValue.tr"
-          @input="onCornerInput('tr')($event)"
+          @input="(e) => onCornerInput('tr', e)"
         />
         <span class="radius-corner-label">TR</span>
       </div>
@@ -94,7 +115,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
           min="0"
           :step="step"
           :value="modelValue.bl"
-          @input="onCornerInput('bl')($event)"
+          @input="(e) => onCornerInput('bl', e)"
         />
         <span class="radius-corner-label">BL</span>
       </div>
@@ -106,7 +127,7 @@ const onCornerInput = (corner: 'tl' | 'tr' | 'br' | 'bl') =>  (e: Event) =>
           min="0"
           :step="step"
           :value="modelValue.br"
-          @input="onCornerInput('br')($event)"
+          @input="(e) => onCornerInput('br', e)"
         />
         <span class="radius-corner-label">BR</span>
       </div>

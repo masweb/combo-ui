@@ -6,6 +6,7 @@
 
 import { db, COMPONENT_STORE_MAP } from '@/db'
 import { useThemeIO } from './useThemeIO.js'
+import { storeManager } from './useStoreManager.js'
 
 const THEME_VERSION = '1.0'
 const WS_URL = 'ws://localhost:3001'
@@ -77,7 +78,7 @@ function createThemeSyncInstance() {
           try {
             const message = JSON.parse(event.data)
             // Currently we only send, but could receive theme requests
-            console.log('[ThemeSync] Received:', message.type)
+            // console.log('[ThemeSync] Received:', message.type)
           } catch (e) {
             // Ignore parse errors
           }
@@ -116,7 +117,7 @@ function createThemeSyncInstance() {
   }
 
   /**
-   * Build theme data from all stores
+   * Build theme data from all stores (tries live stores first, falls back to DB)
    */
   const buildThemeData = async (): Promise<ThemeData> => {
     const themeData: ThemeData = {
@@ -124,44 +125,78 @@ function createThemeSyncInstance() {
       version: THEME_VERSION
     }
 
-    // Export typography
-    const typographyData = await db.typography.get('main')
-    if (typographyData) {
+    const allStores = storeManager.getAllStores()
+
+    // Export typography (try live store first, then DB)
+    const typographyStore = allStores.get('typography')
+    if (typographyStore?.variants) {
+      const globalConfigRef = (typographyStore as { globalConfig?: Ref<unknown> }).globalConfig
       themeData.typography = {
-        globalConfig: typographyData.globalConfig,
-        variants: typographyData.variants,
-        selectedVariantIndex: typographyData.selectedVariantIndex
+        globalConfig: (globalConfigRef?.value as Record<string, unknown>) || {},
+        variants: typographyStore.variants.value as unknown[],
+        selectedVariantIndex: typographyStore.selectedVariantIndex?.value ?? 0
       }
-      console.log('[ThemeSync] Typography globalConfig:', typographyData.globalConfig)
+    } else {
+      const typographyData = await db.typography.get('main')
+      if (typographyData) {
+        themeData.typography = {
+          globalConfig: typographyData.globalConfig,
+          variants: typographyData.variants,
+          selectedVariantIndex: typographyData.selectedVariantIndex
+        }
+      }
     }
 
-    // Export forms
-    const formsData = await db.forms.get('main')
-    if (formsData) {
+    // Export forms (try live store first, then DB)
+    const formsStore = allStores.get('forms')
+    if (formsStore?.variants) {
+      const globalConfigRef = (formsStore as { globalConfig?: Ref<unknown> }).globalConfig
       themeData.forms = {
-        globalConfig: formsData.globalConfig,
-        variants: formsData.variants,
-        selectedVariantIndex: formsData.selectedVariantIndex,
-        currentState: formsData.currentState
+        globalConfig: (globalConfigRef?.value as Record<string, unknown>) || {},
+        variants: formsStore.variants.value as unknown[],
+        selectedVariantIndex: formsStore.selectedVariantIndex?.value ?? 0,
+        currentState: (formsStore as { currentState?: Ref<string> }).currentState?.value
+      }
+    } else {
+      const formsData = await db.forms.get('main')
+      if (formsData) {
+        themeData.forms = {
+          globalConfig: formsData.globalConfig,
+          variants: formsData.variants,
+          selectedVariantIndex: formsData.selectedVariantIndex,
+          currentState: formsData.currentState
+        }
       }
     }
 
-    // Export component variants
+    // Export component variants (try live stores first, then DB)
     for (const [componentId, tableName] of Object.entries(COMPONENT_STORE_MAP)) {
       if (componentId === 'forms') continue
 
-      const table = db[tableName] as unknown as {
-        get: (id: string) => Promise<{ variants: unknown[]; selectedVariantIndex: number } | undefined>
-      }
-      const data = await table.get('main')
-
-      if (data && data.variants && data.variants.length > 0) {
+      const store = allStores.get(componentId)
+      if (store?.variants) {
+        // Use live store data
         Object.assign(themeData, {
           [tableName]: {
-            variants: data.variants,
-            selectedVariantIndex: data.selectedVariantIndex
+            variants: store.variants.value as unknown[],
+            selectedVariantIndex: store.selectedVariantIndex?.value ?? 0
           }
         })
+      } else {
+        // Fallback to DB
+        const table = db[tableName] as unknown as {
+          get: (id: string) => Promise<{ variants: unknown[]; selectedVariantIndex: number } | undefined>
+        }
+        const data = await table.get('main')
+
+        if (data && data.variants && data.variants.length > 0) {
+          Object.assign(themeData, {
+            [tableName]: {
+              variants: data.variants,
+              selectedVariantIndex: data.selectedVariantIndex
+            }
+          })
+        }
       }
     }
 
@@ -188,7 +223,7 @@ function createThemeSyncInstance() {
       }
 
       ws.send(JSON.stringify(message))
-      console.log('[ThemeSync] Sent theme update with keys:', Object.keys(themeData))
+      // console.log('[ThemeSync] Sent theme update with keys:', Object.keys(themeData))
     } catch (e) {
       console.error('[ThemeSync] Error broadcasting theme:', e)
     }
@@ -260,13 +295,39 @@ function createThemeSyncInstance() {
     }
   }
 
+  /**
+   * Broadcast immediately (for real-time updates like color changes)
+   */
+  const broadcastImmediate = async () => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      return
+    }
+
+    try {
+      // Build theme data NOW
+      const themeData = await buildThemeData()
+
+      const message = {
+        type: 'theme-update',
+        payload: themeData,
+        timestamp: Date.now()
+      }
+
+      ws.send(JSON.stringify(message))
+      // console.log('[ThemeSync] Sent immediate theme update')
+    } catch (e) {
+      console.error('[ThemeSync] Error broadcasting theme:', e)
+    }
+  }
+
   return {
     isConnected,
     isBroadcasting,
     error,
     connect,
     disconnect,
-    toggleRealtime
+    toggleRealtime,
+    broadcastImmediate
   }
 }
 

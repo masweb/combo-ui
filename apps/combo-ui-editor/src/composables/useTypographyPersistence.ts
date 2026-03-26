@@ -104,7 +104,8 @@ export const useTypographyPersistence = (
     loadFromDB,
     clearFromMemory,
     variants,
-    selectedVariantIndex
+    selectedVariantIndex,
+    globalConfig
   })
 
   void loadFromDB()

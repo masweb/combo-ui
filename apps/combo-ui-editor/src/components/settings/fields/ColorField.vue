@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { IconColorPicker } from '@tabler/icons-vue'
+import { useThemeSync } from '@/composables/useThemeSync'
+
+// ─── Theme sync ───────────────────────────────────────────────────────────────
+
+const { isBroadcasting, broadcastImmediate } = useThemeSync()
 
 // ─── Props & emits ────────────────────────────────────────────────────────────
 
@@ -11,6 +16,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
+
+// ─── Scale mode ───────────────────────────────────────────────────────────────
+
+const scaleMode = ref<'fixed' | 'proportional'>('fixed')
 
 // ─── Color parsing helpers ────────────────────────────────────────────────────
 
@@ -157,6 +166,10 @@ const emitColor = () => {
   const out = buildOutput(hue.value, sat.value, lit.value, alpha.value)
   hexInput.value = out
   emit('update:modelValue', out)
+  // Broadcast to connected clients when broadcasting is active
+  if (isBroadcasting.value) {
+    void broadcastImmediate()
+  }
 }
 
 // ─── Gradient canvas ─────────────────────────────────────────────────────────
@@ -311,6 +324,10 @@ const onHexInput = (e: Event) => {
     cursorY.value = 1 - p.l / 100
     drawGradient()
     emit('update:modelValue', val)
+    // Broadcast to connected clients when broadcasting is active
+    if (isBroadcasting.value) {
+      void broadcastImmediate()
+    }
   }
 }
 
@@ -319,6 +336,10 @@ const onHexInput = (e: Event) => {
 const onAlphaInput = (e: Event) => {
   alpha.value = Math.max(0, Math.min(100, Number((e.target as HTMLInputElement).value))) / 100
   emitColor()
+  // Broadcast to connected clients when broadcasting is active
+  if (isBroadcasting.value) {
+    void broadcastImmediate()
+  }
 }
 
 // ─── EyeDropper ──────────────────────────────────────────────────────────────
@@ -342,6 +363,10 @@ const openEyeDropper = async () => {
     hexInput.value = picked
     drawGradient()
     emit('update:modelValue', picked)
+    // Broadcast to connected clients when broadcasting is active
+    if (isBroadcasting.value) {
+      void broadcastImmediate()
+    }
   } catch {
     // user cancelled — do nothing
   }
@@ -370,6 +395,68 @@ const cursorStyle = computed(() => ({
   left: `${cursorX.value * 100}%`,
   top: `${cursorY.value * 100}%`
 }))
+
+// ─── Color scale variations ───────────────────────────────────────────────────
+
+// Determina si el color es claro (para ajustar color del texto)
+const isLightColor = computed(() => {
+  // Usamos luminosidad percibida: L > 55 se considera claro
+  return lit.value > 55
+})
+
+// Genera las 10 variaciones de color (5 más oscuros, 5 más claros)
+const colorVariations = computed(() => {
+  const currentL = lit.value
+  const h = hue.value
+  const s = sat.value
+  const a = alpha.value
+
+  // 5 tonos más oscuros (de más oscuro a menos oscuro)
+  const darker: Array<{ l: number; color: string }> = []
+  // 5 tonos más claros (de menos claro a más claro)
+  const lighter: Array<{ l: number; color: string }> = []
+
+  if (scaleMode.value === 'fixed') {
+    // Modo pasos fijos: ±10%, ±20%, ±30%, ±40%, ±50%
+    for (let i = 5; i >= 1; i--) {
+      const l = Math.max(0, currentL - i * 10)
+      darker.push({ l, color: buildOutput(h, s, l, a) })
+    }
+    for (let i = 1; i <= 5; i++) {
+      const l = Math.min(100, currentL + i * 10)
+      lighter.push({ l, color: buildOutput(h, s, l, a) })
+    }
+  } else {
+    // Modo proporcional: distribuir entre actual y extremos
+    // Oscuros: del actual hacia 0
+    for (let i = 5; i >= 1; i--) {
+      const l = (currentL / 6) * i
+      darker.push({ l: Math.round(l), color: buildOutput(h, s, l, a) })
+    }
+    // Claros: del actual hacia 100
+    for (let i = 1; i <= 5; i++) {
+      const l = currentL + ((100 - currentL) / 6) * i
+      lighter.push({ l: Math.round(l), color: buildOutput(h, s, l, a) })
+    }
+  }
+
+  return { darker, lighter }
+})
+
+// Selecciona una variación de color
+const selectVariation = (newL: number) => {
+  lit.value = newL
+  cursorY.value = 1 - newL / 100
+  emitColor()
+  drawGradient()
+  // Broadcast to connected clients when broadcasting is active
+  if (isBroadcasting.value) {
+    void broadcastImmediate()
+  }
+}
+
+// Determina si un color de la variación es claro (para el texto del label)
+const isVariationLight = (l: number) => l > 55
 </script>
 
 <template>
@@ -377,14 +464,71 @@ const cursorStyle = computed(() => ({
     <label class="field-label">{{ label }}</label>
 
     <!-- Trigger row -->
-    <div class="color-field-trigger" @click="open = !open">
-      <span class="color-field-swatch" :style="swatchStyle" />
+    <div
+      class="color-field-trigger"
+      :class="{ 'is-light': isLightColor, 'is-dark': !isLightColor }"
+      :style="swatchStyle"
+      @click="open = !open"
+    >
       <span class="color-field-value">{{ hexInput }}</span>
       <span class="color-field-chevron">{{ open ? '▲' : '▼' }}</span>
     </div>
 
     <!-- Popover -->
     <div v-if="open" ref="popoverRef" class="color-popover">
+      <!-- Color scale variations -->
+      <div class="cp-scale">
+        <div class="cp-scale-header">
+          <span class="cp-scale-title">Variations</span>
+          <div class="cp-scale-switch">
+            <button
+              class="cp-scale-btn"
+              :class="{ active: scaleMode === 'fixed' }"
+              @click="scaleMode = 'fixed'"
+            >
+              Fixed
+            </button>
+            <button
+              class="cp-scale-btn"
+              :class="{ active: scaleMode === 'proportional' }"
+              @click="scaleMode = 'proportional'"
+            >
+              Prop
+            </button>
+          </div>
+        </div>
+        <!-- Darker row -->
+        <div class="cp-scale-row">
+          <button
+            v-for="(item, idx) in colorVariations.darker"
+            :key="'d' + idx"
+            class="cp-scale-swatch"
+            :style="{ background: item.color }"
+            :title="`${Math.round(item.l)}%`"
+            @click="selectVariation(item.l)"
+          >
+            <span class="cp-scale-label" :class="{ light: !isVariationLight(item.l) }">
+              {{ Math.round(item.l) }}%
+            </span>
+          </button>
+        </div>
+        <!-- Lighter row -->
+        <div class="cp-scale-row">
+          <button
+            v-for="(item, idx) in colorVariations.lighter"
+            :key="'l' + idx"
+            class="cp-scale-swatch"
+            :style="{ background: item.color }"
+            :title="`${Math.round(item.l)}%`"
+            @click="selectVariation(item.l)"
+          >
+            <span class="cp-scale-label" :class="{ light: !isVariationLight(item.l) }">
+              {{ Math.round(item.l) }}%
+            </span>
+          </button>
+        </div>
+      </div>
+
       <!-- Gradient canvas -->
       <div class="cp-gradient-wrap" @mousedown="onGradientMousedown">
         <canvas ref="gradientCanvas" class="cp-gradient" width="240" height="150" />
@@ -410,8 +554,18 @@ const cursorStyle = computed(() => ({
 
       <!-- Hex + alpha inputs + eyedropper -->
       <div class="cp-inputs">
-        <div class="cp-input-group">
-          <input class="form-control form-control-sm" :value="hexInput" @input="onHexInput" />
+        <div class="cp-input-group cp-input-hex">
+          <div
+            class="cp-hex-input-wrap"
+            :style="{ background: swatchStyle.background }"
+          >
+            <input
+              class="cp-hex-input"
+              :class="{ 'text-dark': isLightColor, 'text-light': !isLightColor }"
+              :value="hexInput"
+              @input="onHexInput"
+            />
+          </div>
           <span class="cp-input-label">HEX</span>
         </div>
         <div class="cp-input-group cp-input-alpha">

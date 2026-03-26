@@ -99,6 +99,14 @@ class StoreManager {
       this.loadComponentFonts(componentId, store)
     }
   }
+
+  getStore(componentId: string): StoreInstance | undefined {
+    return this.stores.get(componentId)
+  }
+
+  getAllStores(): Map<string, StoreInstance> {
+    return this.stores
+  }
 }
 
 export const storeManager = new StoreManager()

@@ -1,0 +1,24 @@
+{
+  "name": "custombasscss",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "postcss src/index.css -o dist/basscss-custom.css",
+    "build:min": "postcss src/index.css -o dist/basscss-custom.min.css --no-map"
+  },
+  "dependencies": {
+    "basscss-align": "^1.0.2",
+    "basscss-border": "^4.0.2",
+    "basscss-flexbox": "^1.0.2",
+    "basscss-grid": "^2.0.0",
+    "basscss-hide": "^1.0.1",
+    "basscss-layout": "^3.1.0",
+    "basscss-margin": "^1.0.9",
+    "basscss-padding": "^1.1.3",
+    "basscss-position": "^2.0.3"
+  },
+  "devDependencies": {
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.0.0",
+    "cssnano": "^7.0.0"
+  }
+}

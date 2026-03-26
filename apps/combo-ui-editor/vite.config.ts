@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VueI18nPlugin.vite({
-      include: [resolve(__dirname, './locales/**')],
+      include: [resolve(__dirname, './i18n/locales/**')],
       runtimeOnly: false
     }),
     AutoImport({
