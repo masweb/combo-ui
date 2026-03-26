@@ -3,6 +3,8 @@ import { storeManager } from './useStoreManager.js'
 import { loadGoogleFont } from './useGoogleFonts.js'
 import { useTypographyStore, getTypographyDefaults } from '@/stores/typography'
 import { useFormsStore, getFormsDefaults } from '@/stores/forms'
+import { generateReadme } from './useReadmeGenerator'
+import JSZip from 'jszip'
 
 const THEME_VERSION = '1.0'
 const DEFAULT_THEME_NAME = 'NewTheme'
@@ -95,13 +97,21 @@ export const useThemeIO = () => {
     try {
       const themeData = await buildThemeData(name)
       const json = JSON.stringify(themeData, null, 2)
-      const blob = new Blob([json], { type: 'application/json' })
+      const readme = generateReadme(themeData)
+
+      // Create ZIP with JSON and README
+      const zip = new JSZip()
+      zip.file(`${name}.json`, json)
+      zip.file('README.md', readme)
+
+      // Generate ZIP blob and download
+      const blob = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(blob)
 
       // Create temporary link and trigger download
       const link = document.createElement('a')
       link.href = url
-      link.download = `${name}.json`
+      link.download = `${name}.zip`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -322,4 +332,24 @@ export const useThemeIO = () => {
     isLoaded,
     error
   }
+}
+
+/**
+ * Theme data structure
+ */
+export interface ThemeData {
+  name: string
+  version: string
+  typography?: {
+    globalConfig: unknown
+    variants: unknown[]
+    selectedVariantIndex: number
+  }
+  forms?: {
+    globalConfig: unknown
+    variants: unknown[]
+    selectedVariantIndex: number
+    currentState?: string
+  }
+  [key: string]: unknown
 }

@@ -34,6 +34,7 @@ declare global {
   const defineStore: typeof import('pinia').defineStore
   const effectScope: typeof import('vue').effectScope
   const generateFontUrl: typeof import('./src/composables/googleFonts').generateFontUrl
+  const generateReadme: typeof import('./src/composables/useReadmeGenerator').generateReadme
   const getActivePinia: typeof import('pinia').getActivePinia
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
