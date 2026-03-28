@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "combo-ui-vue": "workspace:*",
-    "vue": "^3.5.0"
+    "vue": "^3.5.31"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",
