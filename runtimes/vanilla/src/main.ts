@@ -4,7 +4,7 @@ import { ComboUX } from '@combo-ux/vanilla'
 const cux = new ComboUX({
   theme: './theme.json',
   darkMode: 'auto',
-  ws: 'ws://localhost:3001'  // Enable realtime sync
+  ws: 'ws://localhost:3001' // Enable realtime sync
 })
 
 // Log WebSocket connection status
@@ -16,7 +16,7 @@ cux.onSyncDisconnect(() => {
   console.log('%c✦ Realtime sync disconnected', 'color: #ef4444; font-weight: bold;')
 })
 
-cux.onSyncThemeUpdate((theme) => {
+cux.onSyncThemeUpdate(theme => {
   console.log('%c✦ Theme updated:', 'color: #3b82f6; font-weight: bold;', theme.name)
   // Update theme name display
   const themeNameEl = document.getElementById('theme-name')
