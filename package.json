@@ -9,7 +9,7 @@
     "prepare": "vp config"
   },
   "devDependencies": {
-    "vite-plus": "catalog:"
+    "vite-plus": "^0.1.15"
   },
   "engines": {
     "node": ">=22.12.0"

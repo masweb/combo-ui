@@ -22,13 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-packages
-
-.claude
-AGENTS.md
-CLAUDE.md
-
-project
-
-/apps/combo-ui-editor
-/apps/custombasscss
