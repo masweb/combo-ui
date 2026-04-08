@@ -151,17 +151,19 @@ const accordion2 = ref(false)
     <!-- Progress -->
     <section>
       <h3 class="cui-h3 mt3 mb1">Progress</h3>
+
       <div style="display: flex; flex-direction: column; gap: 1rem">
-        <div class="cui-progress --v1">
-          <div class="cui-progress-fill" style="width: 60%"></div>
-        </div>
+        <!-- Con etiqueta -->
         <div class="cui-progress --v1">
           <div class="cui-progress-fill" style="width: 75%"></div>
           <span class="cui-progress-label">75%</span>
         </div>
-        <div class="cui-progress --v1">
-          <div class="cui-progress-fill --striped --animated" style="width: 50%"></div>
+
+        <!-- Con rayas animadas (se aplica automáticamente si variant.type = "striped") -->
+        <div class="cui-progress --v2">
+          <div class="cui-progress-fill" style="width: 50%"></div>
         </div>
+        ```
       </div>
     </section>
 
