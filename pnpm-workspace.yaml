@@ -6,7 +6,9 @@ packages:
 
 catalog:
   '@types/node': ^24
+  '@types/tinycolor2': ^1.4.6
   '@vitejs/plugin-vue': ^5.2.4
+  tinycolor2: ^1.6.0
   typescript: ^5
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vite-plus: ^0.1.16
