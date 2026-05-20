@@ -22,9 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.claude
-AGENTS.md
+
+# AI tool artifacts
+.claude/
+.cursor/
+.gemini/
+.codex/
+.agents/
+.tessl/
+.mcp.json
 CLAUDE.md
+AGENTS.md
+tile.json
+tessl.json
+
 # runtimes
 packages
 
