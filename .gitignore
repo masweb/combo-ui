@@ -28,6 +28,10 @@ dist-ssr
 .cursor/
 .gemini/
 .codex/
+AGENTS.md
+CLAUDE.md
+.vite-hooks/
+project/
 .agents/
 .tessl/
 .mcp.json
