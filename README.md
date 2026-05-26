@@ -1,5 +1,7 @@
 # Combo UI
 
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) ![Vue 3](https://img.shields.io/badge/Vue-3-42b883.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178c6.svg) ![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)
+
 A visual design system with a desktop theme editor, real-time sync, and framework-specific runtime packages.
 
 Design your UI components visually, export a theme JSON, and consume it in your app. Edit live and see changes instantly via WebSocket — no page reload needed.
@@ -91,9 +93,32 @@ Pre-built themes available in `themes/`:
 
 Export your own from the editor or generate one from color pairs using the built-in theme generator.
 
-## Demo
+## Demo App
 
-<!-- TODO: Add screenshots and demo URL -->
+A Vue 3 app showcasing every component with light/dark mode toggle. Lives in `runtimes/vue/`.
+
+```bash
+# From the monorepo root
+cd runtimes/vue
+pnpm install
+pnpm dev
+```
+
+Components included: Button, Card, Alert, Avatar, Badge, Tooltip, Popover, Chip, Progress, Spinner, Table, ListGroup, Accordion, Pagination, Typography, Forms.
+
+## Screenshots
+
+**Theme Editor — Main Screen**
+
+| Light                                                        | Dark                                                       |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| ![Combo UI Editor - Light mode](screenshots/combolight.webp) | ![Combo UI Editor - Dark mode](screenshots/combodark.webp) |
+
+**Typography Editor**
+
+| Light                                                             | Dark                                                             |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------- |
+| ![Typography Editor - Light mode](screenshots/combotyplight.webp) | ![Typography Editor - Dark mode](screenshots/combotypodark.webp) |
 
 ## License
 
